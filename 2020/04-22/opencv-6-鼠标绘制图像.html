@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#2.2.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>opencv-6-图像绘制与opencv Line 函数剖析 - 東木 - 随笔</title>
+  
+    <meta name="keywords" content="opencv,c++,qt">
+  
+  
+    <meta name="description" content="开始之前越到后面, 写的越慢, 之前还抽空去看了下 学堂在线那篇文章提供的方法,  博客第一个人评论的我, 想想还是要给人家一个交代的, 就想着找到一个方法进行下载, 但是尝试了 还没找到, 估计我要花时间自己写一个了, 不是很难, 但是 就是要花时间, 安排到日程上了, 应该会有结果的, 到时候再写博文记录.
+...">
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="東木 - 随笔">
+  
+
+  <!-- import meta -->
+  
+    
+      <meta name='theme-color' content='#FFFFFF'>
+    
+      <meta name='msapplication-TileColor' content='#cccccc'>
+    
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+  <link rel="shortcut icon" type='image/x-icon' href="https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  <!-- import link -->
+  
+  
+  <link rel='shortcut icon' type='image/x-icon' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  <link rel='icon' type='image/x-icon' sizes='32x32' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  
+
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <a class="logo flat-box"></a>
+      <ul class='switcher h-list'>
+        <li><a class="s-comment flat-btn fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc flat-btn fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="logo flat-box" target="_self" href='/'>
+          
+            <img class='logo' src='https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png'/>
+          
+          
+          
+          
+        </a>
+      
+
+      
+
+			<div class='menu navigation'>
+				<ul class='h-list'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  
+                    <i class='fas fa-rss fa-fw'></i>
+                  
+                  博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  
+                    <i class='fas fa-folder-open fa-fw'></i>
+                  
+                  分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  
+                    <i class='fas fa-tags fa-fw'></i>
+                  
+                  标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  
+                    <i class='fas fa-archive fa-fw'></i>
+                  
+                  归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  
+                    <i class='fas fa-link fa-fw'></i>
+                  
+                  友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  
+                    <i class='fas fa-info-circle fa-fw'></i>
+                  
+                  关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      
+        <div class="m_search">
+          <form name="searchform" class="form u-search-form">
+            <i class="icon fas fa-search fa-fw"></i>
+            <input type="text" class="input u-search-input" placeholder="搜索" />
+          </form>
+        </div>
+      
+
+			<ul class='switcher h-list'>
+				
+					<li><a class="s-search flat-btn fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li><a class="s-menu flat-btn fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<ul class="menu-phone navigation white-box">
+  
+  
+    <li>
+      <a class="flat-box" href=/
+        
+        
+        
+          id="home"
+        >
+        
+          <i class='fas fa-rss fa-fw'></i>
+        
+        博客
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/categories/
+        
+        
+        
+          id="categories"
+        >
+        
+          <i class='fas fa-folder-open fa-fw'></i>
+        
+        分类
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/tags/
+        
+        
+        
+          id="tags"
+        >
+        
+          <i class='fas fa-tags fa-fw'></i>
+        
+        标签
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/archives/
+        
+        
+        
+          id="archives"
+        >
+        
+          <i class='fas fa-archive fa-fw'></i>
+        
+        归档
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/friends/
+        
+        
+        
+          id="friends"
+        >
+        
+          <i class='fas fa-link fa-fw'></i>
+        
+        友链
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/about/
+        
+        
+        
+          id="about"
+        >
+        
+          <i class='fas fa-info-circle fa-fw'></i>
+        
+        关于
+      </a>
+    </li>
+  
+</ul>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box shadow article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2020/04-22/opencv-6-%E9%BC%A0%E6%A0%87%E7%BB%98%E5%88%B6%E5%9B%BE%E5%83%8F.html">
+        opencv-6-图像绘制与opencv Line 函数剖析
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+<div class='new-meta-item author'>
+  <a href="https://schen1024.github.io" rel="nofollow">
+    <img src="https://avatars3.githubusercontent.com/u/12789460">
+    <p>SChen1024</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/opencv/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>opencv</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2020年4月22日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>越到后面, 写的越慢, 之前还抽空去看了下 学堂在线那篇文章提供的方法,  博客第一个人评论的我, 想想还是要给人家一个交代的, 就想着找到一个方法进行下载, 但是尝试了 还没找到, 估计我要花时间自己写一个了, 不是很难, 但是 就是要花时间, 安排到日程上了, 应该会有结果的, 到时候再写博文记录.</p>
+<p>之前都是空的, 写起来很快, 后面的话我还要去写具体的代码实现,  争取都能够复现出来, 这样更有实际意义, 所以接下来可能更新的更慢了, 不过应该不会断, 我计划的很长, 但是我想 至少写够20篇吧, 加油.</p>
+<p>在这篇文章以及后续的文章中,我们都会 说明一些代码出现的地方,  头文件对应的 opencv 库引用目录 include 文件夹下面的文件 源文件则是 opencv 4.3.0 下的 Source 文件夹里面的文件<br>同样的, 文件的后面使用 <code>:xx</code>  标识, 在文件的xx 行的地方</p>
+<blockquote>
+<p>头文件 <code>opencv2/opencv.hpp:100</code> 在 opencv.hpp 第100 行开始的地方<br>源文件 <code>modules/imgproc/src/drawing.cpp:1000</code> 则是在 1000 行的地方</p>
+</blockquote>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[toc]</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>在上一篇中, 我们能够进行像素点的操作了, 那么, 很明显的一个问题, 我能不能在图像上画一条线呢, 或者在图像上自己用鼠标绘制呢,  当然可以, opencv 提供了这些功能,</p>
+<p>在opencv 的文档中 <a href="https://docs.opencv.org/4.3.0/d3/d96/tutorial_basic_geometric_drawing.html" target="_blank" rel="noopener">Basic Drawing</a>, 基础绘图章节, 有相关的例程, </p>
+<p>我们在之前的文章中提到了 opencv 座标系的问题</p>
+<ul>
+<li>以左上角为起始点</li>
+<li>横向为x, 纵向为y</li>
+<li>使用 at(rows,cols) 确定座标值  对应的是 (行,列)</li>
+<li>使用 point(x,y)  定位, 使用的是 (列, 行) </li>
+</ul>
+<p>这两个定位是不一样的 ,所一定要注意, opencv 在 绘制图形的时候 使用的是 Point 来进行的定位, 我们可以使用 <code>cv::Point p = cv::Point(20,30)</code> 直接初始化, 或者使用 <code>cv::Point p; p.x = 20,p.y=30;</code> 初始化后进行赋值操作.</p>
+<h3 id="在图像上绘制标准图形"><a href="#在图像上绘制标准图形" class="headerlink" title="在图像上绘制标准图形"></a>在图像上绘制标准图形</h3><p>我们还以 lena 为例, 在图片上绘制 以 (x,y) 座标的图形</p>
+<ul>
+<li>直线: 起点(100,200) - 终点(500,300)   绿色</li>
+<li>直线: 起点 (100,500) - 终点(500,100)  蓝色</li>
+<li>圆:  圆心 (200,300)   半径 200      红色</li>
+<li>矩形: 左上角点 (100,120)  右下角点(400,450);  白色</li>
+<li>文字: 起始点: (100,200), 文字: OpenCV  </li>
+<li>….</li>
+</ul>
+<p>在我们绘制之前, 我们要说明一个函数 <code>cv::Scalar</code> 是opencv 的颜色函数,  按照 <code>BGR</code> 的顺序传入三个参数,  用于指名绘制图形的颜色</p>
+<blockquote>
+<p>note: 实际上是 4个参数, 一般我们不使用最后一个参数即可^[《OpenCV: Basic Drawing》. 见于 2020年4月24日. <a href="https://docs.opencv.org/4.3.0/d3/d96/tutorial_basic_geometric_drawing.html.]" target="_blank" rel="noopener">https://docs.opencv.org/4.3.0/d3/d96/tutorial_basic_geometric_drawing.html.]</a></p>
+</blockquote>
+<h3 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h3><p>我们根据上面给出的顺序  依次 编写代码, 将图形绘制到 lena 图的上面,<br> 我们可以得到这样的程序, 就是一条一条的写,  我们只需要调用 相应的opencv 函数就能绘制了,  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//QApplication a(argc, argv);</span></span><br><span class="line">    <span class="comment">//MainWindow w;</span></span><br><span class="line">    <span class="comment">//w.show();</span></span><br><span class="line">    <span class="comment">// 设置 要显示的图像路径</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> img_lena = <span class="string">"./TestImages/lena.png"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 读取两幅彩色图像  512*512</span></span><br><span class="line">    cv::Mat lena_bgr = cv::imread(img_lena);</span><br><span class="line">    <span class="comment">// 声明结果图像 1020*1020</span></span><br><span class="line">    cv::Mat res_bgr = cv::Mat::zeros(cv::Size(<span class="number">512</span>,<span class="number">512</span>), CV_8UC3);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 绘制基本图形</span></span><br><span class="line">    cv::line(lena_bgr, cv::Point(<span class="number">100</span>, <span class="number">200</span>), cv::Point(<span class="number">500</span>, <span class="number">300</span>), cv::Scalar(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>));</span><br><span class="line">    cv::line(lena_bgr, cv::Point(<span class="number">100</span>, <span class="number">500</span>), cv::Point(<span class="number">500</span>, <span class="number">100</span>), cv::Scalar(<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">    cv::circle(lena_bgr, cv::Point(<span class="number">200</span>, <span class="number">300</span>), <span class="number">200</span>, cv::Scalar(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>));</span><br><span class="line">    cv::rectangle(lena_bgr, cv::Rect(cv::Point(<span class="number">100</span>, <span class="number">120</span>), cv::Point(<span class="number">400</span>, <span class="number">500</span>)), cv::Scalar(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>));</span><br><span class="line"></span><br><span class="line">    cv::putText(lena_bgr, <span class="string">"OpenCV"</span>, cv::Point(<span class="number">100</span>, <span class="number">200</span>), cv::FONT_HERSHEY_COMPLEX,<span class="number">1.0</span>, cv::Scalar(<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>));</span><br><span class="line"></span><br><span class="line">    cv::imshow(<span class="string">"lena_bgr"</span>,lena_bgr);</span><br><span class="line"></span><br><span class="line">    cv::waitKey(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// return a.exec();</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最终我们运行之后 ,便能够得到这样的一副图像, 很简单, 具体的参数部分自己选择就好,  这里只是给出一个示例, </p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1587733292407.png" alt="opencv 基本图形绘制"></p>
+<h3 id="line-函数-源码分析剖析"><a href="#line-函数-源码分析剖析" class="headerlink" title="line 函数 源码分析剖析"></a>line 函数 源码分析剖析</h3><p>其实opencv 还能绘制其他的图形, 太多了, 可以在<a href="https://docs.opencv.org/4.3.0/d6/d6e/group__imgproc__draw.html#ga5126f47f883d730f633d74f07456c576" target="_blank" rel="noopener">Drawing Functions</a>页面去查看, 基本没啥用, 很多时候是需要了自己造个轮子就行了, 不查文档我都不知道能绘制这么多</p>
+<p>只需要知道直线, 圆, 矩形怎么绘制的就行了, 多了也用不到</p>
+<p>后续的部分 主要是 opencv 怎么去实现的 line 函数了, 涉及到比较基础的, 看不看不影响你的使用, 不想看的就关闭即可..</p>
+<h4 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h4><p>我们以 绘制直线为例, 这个简单, 我们使用了 <code>cv::line</code> 就绘制出来了一条直线<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cv::line</span>	<span class="params">(	InputOutputArray 	img,</span></span></span><br><span class="line"><span class="function"><span class="params">					Point 	pt1,</span></span></span><br><span class="line"><span class="function"><span class="params">					Point 	pt2,</span></span></span><br><span class="line"><span class="function"><span class="params">					<span class="keyword">const</span> Scalar &amp; 	color,</span></span></span><br><span class="line"><span class="function"><span class="params">					<span class="keyword">int</span> 	thickness = <span class="number">1</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">					<span class="keyword">int</span> 	lineType = LINE_8,</span></span></span><br><span class="line"><span class="function"><span class="params">					<span class="keyword">int</span> 	shift = <span class="number">0</span> </span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span></span><br></pre></td></tr></table></figure><br>各个参数意义其实名称还是能够 看出来的 </p>
+<ul>
+<li>img: 输入输出图像, 直接在这个图像上绘制</li>
+<li>pt1: 起始点 (x,y) 座标</li>
+<li>pt2: 终止点 (x,y) 座标</li>
+<li>color: Scalar 参数生成的颜色</li>
+<li>*thickness: 直线宽度</li>
+<li>*lineType: 绘制的线的形式  4邻域 8邻域等</li>
+<li>*shift: 精度, 点座标中的小数点等级(第一次看到这个参数, 暂时不管他什么意思)</li>
+</ul>
+<p>一般我们只需要前面的四个参数就行了,  一般就是我们程序中的 <code>cv::line(lena_bgr, cv::Point(100, 200), cv::Point(500, 300), cv::Scalar(0, 255, 0));</code>   </p>
+<p>座标颜色我们都说过了, 那我们去看下 他的源码:<br>在 <code>modules\imgproc\srcdrawing.cpp:1772</code> 中, 我们能够看到 直线的绘制函数, </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">line</span><span class="params">( InputOutputArray _img, Point pt1, Point pt2, <span class="keyword">const</span> Scalar&amp; color,</span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="keyword">int</span> thickness, <span class="keyword">int</span> line_type, <span class="keyword">int</span> shift )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    CV_INSTRUMENT_REGION();</span><br><span class="line"></span><br><span class="line">    Mat img = _img.getMat();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( line_type == CV_AA &amp;&amp; img.depth() != CV_8U )</span><br><span class="line">        line_type = <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">    CV_Assert( <span class="number">0</span> &lt; thickness &amp;&amp; thickness &lt;= MAX_THICKNESS );</span><br><span class="line">    CV_Assert( <span class="number">0</span> &lt;= shift &amp;&amp; shift &lt;= XY_SHIFT );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">double</span> buf[<span class="number">4</span>];</span><br><span class="line">    scalarToRawData( color, buf, img.type(), <span class="number">0</span> );</span><br><span class="line">    ThickLine( img, pt1, pt2, buf, thickness, line_type, <span class="number">3</span>, shift );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个只是一个封装, 将颜色分成一个double 数组, 然后 调用了一个新的函数 <code>ThickLine</code></p>
+<p>这里 实际上 这里的<code>scalarToRawData</code> 函数也是根据图像的通道进行调用了, <code>scalarToRawData_</code> 的函数, 将颜色结构体的四个值分别存入数组中, 也为了兼容以前的版本, 所以采用的这种接口.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">static</span> <span class="keyword">inline</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">scalarToRawData_</span><span class="params">(<span class="keyword">const</span> Scalar&amp; s, T * <span class="keyword">const</span> buf, <span class="keyword">const</span> <span class="keyword">int</span> cn, <span class="keyword">const</span> <span class="keyword">int</span> unroll_to)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(; i &lt; cn; i++)</span><br><span class="line">        buf[i] = saturate_cast&lt;T&gt;(s.val[i]);</span><br><span class="line">    <span class="keyword">for</span>(; i &lt; unroll_to; i++)</span><br><span class="line">        buf[i] = buf[i-cn];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>去看了下 opencv 的矩形 <code>rectancle</code> 函数是实际上是基于 <code>polyline</code> 多边形绘制, 而它则是基于 <code>ThickLine</code>的,  opencv 的函数都是这样基于最简单的元素来实现的, 所以我们继续看这个实现就好<br>感觉线形状的绘制最终都是调用的这个, 那我们去看下具体的实现.</p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1587733292180.png" alt="opencv drawing 调用图"></p>
+<p>在文件 <code>modules\imgproc\src\drawing.cpp:1602</code> 是这个函数的实现, </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">ThickLine( Mat&amp; img, Point2l p0, Point2l p1, <span class="keyword">const</span> <span class="keyword">void</span>* color,</span><br><span class="line">           <span class="keyword">int</span> thickness, <span class="keyword">int</span> line_type, <span class="keyword">int</span> flags, <span class="keyword">int</span> shift )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> INV_XY_ONE = <span class="number">1.</span>/XY_ONE;</span><br><span class="line"></span><br><span class="line">    p0.x &lt;&lt;= XY_SHIFT - shift;</span><br><span class="line">    p0.y &lt;&lt;= XY_SHIFT - shift;</span><br><span class="line">    p1.x &lt;&lt;= XY_SHIFT - shift;</span><br><span class="line">    p1.y &lt;&lt;= XY_SHIFT - shift;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( thickness &lt;= <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>( line_type &lt; CV_AA )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>( line_type == <span class="number">1</span> || line_type == <span class="number">4</span> || shift == <span class="number">0</span> )</span><br><span class="line">            &#123;</span><br><span class="line">                p0.x = (p0.x + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT;</span><br><span class="line">                p0.y = (p0.y + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT;</span><br><span class="line">                p1.x = (p1.x + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT;</span><br><span class="line">                p1.y = (p1.y + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT;</span><br><span class="line">                Line( img, p0, p1, color, line_type );</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                Line2( img, p0, p1, color );</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            LineAA( img, p0, p1, color );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        Point2l pt[<span class="number">4</span>], dp = Point2l(<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">double</span> dx = (p0.x - p1.x)*INV_XY_ONE, dy = (p1.y - p0.y)*INV_XY_ONE;</span><br><span class="line">        <span class="keyword">double</span> r = dx * dx + dy * dy;</span><br><span class="line">        <span class="keyword">int</span> i, oddThickness = thickness &amp; <span class="number">1</span>;</span><br><span class="line">        thickness &lt;&lt;= XY_SHIFT - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( <span class="built_in">fabs</span>(r) &gt; DBL_EPSILON )</span><br><span class="line">        &#123;</span><br><span class="line">            r = (thickness + oddThickness*XY_ONE*<span class="number">0.5</span>)/<span class="built_in">std</span>::<span class="built_in">sqrt</span>(r);</span><br><span class="line">            dp.x = cvRound( dy * r );</span><br><span class="line">            dp.y = cvRound( dx * r );</span><br><span class="line"></span><br><span class="line">            pt[<span class="number">0</span>].x = p0.x + dp.x;</span><br><span class="line">            pt[<span class="number">0</span>].y = p0.y + dp.y;</span><br><span class="line">            pt[<span class="number">1</span>].x = p0.x - dp.x;</span><br><span class="line">            pt[<span class="number">1</span>].y = p0.y - dp.y;</span><br><span class="line">            pt[<span class="number">2</span>].x = p1.x - dp.x;</span><br><span class="line">            pt[<span class="number">2</span>].y = p1.y - dp.y;</span><br><span class="line">            pt[<span class="number">3</span>].x = p1.x + dp.x;</span><br><span class="line">            pt[<span class="number">3</span>].y = p1.y + dp.y;</span><br><span class="line"></span><br><span class="line">            FillConvexPoly( img, pt, <span class="number">4</span>, color, line_type, XY_SHIFT );</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++ )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>( flags &amp; (i+<span class="number">1</span>) )</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>( line_type &lt; CV_AA )</span><br><span class="line">                &#123;</span><br><span class="line">                    Point center;</span><br><span class="line">                    center.x = (<span class="keyword">int</span>)((p0.x + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT);</span><br><span class="line">                    center.y = (<span class="keyword">int</span>)((p0.y + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT);</span><br><span class="line">                    Circle( img, center, (thickness + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT, color, <span class="number">1</span> );</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    EllipseEx( img, p0, Size2l(thickness, thickness),</span><br><span class="line">                               <span class="number">0</span>, <span class="number">0</span>, <span class="number">360</span>, color, <span class="number">-1</span>, line_type );</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            p0 = p1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在讲函数的实现之前, 我们先看几个参数, 线形: <code>linetype</code> 以及线宽 <code>thickness</code></p>
+<p>其中 <code>linetype</code> 这里可以看<a href="https://blog.csdn.net/lly1122334/article/details/88913758" target="_blank" rel="noopener">OpenCV线型lineType</a> 这篇博客, 他做了几种线形的对比, </p>
+<p>在 头文件<code>opencv2\imgproc.hpp:804</code> 中,  定义了<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> LineTypes &#123;</span><br><span class="line">    FILLED  = <span class="number">-1</span>,		</span><br><span class="line">    LINE_4  = <span class="number">4</span>, <span class="comment">//!&lt; 4-connected line		</span></span><br><span class="line">    LINE_8  = <span class="number">8</span>, <span class="comment">//!&lt; 8-connected line</span></span><br><span class="line">    LINE_AA = <span class="number">16</span> <span class="comment">//!&lt; antialiased line</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br>对应的: </p>
+<ul>
+<li>FILLED: 填充</li>
+<li>LINE_4: 四邻域直线, </li>
+<li>LINE_8: 8邻域直线</li>
+<li>LINE_AA: 抗锯齿直线</li>
+</ul>
+<p>再看两个宏, 在<code>modules\imgproc\src\drawing.cpp:46</code> 定义了</p>
+<ul>
+<li>XY_SHIFT: 16</li>
+<li>XY_ONE: 1 &lt;&lt; XY_SHIFT    表示左移16位 = 65536</li>
+</ul>
+<p>我们在进行转换之前, 有一个小点需要关注一下, 我们<code>line</code> 函数输入的点是 <code>Point2i</code>, 而<code>ThickLine</code> 函数输入的点变成了 <code>Point2l</code>, 有意思,<br>在<code>\modules\core\include\opencv2\core\types.hpp:190</code>, 我们找到了这样的定义,  其实是一样的 , 就是定义的必须是 64长度的 int 类型, 为什么, 好用于移位呀,<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> Point_&lt;<span class="keyword">int</span>&gt; Point2i;</span><br><span class="line"><span class="keyword">typedef</span> Point_&lt;int64&gt; Point2l;</span><br><span class="line"><span class="keyword">typedef</span> Point2i Point;</span><br></pre></td></tr></table></figure><br>这里有一段程序, 是这样的 , 我们去掉 if 再看一下:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">p0.x &lt;&lt;= XY_SHIFT - shift;</span><br><span class="line">p0.y &lt;&lt;= XY_SHIFT - shift;</span><br><span class="line">p1.x &lt;&lt;= XY_SHIFT - shift;</span><br><span class="line">p1.y &lt;&lt;= XY_SHIFT - shift;</span><br><span class="line"></span><br><span class="line">p0.x = (p0.x + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT;</span><br><span class="line">p0.y = (p0.y + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT;</span><br><span class="line">p1.x = (p1.x + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT;</span><br><span class="line">p1.y = (p1.y + (XY_ONE&gt;&gt;<span class="number">1</span>)) &gt;&gt; XY_SHIFT;</span><br></pre></td></tr></table></figure><br>shift 的 默认参数是 0,  这里的shift 实际上是座标移位的一个作用, 实际上结果就是移位得到结果  这里加上一般是为了<code>XY_ONE&gt;&gt;1</code> 实际上 加上0.5  向上取整而已</p>
+<blockquote>
+<p>个人分析, 不一定是真实意图</p>
+</blockquote>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1587733292824.png" alt="shift = 0,1,2,3 绘制的直线"> </p>
+<p>由于绘制函数的 <code>ThickLine</code> 函数考虑了线宽,  我们先以基础的线宽为例:  上面一通操作只是给座标进行了变换,得到了有效的座标, 然后 来到了我们最终的 进行绘制的函数,<code>Line</code> ,首写字母大写的呦, 这里的核心就是 构建一个直线迭代器, 在每个点的位置上依次填入颜色即可,<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">Line( Mat&amp; img, Point pt1, Point pt2,</span><br><span class="line">      <span class="keyword">const</span> <span class="keyword">void</span>* _color, <span class="keyword">int</span> connectivity = <span class="number">8</span> )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>( connectivity == <span class="number">0</span> )</span><br><span class="line">        connectivity = <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>( connectivity == <span class="number">1</span> )</span><br><span class="line">        connectivity = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">LineIterator <span class="title">iterator</span><span class="params">(img, pt1, pt2, connectivity, <span class="literal">true</span>)</span></span>;</span><br><span class="line">    <span class="keyword">int</span> i, count = iterator.count;</span><br><span class="line">    <span class="keyword">int</span> pix_size = (<span class="keyword">int</span>)img.elemSize();</span><br><span class="line">    <span class="keyword">const</span> uchar* color = (<span class="keyword">const</span> uchar*)_color;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; count; i++, ++iterator )</span><br><span class="line">    &#123;</span><br><span class="line">        uchar* ptr = *iterator;</span><br><span class="line">        <span class="keyword">if</span>( pix_size == <span class="number">1</span> )</span><br><span class="line">            ptr[<span class="number">0</span>] = color[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>( pix_size == <span class="number">3</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            ptr[<span class="number">0</span>] = color[<span class="number">0</span>];</span><br><span class="line">            ptr[<span class="number">1</span>] = color[<span class="number">1</span>];</span><br><span class="line">            ptr[<span class="number">2</span>] = color[<span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">memcpy</span>( *iterator, color, pix_size );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么, 还没到最后, 我们继续 在 <code>modules\imgproc\src\drawing.cpp:160</code> 的地方, 找到了 <code>LineIterator</code> 类的 构造函数,<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   Initializes line iterator.</span></span><br><span class="line"><span class="comment">   Returns number of points on the line or negative number if error.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">LineIterator::LineIterator(<span class="keyword">const</span> Mat&amp; img, Point pt1, Point pt2,</span><br><span class="line">                           <span class="keyword">int</span> connectivity, <span class="keyword">bool</span> left_to_right)</span><br><span class="line">&#123;</span><br><span class="line">    count = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    CV_Assert( connectivity == <span class="number">8</span> || connectivity == <span class="number">4</span> );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( (<span class="keyword">unsigned</span>)pt1.x &gt;= (<span class="keyword">unsigned</span>)(img.cols) ||</span><br><span class="line">        (<span class="keyword">unsigned</span>)pt2.x &gt;= (<span class="keyword">unsigned</span>)(img.cols) ||</span><br><span class="line">        (<span class="keyword">unsigned</span>)pt1.y &gt;= (<span class="keyword">unsigned</span>)(img.rows) ||</span><br><span class="line">        (<span class="keyword">unsigned</span>)pt2.y &gt;= (<span class="keyword">unsigned</span>)(img.rows) )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>( !clipLine( img.size(), pt1, pt2 ) )</span><br><span class="line">        &#123;</span><br><span class="line">            ptr = img.data;</span><br><span class="line">            err = plusDelta = minusDelta = plusStep = minusStep = count = <span class="number">0</span>;</span><br><span class="line">            ptr0 = <span class="number">0</span>;</span><br><span class="line">            step = <span class="number">0</span>;</span><br><span class="line">            elemSize = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">size_t</span> bt_pix0 = img.elemSize(), bt_pix = bt_pix0;</span><br><span class="line">    <span class="keyword">size_t</span> istep = img.step;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> dx = pt2.x - pt1.x;</span><br><span class="line">    <span class="keyword">int</span> dy = pt2.y - pt1.y;</span><br><span class="line">    <span class="keyword">int</span> s = dx &lt; <span class="number">0</span> ? <span class="number">-1</span> : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( left_to_right )</span><br><span class="line">    &#123;</span><br><span class="line">        dx = (dx ^ s) - s;</span><br><span class="line">        dy = (dy ^ s) - s;</span><br><span class="line">        pt1.x ^= (pt1.x ^ pt2.x) &amp; s;</span><br><span class="line">        pt1.y ^= (pt1.y ^ pt2.y) &amp; s;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        dx = (dx ^ s) - s;</span><br><span class="line">        bt_pix = (bt_pix ^ s) - s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ptr = (uchar*)(img.data + pt1.y * istep + pt1.x * bt_pix0);</span><br><span class="line"></span><br><span class="line">    s = dy &lt; <span class="number">0</span> ? <span class="number">-1</span> : <span class="number">0</span>;</span><br><span class="line">    dy = (dy ^ s) - s;</span><br><span class="line">    istep = (istep ^ s) - s;</span><br><span class="line"></span><br><span class="line">    s = dy &gt; dx ? <span class="number">-1</span> : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* conditional swaps */</span></span><br><span class="line">    dx ^= dy &amp; s;</span><br><span class="line">    dy ^= dx &amp; s;</span><br><span class="line">    dx ^= dy &amp; s;</span><br><span class="line"></span><br><span class="line">    bt_pix ^= istep &amp; s;</span><br><span class="line">    istep ^= bt_pix &amp; s;</span><br><span class="line">    bt_pix ^= istep &amp; s;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( connectivity == <span class="number">8</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        assert( dx &gt;= <span class="number">0</span> &amp;&amp; dy &gt;= <span class="number">0</span> );</span><br><span class="line"></span><br><span class="line">        err = dx - (dy + dy);</span><br><span class="line">        plusDelta = dx + dx;</span><br><span class="line">        minusDelta = -(dy + dy);</span><br><span class="line">        plusStep = (<span class="keyword">int</span>)istep;</span><br><span class="line">        minusStep = (<span class="keyword">int</span>)bt_pix;</span><br><span class="line">        count = dx + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="comment">/* connectivity == 4 */</span></span><br><span class="line">    &#123;</span><br><span class="line">        assert( dx &gt;= <span class="number">0</span> &amp;&amp; dy &gt;= <span class="number">0</span> );</span><br><span class="line"></span><br><span class="line">        err = <span class="number">0</span>;</span><br><span class="line">        plusDelta = (dx + dx) + (dy + dy);</span><br><span class="line">        minusDelta = -(dy + dy);</span><br><span class="line">        plusStep = (<span class="keyword">int</span>)(istep - bt_pix);</span><br><span class="line">        minusStep = (<span class="keyword">int</span>)bt_pix;</span><br><span class="line">        count = dx + dy + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>-&gt;ptr0 = img.ptr();</span><br><span class="line">    <span class="keyword">this</span>-&gt;step = (<span class="keyword">int</span>)img.step;</span><br><span class="line">    <span class="keyword">this</span>-&gt;elemSize = (<span class="keyword">int</span>)bt_pix0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>做稍微一点的 简化, 实际上就是考虑正负符号的处理呀,  这里主要使用的就是 异或 (xor) 和 与 运算(&amp;)<br>这里要考虑计算顺序, 注意就好 运算优先级为如下</p>
+<ul>
+<li>11    a&amp;b    逐位与</li>
+<li>12    ^    逐位异或（互斥或）</li>
+<li>13    |    逐位或（可兼或）</li>
+</ul>
+<p>可以参考文章<a href="https://blog.csdn.net/ice110956/article/details/12746819" target="_blank" rel="noopener">异或的妙用</a> 和文章<a href="https://blog.csdn.net/sinat_35121480/article/details/53510793" target="_blank" rel="noopener">位运算总结(按位与,或,异或)</a>, 算是一个基础的x 运算吧 </p>
+<p>在计算中, 巧妙的加入了 s 作为符号,  这样减少每次计算正负的比较, </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> bt_pix0 = img.elemSize(), bt_pix = bt_pix0;</span><br><span class="line"><span class="keyword">size_t</span> istep = img.step;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> dx = pt2.x - pt1.x;</span><br><span class="line"><span class="keyword">int</span> dy = pt2.y - pt1.y;</span><br><span class="line"><span class="keyword">int</span> s = dx &lt; <span class="number">0</span> ? <span class="number">-1</span> : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">dx = (dx ^ s) - s;</span><br><span class="line">dy = (dy ^ s) - s;</span><br><span class="line">pt1.x ^= (pt1.x ^ pt2.x) &amp; s;</span><br><span class="line">pt1.y ^= (pt1.y ^ pt2.y) &amp; s;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 记录起点的指针, </span></span><br><span class="line">ptr = (uchar*)(img.data + pt1.y * istep + pt1.x * bt_pix0);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用符号, 巧妙的得到 绝对值</span></span><br><span class="line">s = dy &lt; <span class="number">0</span> ? <span class="number">-1</span> : <span class="number">0</span>;</span><br><span class="line">dy = (dy ^ s) - s;</span><br><span class="line">istep = (istep ^ s) - s;</span><br><span class="line"></span><br><span class="line">s = dy &gt; dx ? <span class="number">-1</span> : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 有符号的 值交换 交换 dx dy  与 bt_pix istep</span></span><br><span class="line"><span class="comment">/* conditional swaps */</span></span><br><span class="line">dx ^= dy &amp; s;</span><br><span class="line">dy ^= dx &amp; s;</span><br><span class="line">dx ^= dy &amp; s;</span><br><span class="line"></span><br><span class="line">bt_pix ^= istep &amp; s;</span><br><span class="line">istep ^= bt_pix &amp; s;</span><br><span class="line">bt_pix ^= istep &amp; s;</span><br><span class="line"></span><br><span class="line">err = dx - (dy + dy);</span><br><span class="line">plusDelta = dx + dx;</span><br><span class="line">minusDelta = -(dy + dy);</span><br><span class="line">plusStep = (<span class="keyword">int</span>)istep;</span><br><span class="line">minusStep = (<span class="keyword">int</span>)bt_pix;</span><br><span class="line">count = dx + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>这里的处理真的 很巧妙, 有符号的值交换, 然后设置相应的符号mask, 及其这里求绝对值的方式,  不懂的话 就个8位的数字 代入进行运算, 可以得到想要的结果, 跑一遍就会了<br>我之后写一篇文章 看下这里的符号运算吧,  真厉害!   </p>
+<p>在这里完成了起始点的确定, 给出了一共有多少点的存在<code>count=dx+1</code>, 通过确定了 我们可以假定 dx 会沿着一个方向依次相加 但是dy呢,   我们还是没有解决怎么确定的一条直线,<br>在<code>Line</code> 函数的这一句, <code>for( i = 0; i &lt; count; i++, ++iterator )</code> 这里的迭代器是累加的, 但是,迭代器是我们自己自定义的, 那么, <code>++</code> 操作会不会也是自定义的呢,<br>在<code>modules\imgproc\include\opencv2\imgproc.hpp:4673</code> 行的地方, 我们看到了这里重载了操作符号, 这样我们在进行加加操作的时候,  这里的err 就会自己调节了, </p>
+<ul>
+<li>err &gt;= 0  mask = 0  err += -2dy  ptr += minusStep</li>
+<li>err &lt; 0  mask = -1   err += -2dy + 2dx 这里会 得到一个正的值,<br>这里更加的巧妙, 具体的公式或者过程需要慢慢推导, </li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span></span><br><span class="line">LineIterator&amp; LineIterator::<span class="keyword">operator</span> ++()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> mask = err &lt; <span class="number">0</span> ? <span class="number">-1</span> : <span class="number">0</span>;</span><br><span class="line">    err += minusDelta + (plusDelta &amp; mask);</span><br><span class="line">    ptr += minusStep + (plusStep &amp; mask);</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">inline</span></span><br><span class="line">LineIterator LineIterator::<span class="keyword">operator</span> ++(<span class="keyword">int</span>)</span><br><span class="line">&#123;</span><br><span class="line">    LineIterator it = *<span class="keyword">this</span>;</span><br><span class="line">    ++(*<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">return</span> it;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总之就是 巧妙的使用了两个变量, 使得我们的累加根据斜率进行累加过程, 完成执行,  很巧妙, </p>
+<p>我这里 不再进行后续推导了, , 后续有机会在做… </p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><a id="more"></a>
+
+          
+            <br>
+            
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+          
+            <p>本文永久链接是：<a href=https://schen1024.github.io/2020/04-22/opencv-6-%E9%BC%A0%E6%A0%87%E7%BB%98%E5%88%B6%E5%9B%BE%E5%83%8F.html>https://schen1024.github.io/2020/04-22/opencv-6-%E9%BC%A0%E6%A0%87%E7%BB%98%E5%88%B6%E5%9B%BE%E5%83%8F.html</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+  </div>
+</section>
+
+  
+
+
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-12-24T05:36:13+00:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2020年12月24日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/opencv/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>opencv</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/c/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>c++</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/qt/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>qt</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2020/04-22/opencv-6-%E9%BC%A0%E6%A0%87%E7%BB%98%E5%88%B6%E5%9B%BE%E5%83%8F.html&title=opencv-6-图像绘制与opencv Line 函数剖析 - 東木 - 随笔&summary=开始之前越到后面, 写的越慢, 之前还抽空去看了下 学堂在线那篇文章提供的方法,  博客第一个人评论的我, 想想还是要给人家一个交代的, 就想着找到一个方法进行下载, 但是尝试了 还没找到, 估计我要花时间自己写一个了, 不是很难, 但是 就是要花时间, 安排到日程上了, 应该会有结果的, 到时候再写博文记录.
+之前都是空的, 写起来很快, 后面的话我还要去写具体的代码实现,  争取都能够复现出来, 这样更有实际意义, 所以接下来可能更新的更慢了, 不过应该不会断, 我计划的很长, 但是我想 至少写够20篇吧, 加油.
+在这篇文章以及后续的文章中,我们都会 说明一些代码出现的地方,  头文件对应的 opencv 库引用目录 include 文件夹下面的文件 源文件则是 opencv 4.3.0 下的 Source 文件夹里面的文件同样的, 文件的后面使用 :xx  标识, 在文件的xx 行的地方
+
+头文件 opencv2/opencv.hpp:100 在 opencv.hpp 第100 行开始的地方源文件 modules/imgproc/src/drawing.cpp:1000 则是在 1000 行的地方
+
+目录[toc]
+正文在上一篇中, 我们能够进行像素点的操作了, 那么, 很明显的一个问题, 我能不能在图像上画一条线呢, 或者在图像上自己用鼠标绘制呢,  当然可以, opencv 提供了这些功能,
+在opencv 的文档中 Basic Drawing, 基础绘图章节, 有相关的例程, 
+我们在之前的文章中提到了 opencv 座标系的问题
+
+以左上角为起始点
+横向为x, 纵向为y
+使用 at(rows,cols) 确定座标值  对应的是 (行,列)
+使用 point(x,y)  定位, 使用的是 (列, 行) 
+
+这两个定位是不一样的 ,所一定要注意, opencv 在 绘制图形的时候 使用的是 Point 来进行的定位, 我们可以使用 cv::Point p = cv::Point(20,30) 直接初始化, 或者使用 cv::Point p; p.x = 20,p.y=30; 初始化后进行赋值操作.
+在图像上绘制标准图形我们还以 lena 为例, 在图片上绘制 以 (x,y) 座标的图形
+
+直线: 起点(100,200) - 终点(500,300)   绿色
+直线: 起点 (100,500) - 终点(500,100)  蓝色
+圆:  圆心 (200,300)   半径 200      红色
+矩形: 左上角点 (100,120)  右下角点(400,450);  白色
+文字: 起始点: (100,200), 文字: OpenCV  
+….
+
+在我们绘制之前, 我们要说明一个函数 cv::Scalar 是opencv 的颜色函数,  按照 BGR 的顺序传入三个参数,  用于指名绘制图形的颜色
+
+note: 实际上是 4个参数, 一般我们不使用最后一个参数即可^[《OpenCV: Basic Drawing》. 见于 2020年4月24日. https://docs.opencv.org/4.3.0/d3/d96/tutorial_basic_geometric_drawing.html.]
+
+编码实现我们根据上面给出的顺序  依次 编写代码, 将图形绘制到 lena 图的上面, 我们可以得到这样的程序, 就是一条一条的写,  我们只需要调用 相应的opencv 函数就能绘制了,  
+1234567891011121314151617181920212223242526272829#include &lt;opencv2/opencv.hpp&gt;int main(int argc, char *argv[])&#123;    //QApplication a(argc, argv);    //MainWindow w;    //w.show();    // 设置 要显示的图像路径    std::string img_lena = "./TestImages/lena.png";    // 读取两幅彩色图像  512*512    cv::Mat lena_bgr = cv::imread(img_lena);    // 声明结果图像 1020*1020    cv::Mat res_bgr = cv::Mat::zeros(cv::Size(512,512), CV_8UC3);    // 绘制基本图形    cv::line(lena_bgr, cv::Point(100, 200), cv::Point(500, 300), cv::Scalar(0, 255, 0));    cv::line(lena_bgr, cv::Point(100, 500), cv::Point(500, 100), cv::Scalar(255, 0, 0));    cv::circle(lena_bgr, cv::Point(200, 300), 200, cv::Scalar(0, 0, 255));    cv::rectangle(lena_bgr, cv::Rect(cv::Point(100, 120), cv::Point(400, 500)), cv::Scalar(255, 255, 255));    cv::putText(lena_bgr, "OpenCV", cv::Point(100, 200), cv::FONT_HERSHEY_COMPLEX,1.0, cv::Scalar(0, 255, 255));    cv::imshow("lena_bgr",lena_bgr);    cv::waitKey(0);    return 0;    // return a.exec();&#125;
+最终我们运行之后 ,便能够得到这样的一副图像, 很简单, 具体的参数部分自己选择就好,  这里只是给出一个示例, 
+
+line 函数 源码分析剖析其实opencv 还能绘制其他的图形, 太多了, 可以在Drawing Functions页面去查看, 基本没啥用, 很多时候是需要了自己造个轮子就行了, 不查文档我都不知道能绘制这么多
+只需要知道直线, 圆, 矩形怎么绘制的就行了, 多了也用不到
+后续的部分 主要是 opencv 怎么去实现的 line 函数了, 涉及到比较基础的, 看不看不影响你的使用, 不想看的就关闭即可..
+源码解析我们以 绘制直线为例, 这个简单, 我们使用了 cv::line 就绘制出来了一条直线12345678void cv::line	(	InputOutputArray 	img,					Point 	pt1,					Point 	pt2,					const Scalar &amp; 	color,					int 	thickness = 1,					int 	lineType = LINE_8,					int 	shift = 0 )各个参数意义其实名称还是能够 看出来的 
+
+img: 输入输出图像, 直接在这个图像上绘制
+pt1: 起始点 (x,y) 座标
+pt2: 终止点 (x,y) 座标
+color: Scalar 参数生成的颜色
+*thickness: 直线宽度
+*lineType: 绘制的线的形式  4邻域 8邻域等
+*shift: 精度, 点座标中的小数点等级(第一次看到这个参数, 暂时不管他什么意思)
+
+一般我们只需要前面的四个参数就行了,  一般就是我们程序中的 cv::line(lena_bgr, cv::Point(100, 200), cv::Point(500, 300), cv::Scalar(0, 255, 0));   
+座标颜色我们都说过了, 那我们去看下 他的源码:在 modules\imgproc\srcdrawing.cpp:1772 中, 我们能够看到 直线的绘制函数, 
+1234567891011121314151617void line( InputOutputArray _img, Point pt1, Point pt2, const Scalar&amp; color,           int thickness, int line_type, int shift )&#123;    CV_INSTRUMENT_REGION();    Mat img = _img.getMat();    if( line_type == CV_AA &amp;&amp; img.depth() != CV_8U )        line_type = 8;    CV_Assert( 0 &lt; thickness &amp;&amp; thickness &lt;= MAX_THICKNESS );    CV_Assert( 0 &lt;= shift &amp;&amp; shift &lt;= XY_SHIFT );    double buf[4];    scalarToRawData( color, buf, img.type(), 0 );    ThickLine( img, pt1, pt2, buf, thickness, line_type, 3, shift );&#125;
+这个只是一个封装, 将颜色分成一个double 数组, 然后 调用了一个新的函数 ThickLine
+这里 实际上 这里的scalarToRawData 函数也是根据图像的通道进行调用了, scalarToRawData_ 的函数, 将颜色结构体的四个值分别存入数组中, 也为了兼容以前的版本, 所以采用的这种接口.123456789template &lt;typename T&gt; static inlinevoid scalarToRawData_(const Scalar&amp; s, T * const buf, const int cn, const int unroll_to)&#123;    int i = 0;    for(; i &lt; cn; i++)        buf[i] = saturate_cast&lt;T&gt;(s.val[i]);    for(; i &lt; unroll_to; i++)        buf[i] = buf[i-cn];&#125;
+去看了下 opencv 的矩形 rectancle 函数是实际上是基于 polyline 多边形绘制, 而它则是基于 ThickLine的,  opencv 的函数都是这样基于最简单的元素来实现的, 所以我们继续看这个实现就好感觉线形状的绘制最终都是调用的这个, 那我们去看下具体的实现.
+
+在文件 modules\imgproc\src\drawing.cpp:1602 是这个函数的实现, 
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576static voidThickLine( Mat&amp; img, Point2l p0, Point2l p1, const void* color,           int thickness, int line_type, int flags, int shift )&#123;    static const double INV_XY_ONE = 1./XY_ONE;    p0.x &lt;&lt;= XY_SHIFT - shift;    p0.y &lt;&lt;= XY_SHIFT - shift;    p1.x &lt;&lt;= XY_SHIFT - shift;    p1.y &lt;&lt;= XY_SHIFT - shift;    if( thickness &lt;= 1 )    &#123;        if( line_type &lt; CV_AA )        &#123;            if( line_type == 1 || line_type == 4 || shift == 0 )            &#123;                p0.x = (p0.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                p0.y = (p0.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                p1.x = (p1.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                p1.y = (p1.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                Line( img, p0, p1, color, line_type );            &#125;            else                Line2( img, p0, p1, color );        &#125;        else            LineAA( img, p0, p1, color );    &#125;    else    &#123;        Point2l pt[4], dp = Point2l(0,0);        double dx = (p0.x - p1.x)*INV_XY_ONE, dy = (p1.y - p0.y)*INV_XY_ONE;        double r = dx * dx + dy * dy;        int i, oddThickness = thickness &amp; 1;        thickness &lt;&lt;= XY_SHIFT - 1;        if( fabs(r) &gt; DBL_EPSILON )        &#123;            r = (thickness + oddThickness*XY_ONE*0.5)/std::sqrt(r);            dp.x = cvRound( dy * r );            dp.y = cvRound( dx * r );            pt[0].x = p0.x + dp.x;            pt[0].y = p0.y + dp.y;            pt[1].x = p0.x - dp.x;            pt[1].y = p0.y - dp.y;            pt[2].x = p1.x - dp.x;            pt[2].y = p1.y - dp.y;            pt[3].x = p1.x + dp.x;            pt[3].y = p1.y + dp.y;            FillConvexPoly( img, pt, 4, color, line_type, XY_SHIFT );        &#125;        for( i = 0; i &lt; 2; i++ )        &#123;            if( flags &amp; (i+1) )            &#123;                if( line_type &lt; CV_AA )                &#123;                    Point center;                    center.x = (int)((p0.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT);                    center.y = (int)((p0.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT);                    Circle( img, center, (thickness + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT, color, 1 );                &#125;                else                &#123;                    EllipseEx( img, p0, Size2l(thickness, thickness),                               0, 0, 360, color, -1, line_type );                &#125;            &#125;            p0 = p1;        &#125;    &#125;&#125;
+在讲函数的实现之前, 我们先看几个参数, 线形: linetype 以及线宽 thickness
+其中 linetype 这里可以看OpenCV线型lineType 这篇博客, 他做了几种线形的对比, 
+在 头文件opencv2\imgproc.hpp:804 中,  定义了123456enum LineTypes &#123;    FILLED  = -1,		    LINE_4  = 4, //!&lt; 4-connected line		    LINE_8  = 8, //!&lt; 8-connected line    LINE_AA = 16 //!&lt; antialiased line&#125;;对应的: 
+
+FILLED: 填充
+LINE_4: 四邻域直线, 
+LINE_8: 8邻域直线
+LINE_AA: 抗锯齿直线
+
+再看两个宏, 在modules\imgproc\src\drawing.cpp:46 定义了
+
+XY_SHIFT: 16
+XY_ONE: 1 &lt;&lt; XY_SHIFT    表示左移16位 = 65536
+
+我们在进行转换之前, 有一个小点需要关注一下, 我们line 函数输入的点是 Point2i, 而ThickLine 函数输入的点变成了 Point2l, 有意思,在\modules\core\include\opencv2\core\types.hpp:190, 我们找到了这样的定义,  其实是一样的 , 就是定义的必须是 64长度的 int 类型, 为什么, 好用于移位呀,123typedef Point_&lt;int&gt; Point2i;typedef Point_&lt;int64&gt; Point2l;typedef Point2i Point;这里有一段程序, 是这样的 , 我们去掉 if 再看一下:123456789p0.x &lt;&lt;= XY_SHIFT - shift;p0.y &lt;&lt;= XY_SHIFT - shift;p1.x &lt;&lt;= XY_SHIFT - shift;p1.y &lt;&lt;= XY_SHIFT - shift;p0.x = (p0.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;p0.y = (p0.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;p1.x = (p1.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;p1.y = (p1.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;shift 的 默认参数是 0,  这里的shift 实际上是座标移位的一个作用, 实际上结果就是移位得到结果  这里加上一般是为了XY_ONE&gt;&gt;1 实际上 加上0.5  向上取整而已
+
+个人分析, 不一定是真实意图
+
+ 
+由于绘制函数的 ThickLine 函数考虑了线宽,  我们先以基础的线宽为例:  上面一通操作只是给座标进行了变换,得到了有效的座标, 然后 来到了我们最终的 进行绘制的函数,Line ,首写字母大写的呦, 这里的核心就是 构建一个直线迭代器, 在每个点的位置上依次填入颜色即可,1234567891011121314151617181920212223242526272829static voidLine( Mat&amp; img, Point pt1, Point pt2,      const void* _color, int connectivity = 8 )&#123;    if( connectivity == 0 )        connectivity = 8;    else if( connectivity == 1 )        connectivity = 4;    LineIterator iterator(img, pt1, pt2, connectivity, true);    int i, count = iterator.count;    int pix_size = (int)img.elemSize();    const uchar* color = (const uchar*)_color;    for( i = 0; i &lt; count; i++, ++iterator )    &#123;        uchar* ptr = *iterator;        if( pix_size == 1 )            ptr[0] = color[0];        else if( pix_size == 3 )        &#123;            ptr[0] = color[0];            ptr[1] = color[1];            ptr[2] = color[2];        &#125;        else            memcpy( *iterator, color, pix_size );    &#125;&#125;
+那么, 还没到最后, 我们继续 在 modules\imgproc\src\drawing.cpp:160 的地方, 找到了 LineIterator 类的 构造函数,12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091/*   Initializes line iterator.   Returns number of points on the line or negative number if error.*/LineIterator::LineIterator(const Mat&amp; img, Point pt1, Point pt2,                           int connectivity, bool left_to_right)&#123;    count = -1;    CV_Assert( connectivity == 8 || connectivity == 4 );    if( (unsigned)pt1.x &gt;= (unsigned)(img.cols) ||        (unsigned)pt2.x &gt;= (unsigned)(img.cols) ||        (unsigned)pt1.y &gt;= (unsigned)(img.rows) ||        (unsigned)pt2.y &gt;= (unsigned)(img.rows) )    &#123;        if( !clipLine( img.size(), pt1, pt2 ) )        &#123;            ptr = img.data;            err = plusDelta = minusDelta = plusStep = minusStep = count = 0;            ptr0 = 0;            step = 0;            elemSize = 0;            return;        &#125;    &#125;    size_t bt_pix0 = img.elemSize(), bt_pix = bt_pix0;    size_t istep = img.step;    int dx = pt2.x - pt1.x;    int dy = pt2.y - pt1.y;    int s = dx &lt; 0 ? -1 : 0;    if( left_to_right )    &#123;        dx = (dx ^ s) - s;        dy = (dy ^ s) - s;        pt1.x ^= (pt1.x ^ pt2.x) &amp; s;        pt1.y ^= (pt1.y ^ pt2.y) &amp; s;    &#125;    else    &#123;        dx = (dx ^ s) - s;        bt_pix = (bt_pix ^ s) - s;    &#125;    ptr = (uchar*)(img.data + pt1.y * istep + pt1.x * bt_pix0);    s = dy &lt; 0 ? -1 : 0;    dy = (dy ^ s) - s;    istep = (istep ^ s) - s;    s = dy &gt; dx ? -1 : 0;    /* conditional swaps */    dx ^= dy &amp; s;    dy ^= dx &amp; s;    dx ^= dy &amp; s;    bt_pix ^= istep &amp; s;    istep ^= bt_pix &amp; s;    bt_pix ^= istep &amp; s;    if( connectivity == 8 )    &#123;        assert( dx &gt;= 0 &amp;&amp; dy &gt;= 0 );        err = dx - (dy + dy);        plusDelta = dx + dx;        minusDelta = -(dy + dy);        plusStep = (int)istep;        minusStep = (int)bt_pix;        count = dx + 1;    &#125;    else /* connectivity == 4 */    &#123;        assert( dx &gt;= 0 &amp;&amp; dy &gt;= 0 );        err = 0;        plusDelta = (dx + dx) + (dy + dy);        minusDelta = -(dy + dy);        plusStep = (int)(istep - bt_pix);        minusStep = (int)bt_pix;        count = dx + dy + 1;    &#125;    this-&gt;ptr0 = img.ptr();    this-&gt;step = (int)img.step;    this-&gt;elemSize = (int)bt_pix0;&#125;
+做稍微一点的 简化, 实际上就是考虑正负符号的处理呀,  这里主要使用的就是 异或 (xor) 和 与 运算(&amp;)这里要考虑计算顺序, 注意就好 运算优先级为如下
+
+11    a&amp;b    逐位与
+12    ^    逐位异或（互斥或）
+13    |    逐位或（可兼或）
+
+可以参考文章异或的妙用 和文章位运算总结(按位与,或,异或), 算是一个基础的x 运算吧 
+在计算中, 巧妙的加入了 s 作为符号,  这样减少每次计算正负的比较, 
+1234567891011121314151617181920212223242526272829303132333435363738size_t bt_pix0 = img.elemSize(), bt_pix = bt_pix0;size_t istep = img.step;int dx = pt2.x - pt1.x;int dy = pt2.y - pt1.y;int s = dx &lt; 0 ? -1 : 0;dx = (dx ^ s) - s;dy = (dy ^ s) - s;pt1.x ^= (pt1.x ^ pt2.x) &amp; s;pt1.y ^= (pt1.y ^ pt2.y) &amp; s;// 记录起点的指针, ptr = (uchar*)(img.data + pt1.y * istep + pt1.x * bt_pix0);// 使用符号, 巧妙的得到 绝对值s = dy &lt; 0 ? -1 : 0;dy = (dy ^ s) - s;istep = (istep ^ s) - s;s = dy &gt; dx ? -1 : 0;// 有符号的 值交换 交换 dx dy  与 bt_pix istep/* conditional swaps */dx ^= dy &amp; s;dy ^= dx &amp; s;dx ^= dy &amp; s;bt_pix ^= istep &amp; s;istep ^= bt_pix &amp; s;bt_pix ^= istep &amp; s;err = dx - (dy + dy);plusDelta = dx + dx;minusDelta = -(dy + dy);plusStep = (int)istep;minusStep = (int)bt_pix;count = dx + 1;
+这里的处理真的 很巧妙, 有符号的值交换, 然后设置相应的符号mask, 及其这里求绝对值的方式,  不懂的话 就个8位的数字 代入进行运算, 可以得到想要的结果, 跑一遍就会了我之后写一篇文章 看下这里的符号运算吧,  真厉害!   
+在这里完成了起始点的确定, 给出了一共有多少点的存在count=dx+1, 通过确定了 我们可以假定 dx 会沿着一个方向依次相加 但是dy呢,   我们还是没有解决怎么确定的一条直线,在Line 函数的这一句, for( i = 0; i &lt; count; i++, ++iterator ) 这里的迭代器是累加的, 但是,迭代器是我们自己自定义的, 那么, ++ 操作会不会也是自定义的呢,在modules\imgproc\include\opencv2\imgproc.hpp:4673 行的地方, 我们看到了这里重载了操作符号, 这样我们在进行加加操作的时候,  这里的err 就会自己调节了, 
+
+err &gt;= 0  mask = 0  err += -2dy  ptr += minusStep
+err &lt; 0  mask = -1   err += -2dy + 2dx 这里会 得到一个正的值,这里更加的巧妙, 具体的公式或者过程需要慢慢推导, 
+
+12345678910111213141516inlineLineIterator&amp; LineIterator::operator ++()&#123;    int mask = err &lt; 0 ? -1 : 0;    err += minusDelta + (plusDelta &amp; mask);    ptr += minusStep + (plusStep &amp; mask);    return *this;&#125;inlineLineIterator LineIterator::operator ++(int)&#123;    LineIterator it = *this;    ++(*this);    return it;&#125;
+总之就是 巧妙的使用了两个变量, 使得我们的累加根据斜率进行累加过程, 完成执行,  很巧妙, 
+我这里 不再进行后续推导了, , 后续有机会在做… 
+其他"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://schen1024.github.io/2020/04-22/opencv-6-%E9%BC%A0%E6%A0%87%E7%BB%98%E5%88%B6%E5%9B%BE%E5%83%8F.html&title=opencv-6-图像绘制与opencv Line 函数剖析 - 東木 - 随笔&summary=开始之前越到后面, 写的越慢, 之前还抽空去看了下 学堂在线那篇文章提供的方法,  博客第一个人评论的我, 想想还是要给人家一个交代的, 就想着找到一个方法进行下载, 但是尝试了 还没找到, 估计我要花时间自己写一个了, 不是很难, 但是 就是要花时间, 安排到日程上了, 应该会有结果的, 到时候再写博文记录.
+之前都是空的, 写起来很快, 后面的话我还要去写具体的代码实现,  争取都能够复现出来, 这样更有实际意义, 所以接下来可能更新的更慢了, 不过应该不会断, 我计划的很长, 但是我想 至少写够20篇吧, 加油.
+在这篇文章以及后续的文章中,我们都会 说明一些代码出现的地方,  头文件对应的 opencv 库引用目录 include 文件夹下面的文件 源文件则是 opencv 4.3.0 下的 Source 文件夹里面的文件同样的, 文件的后面使用 :xx  标识, 在文件的xx 行的地方
+
+头文件 opencv2/opencv.hpp:100 在 opencv.hpp 第100 行开始的地方源文件 modules/imgproc/src/drawing.cpp:1000 则是在 1000 行的地方
+
+目录[toc]
+正文在上一篇中, 我们能够进行像素点的操作了, 那么, 很明显的一个问题, 我能不能在图像上画一条线呢, 或者在图像上自己用鼠标绘制呢,  当然可以, opencv 提供了这些功能,
+在opencv 的文档中 Basic Drawing, 基础绘图章节, 有相关的例程, 
+我们在之前的文章中提到了 opencv 座标系的问题
+
+以左上角为起始点
+横向为x, 纵向为y
+使用 at(rows,cols) 确定座标值  对应的是 (行,列)
+使用 point(x,y)  定位, 使用的是 (列, 行) 
+
+这两个定位是不一样的 ,所一定要注意, opencv 在 绘制图形的时候 使用的是 Point 来进行的定位, 我们可以使用 cv::Point p = cv::Point(20,30) 直接初始化, 或者使用 cv::Point p; p.x = 20,p.y=30; 初始化后进行赋值操作.
+在图像上绘制标准图形我们还以 lena 为例, 在图片上绘制 以 (x,y) 座标的图形
+
+直线: 起点(100,200) - 终点(500,300)   绿色
+直线: 起点 (100,500) - 终点(500,100)  蓝色
+圆:  圆心 (200,300)   半径 200      红色
+矩形: 左上角点 (100,120)  右下角点(400,450);  白色
+文字: 起始点: (100,200), 文字: OpenCV  
+….
+
+在我们绘制之前, 我们要说明一个函数 cv::Scalar 是opencv 的颜色函数,  按照 BGR 的顺序传入三个参数,  用于指名绘制图形的颜色
+
+note: 实际上是 4个参数, 一般我们不使用最后一个参数即可^[《OpenCV: Basic Drawing》. 见于 2020年4月24日. https://docs.opencv.org/4.3.0/d3/d96/tutorial_basic_geometric_drawing.html.]
+
+编码实现我们根据上面给出的顺序  依次 编写代码, 将图形绘制到 lena 图的上面, 我们可以得到这样的程序, 就是一条一条的写,  我们只需要调用 相应的opencv 函数就能绘制了,  
+1234567891011121314151617181920212223242526272829#include &lt;opencv2/opencv.hpp&gt;int main(int argc, char *argv[])&#123;    //QApplication a(argc, argv);    //MainWindow w;    //w.show();    // 设置 要显示的图像路径    std::string img_lena = "./TestImages/lena.png";    // 读取两幅彩色图像  512*512    cv::Mat lena_bgr = cv::imread(img_lena);    // 声明结果图像 1020*1020    cv::Mat res_bgr = cv::Mat::zeros(cv::Size(512,512), CV_8UC3);    // 绘制基本图形    cv::line(lena_bgr, cv::Point(100, 200), cv::Point(500, 300), cv::Scalar(0, 255, 0));    cv::line(lena_bgr, cv::Point(100, 500), cv::Point(500, 100), cv::Scalar(255, 0, 0));    cv::circle(lena_bgr, cv::Point(200, 300), 200, cv::Scalar(0, 0, 255));    cv::rectangle(lena_bgr, cv::Rect(cv::Point(100, 120), cv::Point(400, 500)), cv::Scalar(255, 255, 255));    cv::putText(lena_bgr, "OpenCV", cv::Point(100, 200), cv::FONT_HERSHEY_COMPLEX,1.0, cv::Scalar(0, 255, 255));    cv::imshow("lena_bgr",lena_bgr);    cv::waitKey(0);    return 0;    // return a.exec();&#125;
+最终我们运行之后 ,便能够得到这样的一副图像, 很简单, 具体的参数部分自己选择就好,  这里只是给出一个示例, 
+
+line 函数 源码分析剖析其实opencv 还能绘制其他的图形, 太多了, 可以在Drawing Functions页面去查看, 基本没啥用, 很多时候是需要了自己造个轮子就行了, 不查文档我都不知道能绘制这么多
+只需要知道直线, 圆, 矩形怎么绘制的就行了, 多了也用不到
+后续的部分 主要是 opencv 怎么去实现的 line 函数了, 涉及到比较基础的, 看不看不影响你的使用, 不想看的就关闭即可..
+源码解析我们以 绘制直线为例, 这个简单, 我们使用了 cv::line 就绘制出来了一条直线12345678void cv::line	(	InputOutputArray 	img,					Point 	pt1,					Point 	pt2,					const Scalar &amp; 	color,					int 	thickness = 1,					int 	lineType = LINE_8,					int 	shift = 0 )各个参数意义其实名称还是能够 看出来的 
+
+img: 输入输出图像, 直接在这个图像上绘制
+pt1: 起始点 (x,y) 座标
+pt2: 终止点 (x,y) 座标
+color: Scalar 参数生成的颜色
+*thickness: 直线宽度
+*lineType: 绘制的线的形式  4邻域 8邻域等
+*shift: 精度, 点座标中的小数点等级(第一次看到这个参数, 暂时不管他什么意思)
+
+一般我们只需要前面的四个参数就行了,  一般就是我们程序中的 cv::line(lena_bgr, cv::Point(100, 200), cv::Point(500, 300), cv::Scalar(0, 255, 0));   
+座标颜色我们都说过了, 那我们去看下 他的源码:在 modules\imgproc\srcdrawing.cpp:1772 中, 我们能够看到 直线的绘制函数, 
+1234567891011121314151617void line( InputOutputArray _img, Point pt1, Point pt2, const Scalar&amp; color,           int thickness, int line_type, int shift )&#123;    CV_INSTRUMENT_REGION();    Mat img = _img.getMat();    if( line_type == CV_AA &amp;&amp; img.depth() != CV_8U )        line_type = 8;    CV_Assert( 0 &lt; thickness &amp;&amp; thickness &lt;= MAX_THICKNESS );    CV_Assert( 0 &lt;= shift &amp;&amp; shift &lt;= XY_SHIFT );    double buf[4];    scalarToRawData( color, buf, img.type(), 0 );    ThickLine( img, pt1, pt2, buf, thickness, line_type, 3, shift );&#125;
+这个只是一个封装, 将颜色分成一个double 数组, 然后 调用了一个新的函数 ThickLine
+这里 实际上 这里的scalarToRawData 函数也是根据图像的通道进行调用了, scalarToRawData_ 的函数, 将颜色结构体的四个值分别存入数组中, 也为了兼容以前的版本, 所以采用的这种接口.123456789template &lt;typename T&gt; static inlinevoid scalarToRawData_(const Scalar&amp; s, T * const buf, const int cn, const int unroll_to)&#123;    int i = 0;    for(; i &lt; cn; i++)        buf[i] = saturate_cast&lt;T&gt;(s.val[i]);    for(; i &lt; unroll_to; i++)        buf[i] = buf[i-cn];&#125;
+去看了下 opencv 的矩形 rectancle 函数是实际上是基于 polyline 多边形绘制, 而它则是基于 ThickLine的,  opencv 的函数都是这样基于最简单的元素来实现的, 所以我们继续看这个实现就好感觉线形状的绘制最终都是调用的这个, 那我们去看下具体的实现.
+
+在文件 modules\imgproc\src\drawing.cpp:1602 是这个函数的实现, 
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576static voidThickLine( Mat&amp; img, Point2l p0, Point2l p1, const void* color,           int thickness, int line_type, int flags, int shift )&#123;    static const double INV_XY_ONE = 1./XY_ONE;    p0.x &lt;&lt;= XY_SHIFT - shift;    p0.y &lt;&lt;= XY_SHIFT - shift;    p1.x &lt;&lt;= XY_SHIFT - shift;    p1.y &lt;&lt;= XY_SHIFT - shift;    if( thickness &lt;= 1 )    &#123;        if( line_type &lt; CV_AA )        &#123;            if( line_type == 1 || line_type == 4 || shift == 0 )            &#123;                p0.x = (p0.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                p0.y = (p0.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                p1.x = (p1.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                p1.y = (p1.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                Line( img, p0, p1, color, line_type );            &#125;            else                Line2( img, p0, p1, color );        &#125;        else            LineAA( img, p0, p1, color );    &#125;    else    &#123;        Point2l pt[4], dp = Point2l(0,0);        double dx = (p0.x - p1.x)*INV_XY_ONE, dy = (p1.y - p0.y)*INV_XY_ONE;        double r = dx * dx + dy * dy;        int i, oddThickness = thickness &amp; 1;        thickness &lt;&lt;= XY_SHIFT - 1;        if( fabs(r) &gt; DBL_EPSILON )        &#123;            r = (thickness + oddThickness*XY_ONE*0.5)/std::sqrt(r);            dp.x = cvRound( dy * r );            dp.y = cvRound( dx * r );            pt[0].x = p0.x + dp.x;            pt[0].y = p0.y + dp.y;            pt[1].x = p0.x - dp.x;            pt[1].y = p0.y - dp.y;            pt[2].x = p1.x - dp.x;            pt[2].y = p1.y - dp.y;            pt[3].x = p1.x + dp.x;            pt[3].y = p1.y + dp.y;            FillConvexPoly( img, pt, 4, color, line_type, XY_SHIFT );        &#125;        for( i = 0; i &lt; 2; i++ )        &#123;            if( flags &amp; (i+1) )            &#123;                if( line_type &lt; CV_AA )                &#123;                    Point center;                    center.x = (int)((p0.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT);                    center.y = (int)((p0.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT);                    Circle( img, center, (thickness + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT, color, 1 );                &#125;                else                &#123;                    EllipseEx( img, p0, Size2l(thickness, thickness),                               0, 0, 360, color, -1, line_type );                &#125;            &#125;            p0 = p1;        &#125;    &#125;&#125;
+在讲函数的实现之前, 我们先看几个参数, 线形: linetype 以及线宽 thickness
+其中 linetype 这里可以看OpenCV线型lineType 这篇博客, 他做了几种线形的对比, 
+在 头文件opencv2\imgproc.hpp:804 中,  定义了123456enum LineTypes &#123;    FILLED  = -1,		    LINE_4  = 4, //!&lt; 4-connected line		    LINE_8  = 8, //!&lt; 8-connected line    LINE_AA = 16 //!&lt; antialiased line&#125;;对应的: 
+
+FILLED: 填充
+LINE_4: 四邻域直线, 
+LINE_8: 8邻域直线
+LINE_AA: 抗锯齿直线
+
+再看两个宏, 在modules\imgproc\src\drawing.cpp:46 定义了
+
+XY_SHIFT: 16
+XY_ONE: 1 &lt;&lt; XY_SHIFT    表示左移16位 = 65536
+
+我们在进行转换之前, 有一个小点需要关注一下, 我们line 函数输入的点是 Point2i, 而ThickLine 函数输入的点变成了 Point2l, 有意思,在\modules\core\include\opencv2\core\types.hpp:190, 我们找到了这样的定义,  其实是一样的 , 就是定义的必须是 64长度的 int 类型, 为什么, 好用于移位呀,123typedef Point_&lt;int&gt; Point2i;typedef Point_&lt;int64&gt; Point2l;typedef Point2i Point;这里有一段程序, 是这样的 , 我们去掉 if 再看一下:123456789p0.x &lt;&lt;= XY_SHIFT - shift;p0.y &lt;&lt;= XY_SHIFT - shift;p1.x &lt;&lt;= XY_SHIFT - shift;p1.y &lt;&lt;= XY_SHIFT - shift;p0.x = (p0.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;p0.y = (p0.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;p1.x = (p1.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;p1.y = (p1.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;shift 的 默认参数是 0,  这里的shift 实际上是座标移位的一个作用, 实际上结果就是移位得到结果  这里加上一般是为了XY_ONE&gt;&gt;1 实际上 加上0.5  向上取整而已
+
+个人分析, 不一定是真实意图
+
+ 
+由于绘制函数的 ThickLine 函数考虑了线宽,  我们先以基础的线宽为例:  上面一通操作只是给座标进行了变换,得到了有效的座标, 然后 来到了我们最终的 进行绘制的函数,Line ,首写字母大写的呦, 这里的核心就是 构建一个直线迭代器, 在每个点的位置上依次填入颜色即可,1234567891011121314151617181920212223242526272829static voidLine( Mat&amp; img, Point pt1, Point pt2,      const void* _color, int connectivity = 8 )&#123;    if( connectivity == 0 )        connectivity = 8;    else if( connectivity == 1 )        connectivity = 4;    LineIterator iterator(img, pt1, pt2, connectivity, true);    int i, count = iterator.count;    int pix_size = (int)img.elemSize();    const uchar* color = (const uchar*)_color;    for( i = 0; i &lt; count; i++, ++iterator )    &#123;        uchar* ptr = *iterator;        if( pix_size == 1 )            ptr[0] = color[0];        else if( pix_size == 3 )        &#123;            ptr[0] = color[0];            ptr[1] = color[1];            ptr[2] = color[2];        &#125;        else            memcpy( *iterator, color, pix_size );    &#125;&#125;
+那么, 还没到最后, 我们继续 在 modules\imgproc\src\drawing.cpp:160 的地方, 找到了 LineIterator 类的 构造函数,12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091/*   Initializes line iterator.   Returns number of points on the line or negative number if error.*/LineIterator::LineIterator(const Mat&amp; img, Point pt1, Point pt2,                           int connectivity, bool left_to_right)&#123;    count = -1;    CV_Assert( connectivity == 8 || connectivity == 4 );    if( (unsigned)pt1.x &gt;= (unsigned)(img.cols) ||        (unsigned)pt2.x &gt;= (unsigned)(img.cols) ||        (unsigned)pt1.y &gt;= (unsigned)(img.rows) ||        (unsigned)pt2.y &gt;= (unsigned)(img.rows) )    &#123;        if( !clipLine( img.size(), pt1, pt2 ) )        &#123;            ptr = img.data;            err = plusDelta = minusDelta = plusStep = minusStep = count = 0;            ptr0 = 0;            step = 0;            elemSize = 0;            return;        &#125;    &#125;    size_t bt_pix0 = img.elemSize(), bt_pix = bt_pix0;    size_t istep = img.step;    int dx = pt2.x - pt1.x;    int dy = pt2.y - pt1.y;    int s = dx &lt; 0 ? -1 : 0;    if( left_to_right )    &#123;        dx = (dx ^ s) - s;        dy = (dy ^ s) - s;        pt1.x ^= (pt1.x ^ pt2.x) &amp; s;        pt1.y ^= (pt1.y ^ pt2.y) &amp; s;    &#125;    else    &#123;        dx = (dx ^ s) - s;        bt_pix = (bt_pix ^ s) - s;    &#125;    ptr = (uchar*)(img.data + pt1.y * istep + pt1.x * bt_pix0);    s = dy &lt; 0 ? -1 : 0;    dy = (dy ^ s) - s;    istep = (istep ^ s) - s;    s = dy &gt; dx ? -1 : 0;    /* conditional swaps */    dx ^= dy &amp; s;    dy ^= dx &amp; s;    dx ^= dy &amp; s;    bt_pix ^= istep &amp; s;    istep ^= bt_pix &amp; s;    bt_pix ^= istep &amp; s;    if( connectivity == 8 )    &#123;        assert( dx &gt;= 0 &amp;&amp; dy &gt;= 0 );        err = dx - (dy + dy);        plusDelta = dx + dx;        minusDelta = -(dy + dy);        plusStep = (int)istep;        minusStep = (int)bt_pix;        count = dx + 1;    &#125;    else /* connectivity == 4 */    &#123;        assert( dx &gt;= 0 &amp;&amp; dy &gt;= 0 );        err = 0;        plusDelta = (dx + dx) + (dy + dy);        minusDelta = -(dy + dy);        plusStep = (int)(istep - bt_pix);        minusStep = (int)bt_pix;        count = dx + dy + 1;    &#125;    this-&gt;ptr0 = img.ptr();    this-&gt;step = (int)img.step;    this-&gt;elemSize = (int)bt_pix0;&#125;
+做稍微一点的 简化, 实际上就是考虑正负符号的处理呀,  这里主要使用的就是 异或 (xor) 和 与 运算(&amp;)这里要考虑计算顺序, 注意就好 运算优先级为如下
+
+11    a&amp;b    逐位与
+12    ^    逐位异或（互斥或）
+13    |    逐位或（可兼或）
+
+可以参考文章异或的妙用 和文章位运算总结(按位与,或,异或), 算是一个基础的x 运算吧 
+在计算中, 巧妙的加入了 s 作为符号,  这样减少每次计算正负的比较, 
+1234567891011121314151617181920212223242526272829303132333435363738size_t bt_pix0 = img.elemSize(), bt_pix = bt_pix0;size_t istep = img.step;int dx = pt2.x - pt1.x;int dy = pt2.y - pt1.y;int s = dx &lt; 0 ? -1 : 0;dx = (dx ^ s) - s;dy = (dy ^ s) - s;pt1.x ^= (pt1.x ^ pt2.x) &amp; s;pt1.y ^= (pt1.y ^ pt2.y) &amp; s;// 记录起点的指针, ptr = (uchar*)(img.data + pt1.y * istep + pt1.x * bt_pix0);// 使用符号, 巧妙的得到 绝对值s = dy &lt; 0 ? -1 : 0;dy = (dy ^ s) - s;istep = (istep ^ s) - s;s = dy &gt; dx ? -1 : 0;// 有符号的 值交换 交换 dx dy  与 bt_pix istep/* conditional swaps */dx ^= dy &amp; s;dy ^= dx &amp; s;dx ^= dy &amp; s;bt_pix ^= istep &amp; s;istep ^= bt_pix &amp; s;bt_pix ^= istep &amp; s;err = dx - (dy + dy);plusDelta = dx + dx;minusDelta = -(dy + dy);plusStep = (int)istep;minusStep = (int)bt_pix;count = dx + 1;
+这里的处理真的 很巧妙, 有符号的值交换, 然后设置相应的符号mask, 及其这里求绝对值的方式,  不懂的话 就个8位的数字 代入进行运算, 可以得到想要的结果, 跑一遍就会了我之后写一篇文章 看下这里的符号运算吧,  真厉害!   
+在这里完成了起始点的确定, 给出了一共有多少点的存在count=dx+1, 通过确定了 我们可以假定 dx 会沿着一个方向依次相加 但是dy呢,   我们还是没有解决怎么确定的一条直线,在Line 函数的这一句, for( i = 0; i &lt; count; i++, ++iterator ) 这里的迭代器是累加的, 但是,迭代器是我们自己自定义的, 那么, ++ 操作会不会也是自定义的呢,在modules\imgproc\include\opencv2\imgproc.hpp:4673 行的地方, 我们看到了这里重载了操作符号, 这样我们在进行加加操作的时候,  这里的err 就会自己调节了, 
+
+err &gt;= 0  mask = 0  err += -2dy  ptr += minusStep
+err &lt; 0  mask = -1   err += -2dy + 2dx 这里会 得到一个正的值,这里更加的巧妙, 具体的公式或者过程需要慢慢推导, 
+
+12345678910111213141516inlineLineIterator&amp; LineIterator::operator ++()&#123;    int mask = err &lt; 0 ? -1 : 0;    err += minusDelta + (plusDelta &amp; mask);    ptr += minusStep + (plusStep &amp; mask);    return *this;&#125;inlineLineIterator LineIterator::operator ++(int)&#123;    LineIterator it = *this;    ++(*this);    return it;&#125;
+总之就是 巧妙的使用了两个变量, 使得我们的累加根据斜率进行累加过程, 完成执行,  很巧妙, 
+我这里 不再进行后续推导了, , 后续有机会在做… 
+其他"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2020/04-22/opencv-6-%E9%BC%A0%E6%A0%87%E7%BB%98%E5%88%B6%E5%9B%BE%E5%83%8F.html&title=opencv-6-图像绘制与opencv Line 函数剖析 - 東木 - 随笔&summary=开始之前越到后面, 写的越慢, 之前还抽空去看了下 学堂在线那篇文章提供的方法,  博客第一个人评论的我, 想想还是要给人家一个交代的, 就想着找到一个方法进行下载, 但是尝试了 还没找到, 估计我要花时间自己写一个了, 不是很难, 但是 就是要花时间, 安排到日程上了, 应该会有结果的, 到时候再写博文记录.
+之前都是空的, 写起来很快, 后面的话我还要去写具体的代码实现,  争取都能够复现出来, 这样更有实际意义, 所以接下来可能更新的更慢了, 不过应该不会断, 我计划的很长, 但是我想 至少写够20篇吧, 加油.
+在这篇文章以及后续的文章中,我们都会 说明一些代码出现的地方,  头文件对应的 opencv 库引用目录 include 文件夹下面的文件 源文件则是 opencv 4.3.0 下的 Source 文件夹里面的文件同样的, 文件的后面使用 :xx  标识, 在文件的xx 行的地方
+
+头文件 opencv2/opencv.hpp:100 在 opencv.hpp 第100 行开始的地方源文件 modules/imgproc/src/drawing.cpp:1000 则是在 1000 行的地方
+
+目录[toc]
+正文在上一篇中, 我们能够进行像素点的操作了, 那么, 很明显的一个问题, 我能不能在图像上画一条线呢, 或者在图像上自己用鼠标绘制呢,  当然可以, opencv 提供了这些功能,
+在opencv 的文档中 Basic Drawing, 基础绘图章节, 有相关的例程, 
+我们在之前的文章中提到了 opencv 座标系的问题
+
+以左上角为起始点
+横向为x, 纵向为y
+使用 at(rows,cols) 确定座标值  对应的是 (行,列)
+使用 point(x,y)  定位, 使用的是 (列, 行) 
+
+这两个定位是不一样的 ,所一定要注意, opencv 在 绘制图形的时候 使用的是 Point 来进行的定位, 我们可以使用 cv::Point p = cv::Point(20,30) 直接初始化, 或者使用 cv::Point p; p.x = 20,p.y=30; 初始化后进行赋值操作.
+在图像上绘制标准图形我们还以 lena 为例, 在图片上绘制 以 (x,y) 座标的图形
+
+直线: 起点(100,200) - 终点(500,300)   绿色
+直线: 起点 (100,500) - 终点(500,100)  蓝色
+圆:  圆心 (200,300)   半径 200      红色
+矩形: 左上角点 (100,120)  右下角点(400,450);  白色
+文字: 起始点: (100,200), 文字: OpenCV  
+….
+
+在我们绘制之前, 我们要说明一个函数 cv::Scalar 是opencv 的颜色函数,  按照 BGR 的顺序传入三个参数,  用于指名绘制图形的颜色
+
+note: 实际上是 4个参数, 一般我们不使用最后一个参数即可^[《OpenCV: Basic Drawing》. 见于 2020年4月24日. https://docs.opencv.org/4.3.0/d3/d96/tutorial_basic_geometric_drawing.html.]
+
+编码实现我们根据上面给出的顺序  依次 编写代码, 将图形绘制到 lena 图的上面, 我们可以得到这样的程序, 就是一条一条的写,  我们只需要调用 相应的opencv 函数就能绘制了,  
+1234567891011121314151617181920212223242526272829#include &lt;opencv2/opencv.hpp&gt;int main(int argc, char *argv[])&#123;    //QApplication a(argc, argv);    //MainWindow w;    //w.show();    // 设置 要显示的图像路径    std::string img_lena = "./TestImages/lena.png";    // 读取两幅彩色图像  512*512    cv::Mat lena_bgr = cv::imread(img_lena);    // 声明结果图像 1020*1020    cv::Mat res_bgr = cv::Mat::zeros(cv::Size(512,512), CV_8UC3);    // 绘制基本图形    cv::line(lena_bgr, cv::Point(100, 200), cv::Point(500, 300), cv::Scalar(0, 255, 0));    cv::line(lena_bgr, cv::Point(100, 500), cv::Point(500, 100), cv::Scalar(255, 0, 0));    cv::circle(lena_bgr, cv::Point(200, 300), 200, cv::Scalar(0, 0, 255));    cv::rectangle(lena_bgr, cv::Rect(cv::Point(100, 120), cv::Point(400, 500)), cv::Scalar(255, 255, 255));    cv::putText(lena_bgr, "OpenCV", cv::Point(100, 200), cv::FONT_HERSHEY_COMPLEX,1.0, cv::Scalar(0, 255, 255));    cv::imshow("lena_bgr",lena_bgr);    cv::waitKey(0);    return 0;    // return a.exec();&#125;
+最终我们运行之后 ,便能够得到这样的一副图像, 很简单, 具体的参数部分自己选择就好,  这里只是给出一个示例, 
+
+line 函数 源码分析剖析其实opencv 还能绘制其他的图形, 太多了, 可以在Drawing Functions页面去查看, 基本没啥用, 很多时候是需要了自己造个轮子就行了, 不查文档我都不知道能绘制这么多
+只需要知道直线, 圆, 矩形怎么绘制的就行了, 多了也用不到
+后续的部分 主要是 opencv 怎么去实现的 line 函数了, 涉及到比较基础的, 看不看不影响你的使用, 不想看的就关闭即可..
+源码解析我们以 绘制直线为例, 这个简单, 我们使用了 cv::line 就绘制出来了一条直线12345678void cv::line	(	InputOutputArray 	img,					Point 	pt1,					Point 	pt2,					const Scalar &amp; 	color,					int 	thickness = 1,					int 	lineType = LINE_8,					int 	shift = 0 )各个参数意义其实名称还是能够 看出来的 
+
+img: 输入输出图像, 直接在这个图像上绘制
+pt1: 起始点 (x,y) 座标
+pt2: 终止点 (x,y) 座标
+color: Scalar 参数生成的颜色
+*thickness: 直线宽度
+*lineType: 绘制的线的形式  4邻域 8邻域等
+*shift: 精度, 点座标中的小数点等级(第一次看到这个参数, 暂时不管他什么意思)
+
+一般我们只需要前面的四个参数就行了,  一般就是我们程序中的 cv::line(lena_bgr, cv::Point(100, 200), cv::Point(500, 300), cv::Scalar(0, 255, 0));   
+座标颜色我们都说过了, 那我们去看下 他的源码:在 modules\imgproc\srcdrawing.cpp:1772 中, 我们能够看到 直线的绘制函数, 
+1234567891011121314151617void line( InputOutputArray _img, Point pt1, Point pt2, const Scalar&amp; color,           int thickness, int line_type, int shift )&#123;    CV_INSTRUMENT_REGION();    Mat img = _img.getMat();    if( line_type == CV_AA &amp;&amp; img.depth() != CV_8U )        line_type = 8;    CV_Assert( 0 &lt; thickness &amp;&amp; thickness &lt;= MAX_THICKNESS );    CV_Assert( 0 &lt;= shift &amp;&amp; shift &lt;= XY_SHIFT );    double buf[4];    scalarToRawData( color, buf, img.type(), 0 );    ThickLine( img, pt1, pt2, buf, thickness, line_type, 3, shift );&#125;
+这个只是一个封装, 将颜色分成一个double 数组, 然后 调用了一个新的函数 ThickLine
+这里 实际上 这里的scalarToRawData 函数也是根据图像的通道进行调用了, scalarToRawData_ 的函数, 将颜色结构体的四个值分别存入数组中, 也为了兼容以前的版本, 所以采用的这种接口.123456789template &lt;typename T&gt; static inlinevoid scalarToRawData_(const Scalar&amp; s, T * const buf, const int cn, const int unroll_to)&#123;    int i = 0;    for(; i &lt; cn; i++)        buf[i] = saturate_cast&lt;T&gt;(s.val[i]);    for(; i &lt; unroll_to; i++)        buf[i] = buf[i-cn];&#125;
+去看了下 opencv 的矩形 rectancle 函数是实际上是基于 polyline 多边形绘制, 而它则是基于 ThickLine的,  opencv 的函数都是这样基于最简单的元素来实现的, 所以我们继续看这个实现就好感觉线形状的绘制最终都是调用的这个, 那我们去看下具体的实现.
+
+在文件 modules\imgproc\src\drawing.cpp:1602 是这个函数的实现, 
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576static voidThickLine( Mat&amp; img, Point2l p0, Point2l p1, const void* color,           int thickness, int line_type, int flags, int shift )&#123;    static const double INV_XY_ONE = 1./XY_ONE;    p0.x &lt;&lt;= XY_SHIFT - shift;    p0.y &lt;&lt;= XY_SHIFT - shift;    p1.x &lt;&lt;= XY_SHIFT - shift;    p1.y &lt;&lt;= XY_SHIFT - shift;    if( thickness &lt;= 1 )    &#123;        if( line_type &lt; CV_AA )        &#123;            if( line_type == 1 || line_type == 4 || shift == 0 )            &#123;                p0.x = (p0.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                p0.y = (p0.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                p1.x = (p1.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                p1.y = (p1.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;                Line( img, p0, p1, color, line_type );            &#125;            else                Line2( img, p0, p1, color );        &#125;        else            LineAA( img, p0, p1, color );    &#125;    else    &#123;        Point2l pt[4], dp = Point2l(0,0);        double dx = (p0.x - p1.x)*INV_XY_ONE, dy = (p1.y - p0.y)*INV_XY_ONE;        double r = dx * dx + dy * dy;        int i, oddThickness = thickness &amp; 1;        thickness &lt;&lt;= XY_SHIFT - 1;        if( fabs(r) &gt; DBL_EPSILON )        &#123;            r = (thickness + oddThickness*XY_ONE*0.5)/std::sqrt(r);            dp.x = cvRound( dy * r );            dp.y = cvRound( dx * r );            pt[0].x = p0.x + dp.x;            pt[0].y = p0.y + dp.y;            pt[1].x = p0.x - dp.x;            pt[1].y = p0.y - dp.y;            pt[2].x = p1.x - dp.x;            pt[2].y = p1.y - dp.y;            pt[3].x = p1.x + dp.x;            pt[3].y = p1.y + dp.y;            FillConvexPoly( img, pt, 4, color, line_type, XY_SHIFT );        &#125;        for( i = 0; i &lt; 2; i++ )        &#123;            if( flags &amp; (i+1) )            &#123;                if( line_type &lt; CV_AA )                &#123;                    Point center;                    center.x = (int)((p0.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT);                    center.y = (int)((p0.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT);                    Circle( img, center, (thickness + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT, color, 1 );                &#125;                else                &#123;                    EllipseEx( img, p0, Size2l(thickness, thickness),                               0, 0, 360, color, -1, line_type );                &#125;            &#125;            p0 = p1;        &#125;    &#125;&#125;
+在讲函数的实现之前, 我们先看几个参数, 线形: linetype 以及线宽 thickness
+其中 linetype 这里可以看OpenCV线型lineType 这篇博客, 他做了几种线形的对比, 
+在 头文件opencv2\imgproc.hpp:804 中,  定义了123456enum LineTypes &#123;    FILLED  = -1,		    LINE_4  = 4, //!&lt; 4-connected line		    LINE_8  = 8, //!&lt; 8-connected line    LINE_AA = 16 //!&lt; antialiased line&#125;;对应的: 
+
+FILLED: 填充
+LINE_4: 四邻域直线, 
+LINE_8: 8邻域直线
+LINE_AA: 抗锯齿直线
+
+再看两个宏, 在modules\imgproc\src\drawing.cpp:46 定义了
+
+XY_SHIFT: 16
+XY_ONE: 1 &lt;&lt; XY_SHIFT    表示左移16位 = 65536
+
+我们在进行转换之前, 有一个小点需要关注一下, 我们line 函数输入的点是 Point2i, 而ThickLine 函数输入的点变成了 Point2l, 有意思,在\modules\core\include\opencv2\core\types.hpp:190, 我们找到了这样的定义,  其实是一样的 , 就是定义的必须是 64长度的 int 类型, 为什么, 好用于移位呀,123typedef Point_&lt;int&gt; Point2i;typedef Point_&lt;int64&gt; Point2l;typedef Point2i Point;这里有一段程序, 是这样的 , 我们去掉 if 再看一下:123456789p0.x &lt;&lt;= XY_SHIFT - shift;p0.y &lt;&lt;= XY_SHIFT - shift;p1.x &lt;&lt;= XY_SHIFT - shift;p1.y &lt;&lt;= XY_SHIFT - shift;p0.x = (p0.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;p0.y = (p0.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;p1.x = (p1.x + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;p1.y = (p1.y + (XY_ONE&gt;&gt;1)) &gt;&gt; XY_SHIFT;shift 的 默认参数是 0,  这里的shift 实际上是座标移位的一个作用, 实际上结果就是移位得到结果  这里加上一般是为了XY_ONE&gt;&gt;1 实际上 加上0.5  向上取整而已
+
+个人分析, 不一定是真实意图
+
+ 
+由于绘制函数的 ThickLine 函数考虑了线宽,  我们先以基础的线宽为例:  上面一通操作只是给座标进行了变换,得到了有效的座标, 然后 来到了我们最终的 进行绘制的函数,Line ,首写字母大写的呦, 这里的核心就是 构建一个直线迭代器, 在每个点的位置上依次填入颜色即可,1234567891011121314151617181920212223242526272829static voidLine( Mat&amp; img, Point pt1, Point pt2,      const void* _color, int connectivity = 8 )&#123;    if( connectivity == 0 )        connectivity = 8;    else if( connectivity == 1 )        connectivity = 4;    LineIterator iterator(img, pt1, pt2, connectivity, true);    int i, count = iterator.count;    int pix_size = (int)img.elemSize();    const uchar* color = (const uchar*)_color;    for( i = 0; i &lt; count; i++, ++iterator )    &#123;        uchar* ptr = *iterator;        if( pix_size == 1 )            ptr[0] = color[0];        else if( pix_size == 3 )        &#123;            ptr[0] = color[0];            ptr[1] = color[1];            ptr[2] = color[2];        &#125;        else            memcpy( *iterator, color, pix_size );    &#125;&#125;
+那么, 还没到最后, 我们继续 在 modules\imgproc\src\drawing.cpp:160 的地方, 找到了 LineIterator 类的 构造函数,12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091/*   Initializes line iterator.   Returns number of points on the line or negative number if error.*/LineIterator::LineIterator(const Mat&amp; img, Point pt1, Point pt2,                           int connectivity, bool left_to_right)&#123;    count = -1;    CV_Assert( connectivity == 8 || connectivity == 4 );    if( (unsigned)pt1.x &gt;= (unsigned)(img.cols) ||        (unsigned)pt2.x &gt;= (unsigned)(img.cols) ||        (unsigned)pt1.y &gt;= (unsigned)(img.rows) ||        (unsigned)pt2.y &gt;= (unsigned)(img.rows) )    &#123;        if( !clipLine( img.size(), pt1, pt2 ) )        &#123;            ptr = img.data;            err = plusDelta = minusDelta = plusStep = minusStep = count = 0;            ptr0 = 0;            step = 0;            elemSize = 0;            return;        &#125;    &#125;    size_t bt_pix0 = img.elemSize(), bt_pix = bt_pix0;    size_t istep = img.step;    int dx = pt2.x - pt1.x;    int dy = pt2.y - pt1.y;    int s = dx &lt; 0 ? -1 : 0;    if( left_to_right )    &#123;        dx = (dx ^ s) - s;        dy = (dy ^ s) - s;        pt1.x ^= (pt1.x ^ pt2.x) &amp; s;        pt1.y ^= (pt1.y ^ pt2.y) &amp; s;    &#125;    else    &#123;        dx = (dx ^ s) - s;        bt_pix = (bt_pix ^ s) - s;    &#125;    ptr = (uchar*)(img.data + pt1.y * istep + pt1.x * bt_pix0);    s = dy &lt; 0 ? -1 : 0;    dy = (dy ^ s) - s;    istep = (istep ^ s) - s;    s = dy &gt; dx ? -1 : 0;    /* conditional swaps */    dx ^= dy &amp; s;    dy ^= dx &amp; s;    dx ^= dy &amp; s;    bt_pix ^= istep &amp; s;    istep ^= bt_pix &amp; s;    bt_pix ^= istep &amp; s;    if( connectivity == 8 )    &#123;        assert( dx &gt;= 0 &amp;&amp; dy &gt;= 0 );        err = dx - (dy + dy);        plusDelta = dx + dx;        minusDelta = -(dy + dy);        plusStep = (int)istep;        minusStep = (int)bt_pix;        count = dx + 1;    &#125;    else /* connectivity == 4 */    &#123;        assert( dx &gt;= 0 &amp;&amp; dy &gt;= 0 );        err = 0;        plusDelta = (dx + dx) + (dy + dy);        minusDelta = -(dy + dy);        plusStep = (int)(istep - bt_pix);        minusStep = (int)bt_pix;        count = dx + dy + 1;    &#125;    this-&gt;ptr0 = img.ptr();    this-&gt;step = (int)img.step;    this-&gt;elemSize = (int)bt_pix0;&#125;
+做稍微一点的 简化, 实际上就是考虑正负符号的处理呀,  这里主要使用的就是 异或 (xor) 和 与 运算(&amp;)这里要考虑计算顺序, 注意就好 运算优先级为如下
+
+11    a&amp;b    逐位与
+12    ^    逐位异或（互斥或）
+13    |    逐位或（可兼或）
+
+可以参考文章异或的妙用 和文章位运算总结(按位与,或,异或), 算是一个基础的x 运算吧 
+在计算中, 巧妙的加入了 s 作为符号,  这样减少每次计算正负的比较, 
+1234567891011121314151617181920212223242526272829303132333435363738size_t bt_pix0 = img.elemSize(), bt_pix = bt_pix0;size_t istep = img.step;int dx = pt2.x - pt1.x;int dy = pt2.y - pt1.y;int s = dx &lt; 0 ? -1 : 0;dx = (dx ^ s) - s;dy = (dy ^ s) - s;pt1.x ^= (pt1.x ^ pt2.x) &amp; s;pt1.y ^= (pt1.y ^ pt2.y) &amp; s;// 记录起点的指针, ptr = (uchar*)(img.data + pt1.y * istep + pt1.x * bt_pix0);// 使用符号, 巧妙的得到 绝对值s = dy &lt; 0 ? -1 : 0;dy = (dy ^ s) - s;istep = (istep ^ s) - s;s = dy &gt; dx ? -1 : 0;// 有符号的 值交换 交换 dx dy  与 bt_pix istep/* conditional swaps */dx ^= dy &amp; s;dy ^= dx &amp; s;dx ^= dy &amp; s;bt_pix ^= istep &amp; s;istep ^= bt_pix &amp; s;bt_pix ^= istep &amp; s;err = dx - (dy + dy);plusDelta = dx + dx;minusDelta = -(dy + dy);plusStep = (int)istep;minusStep = (int)bt_pix;count = dx + 1;
+这里的处理真的 很巧妙, 有符号的值交换, 然后设置相应的符号mask, 及其这里求绝对值的方式,  不懂的话 就个8位的数字 代入进行运算, 可以得到想要的结果, 跑一遍就会了我之后写一篇文章 看下这里的符号运算吧,  真厉害!   
+在这里完成了起始点的确定, 给出了一共有多少点的存在count=dx+1, 通过确定了 我们可以假定 dx 会沿着一个方向依次相加 但是dy呢,   我们还是没有解决怎么确定的一条直线,在Line 函数的这一句, for( i = 0; i &lt; count; i++, ++iterator ) 这里的迭代器是累加的, 但是,迭代器是我们自己自定义的, 那么, ++ 操作会不会也是自定义的呢,在modules\imgproc\include\opencv2\imgproc.hpp:4673 行的地方, 我们看到了这里重载了操作符号, 这样我们在进行加加操作的时候,  这里的err 就会自己调节了, 
+
+err &gt;= 0  mask = 0  err += -2dy  ptr += minusStep
+err &lt; 0  mask = -1   err += -2dy + 2dx 这里会 得到一个正的值,这里更加的巧妙, 具体的公式或者过程需要慢慢推导, 
+
+12345678910111213141516inlineLineIterator&amp; LineIterator::operator ++()&#123;    int mask = err &lt; 0 ? -1 : 0;    err += minusDelta + (plusDelta &amp; mask);    ptr += minusStep + (plusStep &amp; mask);    return *this;&#125;inlineLineIterator LineIterator::operator ++(int)&#123;    LineIterator it = *this;    ++(*this);    return it;&#125;
+总之就是 巧妙的使用了两个变量, 使得我们的累加根据斜率进行累加过程, 完成执行,  很巧妙, 
+我这里 不再进行后续推导了, , 后续有机会在做… 
+其他"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+              <a class='prev' href='/2020/04-22/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE.html'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>云服务器设置</p>
+                <p class='content'>输入密码, 查看文章24280c0e3efd647a551fb10e40bca1f257c91e5ddb90e743cb3351b3fc2bbe411301989534398be9233f195...</p>
+              </a>
+            
+            
+              <a class='next' href='/2020/04-22/%E8%BD%AF%E4%BB%B6%E6%8E%A8%E8%8D%90--VirtualAssistX.html'>
+                <p class='title'>好用工具--VirtualAssistX<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>介绍VSX 真的是  VS上写 C++ 最好用的插件了,  狂吹
+VSX  我一般称为 番茄插件, 因为他的图标是一个番茄, 
+感觉这位博主写的很详细看Visual Assist 特性和技巧 (...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-spinner fa-spin fa-fw"></i>
+          </div>
+        </section>
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'opencv-6-图像绘制与opencv Line 函数剖析',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始之前"><span class="toc-text">开始之前</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正文"><span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在图像上绘制标准图形"><span class="toc-text">在图像上绘制标准图形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码实现"><span class="toc-text">编码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#line-函数-源码分析剖析"><span class="toc-text">line 函数 源码分析剖析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#源码解析"><span class="toc-text">源码解析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-text">其他</span></a></li></ol>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget category shadow desktop">
+    
+  <header>
+    
+      <a href='categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <ul class="entry navigation">
+        
+          <li><a class="flat-box"
+            title="/categories/Alg/" href="/categories/Alg/"
+            id="categoriesAlg"
+            ><div class='name'>Alg</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/C/" href="/categories/C/"
+            id="categoriesC"
+            ><div class='name'>C++</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Config/" href="/categories/Config/"
+            id="categoriesConfig"
+            ><div class='name'>Config</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Essay/" href="/categories/Essay/"
+            id="categoriesEssay"
+            ><div class='name'>Essay</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Game/" href="/categories/Game/"
+            id="categoriesGame"
+            ><div class='name'>Game</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Hexo/" href="/categories/Hexo/"
+            id="categoriesHexo"
+            ><div class='name'>Hexo</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/IOT/" href="/categories/IOT/"
+            id="categoriesIOT"
+            ><div class='name'>IOT</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Interview/" href="/categories/Interview/"
+            id="categoriesInterview"
+            ><div class='name'>Interview</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LaTex/" href="/categories/LaTex/"
+            id="categoriesLaTex"
+            ><div class='name'>LaTex</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode-Contest/" href="/categories/LeetCode-Contest/"
+            id="categoriesLeetCode-Contest"
+            ><div class='name'>LeetCode-Contest</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode/" href="/categories/LeetCode/"
+            id="categoriesLeetCode"
+            ><div class='name'>LeetCode</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Offer/" href="/categories/Offer/"
+            id="categoriesOffer"
+            ><div class='name'>Offer</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/OpenCV/" href="/categories/OpenCV/"
+            id="categoriesOpenCV"
+            ><div class='name'>OpenCV</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Person/" href="/categories/Person/"
+            id="categoriesPerson"
+            ><div class='name'>Person</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/QT/" href="/categories/QT/"
+            id="categoriesQT"
+            ><div class='name'>QT</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SSR/" href="/categories/SSR/"
+            id="categoriesSSR"
+            ><div class='name'>SSR</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Script/" href="/categories/Script/"
+            id="categoriesScript"
+            ><div class='name'>Script</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SerialPort/" href="/categories/SerialPort/"
+            id="categoriesSerialPort"
+            ><div class='name'>SerialPort</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Sword/" href="/categories/Sword/"
+            id="categoriesSword"
+            ><div class='name'>Sword</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/TODO/" href="/categories/TODO/"
+            id="categoriesTODO"
+            ><div class='name'>TODO</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Tools/" href="/categories/Tools/"
+            id="categoriesTools"
+            ><div class='name'>Tools</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Web/" href="/categories/Web/"
+            id="categoriesWeb"
+            ><div class='name'>Web</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Windows/" href="/categories/Windows/"
+            id="categoriesWindows"
+            ><div class='name'>Windows</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/bug/" href="/categories/bug/"
+            id="categoriesbug"
+            ><div class='name'>bug</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/data/" href="/categories/data/"
+            id="categoriesdata"
+            ><div class='name'>data</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/hexo/" href="/categories/hexo/"
+            id="categorieshexo"
+            ><div class='name'>hexo</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/latex/" href="/categories/latex/"
+            id="categorieslatex"
+            ><div class='name'>latex</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/opencv/" href="/categories/opencv/"
+            id="categoriesopencv"
+            ><div class='name'>opencv</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imagelab/" href="/categories/opencv/imagelab/"
+            id="categoriesopencvimagelab"
+            ><div class='name'>imagelab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imaglab/" href="/categories/opencv/imaglab/"
+            id="categoriesopencvimaglab"
+            ><div class='name'>imaglab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/person/" href="/categories/person/"
+            id="categoriesperson"
+            ><div class='name'>person</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/python/" href="/categories/python/"
+            id="categoriespython"
+            ><div class='name'>python</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/uncategorized/" href="/categories/uncategorized/"
+            id="categoriesuncategorized"
+            ><div class='name'>uncategorized</div><div class='badge'>(5)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/xxx/" href="/categories/xxx/"
+            id="categoriesxxx"
+            ><div class='name'>xxx</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E7%AE%97%E6%B3%95/" href="/categories/%E7%AE%97%E6%B3%95/"
+            id="categoriesE7AE97E6B395"
+            ><div class='name'>算法</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget tagcloud shadow desktop mobile">
+    
+  <header>
+    
+      <a href='tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/2019/" style="font-size: 14px; color: #999">2019</a> <a href="/tags/2020/" style="font-size: 14px; color: #999">2020</a> <a href="/tags/51/" style="font-size: 14px; color: #999">51</a> <a href="/tags/996/" style="font-size: 14px; color: #999">996</a> <a href="/tags/Android/" style="font-size: 14px; color: #999">Android</a> <a href="/tags/Array/" style="font-size: 17px; color: #858585">Array</a> <a href="/tags/Atomineer/" style="font-size: 14px; color: #999">Atomineer</a> <a href="/tags/BinarySearch/" style="font-size: 15px; color: #929292">BinarySearch</a> <a href="/tags/Bugs/" style="font-size: 15px; color: #929292">Bugs</a> <a href="/tags/C/" style="font-size: 14px; color: #999">C</a> <a href="/tags/C/" style="font-size: 24px; color: #555">C++</a> <a href="/tags/Cmake/" style="font-size: 14px; color: #999">Cmake</a> <a href="/tags/Code/" style="font-size: 14px; color: #999">Code</a> <a href="/tags/Compass/" style="font-size: 14px; color: #999">Compass</a> <a href="/tags/Contest/" style="font-size: 14px; color: #999">Contest</a> <a href="/tags/Crack/" style="font-size: 14px; color: #999">Crack</a> <a href="/tags/Doctest/" style="font-size: 14px; color: #999">Doctest</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14px; color: #999">Dynamic Programming</a> <a href="/tags/Emotion/" style="font-size: 14px; color: #999">Emotion</a> <a href="/tags/HEX/" style="font-size: 14px; color: #999">HEX</a> <a href="/tags/ICU/" style="font-size: 14px; color: #999">ICU</a> <a href="/tags/Interview/" style="font-size: 16px; color: #8b8b8b">Interview</a> <a href="/tags/Job/" style="font-size: 15px; color: #929292">Job</a> <a href="/tags/Jobs/" style="font-size: 14px; color: #999">Jobs</a> <a href="/tags/Latex/" style="font-size: 14px; color: #999">Latex</a> <a href="/tags/LeetCode/" style="font-size: 20px; color: #707070">LeetCode</a> <a href="/tags/LeetCode-easy-Overflow/" style="font-size: 14px; color: #999">LeetCode,easy,Overflow</a> <a href="/tags/Live/" style="font-size: 14px; color: #999">Live</a> <a href="/tags/Logger/" style="font-size: 14px; color: #999">Logger</a> <a href="/tags/Math/" style="font-size: 14px; color: #999">Math</a> <a href="/tags/Medium/" style="font-size: 15px; color: #929292">Medium</a> <a href="/tags/NameStyle/" style="font-size: 14px; color: #999">NameStyle</a> <a href="/tags/OpenCV/" style="font-size: 14px; color: #999">OpenCV</a> <a href="/tags/PBootCMS/" style="font-size: 15px; color: #929292">PBootCMS</a> <a href="/tags/PID/" style="font-size: 14px; color: #999">PID</a> <a href="/tags/PSO/" style="font-size: 14px; color: #999">PSO</a> <a href="/tags/Person/" style="font-size: 14px; color: #999">Person</a> <a href="/tags/Plugin/" style="font-size: 14px; color: #999">Plugin</a> <a href="/tags/PrimeNum/" style="font-size: 14px; color: #999">PrimeNum</a> <a href="/tags/Protocbuf/" style="font-size: 14px; color: #999">Protocbuf</a> <a href="/tags/QT/" style="font-size: 17px; color: #858585">QT</a> <a href="/tags/QT%E8%87%AA%E5%AE%9A%E4%B9%89/" style="font-size: 14px; color: #999">QT自定义</a> <a href="/tags/SSR/" style="font-size: 14px; color: #999">SSR</a> <a href="/tags/Serial/" style="font-size: 16px; color: #8b8b8b">Serial</a> <a href="/tags/SerialPort/" style="font-size: 14px; color: #999">SerialPort</a> <a href="/tags/She/" style="font-size: 14px; color: #999">She</a> <a href="/tags/String/" style="font-size: 14px; color: #999">String</a> <a href="/tags/TODO/" style="font-size: 14px; color: #999">TODO</a> <a href="/tags/TwoPointers/" style="font-size: 14px; color: #999">TwoPointers</a> <a href="/tags/UART/" style="font-size: 14px; color: #999">UART</a> <a href="/tags/UnitTest/" style="font-size: 14px; color: #999">UnitTest</a> <a href="/tags/Utils/" style="font-size: 14px; color: #999">Utils</a> <a href="/tags/VS/" style="font-size: 15px; color: #929292">VS</a> <a href="/tags/VS2015/" style="font-size: 16px; color: #8b8b8b">VS2015</a> <a href="/tags/Window/" style="font-size: 14px; color: #999">Window</a> <a href="/tags/Work/" style="font-size: 15px; color: #929292">Work</a> <a href="/tags/Wuhan/" style="font-size: 14px; color: #999">Wuhan</a> <a href="/tags/XeLaTex/" style="font-size: 14px; color: #999">XeLaTex</a> <a href="/tags/action/" style="font-size: 14px; color: #999">action</a> <a href="/tags/algorithm/" style="font-size: 14px; color: #999">algorithm</a> <a href="/tags/aliyun/" style="font-size: 14px; color: #999">aliyun</a> <a href="/tags/asp/" style="font-size: 14px; color: #999">asp</a> <a href="/tags/batch/" style="font-size: 14px; color: #999">batch</a> <a href="/tags/blog/" style="font-size: 21px; color: #696969">blog</a> <a href="/tags/blog%EF%BC%8Chexo/" style="font-size: 14px; color: #999">blog，hexo</a> <a href="/tags/bug/" style="font-size: 14px; color: #999">bug</a> <a href="/tags/c/" style="font-size: 22px; color: #636363">c++</a> <a href="/tags/changelog/" style="font-size: 14px; color: #999">changelog</a> <a href="/tags/cnblogs/" style="font-size: 15px; color: #929292">cnblogs</a> <a href="/tags/cov/" style="font-size: 14px; color: #999">cov</a> <a href="/tags/csdn/" style="font-size: 15px; color: #929292">csdn</a> <a href="/tags/data/" style="font-size: 14px; color: #999">data</a> <a href="/tags/depurple/" style="font-size: 14px; color: #999">depurple</a> <a href="/tags/dream/" style="font-size: 14px; color: #999">dream</a> <a href="/tags/easy/" style="font-size: 16px; color: #8b8b8b">easy</a> <a href="/tags/encrypt/" style="font-size: 23px; color: #5c5c5c">encrypt</a> <a href="/tags/file/" style="font-size: 14px; color: #999">file</a> <a href="/tags/fraud/" style="font-size: 14px; color: #999">fraud</a> <a href="/tags/game/" style="font-size: 15px; color: #929292">game</a> <a href="/tags/github/" style="font-size: 15px; color: #929292">github</a> <a href="/tags/hard/" style="font-size: 15px; color: #929292">hard</a> <a href="/tags/hexo/" style="font-size: 19px; color: #777">hexo</a> <a href="/tags/hide/" style="font-size: 21px; color: #696969">hide</a> <a href="/tags/histograms/" style="font-size: 14px; color: #999">histograms</a> <a href="/tags/history/" style="font-size: 14px; color: #999">history</a> <a href="/tags/home/" style="font-size: 15px; color: #929292">home</a> <a href="/tags/html/" style="font-size: 14px; color: #999">html</a> <a href="/tags/imagelab/" style="font-size: 15px; color: #929292">imagelab</a> <a href="/tags/intel/" style="font-size: 14px; color: #999">intel</a> <a href="/tags/js/" style="font-size: 14px; color: #999">js</a> <a href="/tags/latex/" style="font-size: 15px; color: #929292">latex</a> <a href="/tags/learn/" style="font-size: 14px; color: #999">learn</a> <a href="/tags/list/" style="font-size: 14px; color: #999">list</a> <a href="/tags/master/" style="font-size: 15px; color: #929292">master</a> <a href="/tags/mat/" style="font-size: 14px; color: #999">mat</a> <a href="/tags/matlab/" style="font-size: 14px; color: #999">matlab</a> <a href="/tags/offer/" style="font-size: 14px; color: #999">offer</a> <a href="/tags/opencv/" style="font-size: 24px; color: #555">opencv</a> <a href="/tags/outline/" style="font-size: 14px; color: #999">outline</a> <a href="/tags/overleaf/" style="font-size: 14px; color: #999">overleaf</a> <a href="/tags/pac/" style="font-size: 14px; color: #999">pac</a> <a href="/tags/person/" style="font-size: 18px; color: #7e7e7e">person</a> <a href="/tags/php/" style="font-size: 14px; color: #999">php</a> <a href="/tags/ppt/" style="font-size: 14px; color: #999">ppt</a> <a href="/tags/project/" style="font-size: 14px; color: #999">project</a> <a href="/tags/proxy/" style="font-size: 14px; color: #999">proxy</a> <a href="/tags/python/" style="font-size: 14px; color: #999">python</a> <a href="/tags/qt/" style="font-size: 22px; color: #636363">qt</a> <a href="/tags/robot/" style="font-size: 14px; color: #999">robot</a> <a href="/tags/script/" style="font-size: 14px; color: #999">script</a> <a href="/tags/server/" style="font-size: 15px; color: #929292">server</a> <a href="/tags/shopping/" style="font-size: 14px; color: #999">shopping</a> <a href="/tags/sketchup/" style="font-size: 14px; color: #999">sketchup</a> <a href="/tags/soft/" style="font-size: 15px; color: #929292">soft</a> <a href="/tags/sword/" style="font-size: 14px; color: #999">sword</a> <a href="/tags/swordoffer/" style="font-size: 14px; color: #999">swordoffer</a> <a href="/tags/template/" style="font-size: 14px; color: #999">template</a> <a href="/tags/test/" style="font-size: 16px; color: #8b8b8b">test</a> <a href="/tags/theme/" style="font-size: 14px; color: #999">theme</a> <a href="/tags/todo/" style="font-size: 14px; color: #999">todo</a> <a href="/tags/tools/" style="font-size: 14px; color: #999">tools</a> <a href="/tags/washing-machine/" style="font-size: 14px; color: #999">washing machine</a> <a href="/tags/web/" style="font-size: 15px; color: #929292">web</a> <a href="/tags/whu/" style="font-size: 14px; color: #999">whu</a> <a href="/tags/years/" style="font-size: 14px; color: #999">years</a> <a href="/tags/%E4%B8%B2%E5%8F%A3/" style="font-size: 14px; color: #999">串口</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 14px; color: #999">分治</a> <a href="/tags/%E5%9B%BE%E7%89%87/" style="font-size: 14px; color: #999">图片</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 14px; color: #999">多线程</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 14px; color: #999">学习</a> <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" style="font-size: 14px; color: #999">嵌入式</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 14px; color: #999">数学</a> <a href="/tags/%E6%B0%B4%E6%B8%A9%E6%8E%A7%E5%88%B6/" style="font-size: 14px; color: #999">水温控制</a> <a href="/tags/%E9%98%9F%E5%88%97/" style="font-size: 14px; color: #999">队列</a>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='false'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='netease'
+      type='playlist'
+      id='3175833810'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="/atom.xml"
+                class="social fas fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="mailto:me@xaoxuu.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://github.com/xaoxuu"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=63035382"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+      
+    
+      
+        本站使用
+        <a href="https://volantis.js.org/" target="_blank" class="codename">Schen00</a>
+        作为主题
+        
+          ，
+          总访问量为
+          <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+          次
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://xaoxuu.com" target="_blank" rel="noopener">Copyright © 2017-2020 Mr. X</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js" async></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js" async></script>
+
+  
+
+
+
+
+
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.2.0/js/valine.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var notify = 'false' == true;
+  var verify = 'false' == true;
+  var valine = new Valine();
+  valine.init({
+    el: '#valine_container',
+    notify: notify,
+    verify: verify,
+    guest_info: guest_info,
+    
+    appId: "aB4XKwq00t6BFhV80u7mCg6z-gzGzoHsz",
+    appKey: "RndTSESgwxQgJtumDIvUeWvk",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'mp',
+    lang:'zh-cn',
+    visitor: 'false',
+    highlight:'true'
+  })
+  </script>
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.1/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copyed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-clipboard-check');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPYED';
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-exclamation-triangle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("div.fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

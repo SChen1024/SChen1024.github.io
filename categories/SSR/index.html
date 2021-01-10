@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#2.2.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+      <meta name="robots" content="noindex,follow">
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>分类：SSR - 東木 - 随笔</title>
+  
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="東木 - 随笔">
+  
+
+  <!-- import meta -->
+  
+    
+      <meta name='theme-color' content='#FFFFFF'>
+    
+      <meta name='msapplication-TileColor' content='#cccccc'>
+    
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+  <link rel="shortcut icon" type='image/x-icon' href="https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  <!-- import link -->
+  
+  
+  <link rel='shortcut icon' type='image/x-icon' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  <link rel='icon' type='image/x-icon' sizes='32x32' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  
+
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <a class="logo flat-box"></a>
+      <ul class='switcher h-list'>
+        <li><a class="s-comment flat-btn fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc flat-btn fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="logo flat-box" target="_self" href='/'>
+          
+            <img class='logo' src='https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png'/>
+          
+          
+          
+          
+        </a>
+      
+
+      
+
+			<div class='menu navigation'>
+				<ul class='h-list'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  
+                    <i class='fas fa-rss fa-fw'></i>
+                  
+                  博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  
+                    <i class='fas fa-folder-open fa-fw'></i>
+                  
+                  分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  
+                    <i class='fas fa-tags fa-fw'></i>
+                  
+                  标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  
+                    <i class='fas fa-archive fa-fw'></i>
+                  
+                  归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  
+                    <i class='fas fa-link fa-fw'></i>
+                  
+                  友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  
+                    <i class='fas fa-info-circle fa-fw'></i>
+                  
+                  关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      
+        <div class="m_search">
+          <form name="searchform" class="form u-search-form">
+            <i class="icon fas fa-search fa-fw"></i>
+            <input type="text" class="input u-search-input" placeholder="搜索" />
+          </form>
+        </div>
+      
+
+			<ul class='switcher h-list'>
+				
+					<li><a class="s-search flat-btn fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li><a class="s-menu flat-btn fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<ul class="menu-phone navigation white-box">
+  
+  
+    <li>
+      <a class="flat-box" href=/
+        
+        
+        
+          id="home"
+        >
+        
+          <i class='fas fa-rss fa-fw'></i>
+        
+        博客
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/categories/
+        
+        
+        
+          id="categories"
+        >
+        
+          <i class='fas fa-folder-open fa-fw'></i>
+        
+        分类
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/tags/
+        
+        
+        
+          id="tags"
+        >
+        
+          <i class='fas fa-tags fa-fw'></i>
+        
+        标签
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/archives/
+        
+        
+        
+          id="archives"
+        >
+        
+          <i class='fas fa-archive fa-fw'></i>
+        
+        归档
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/friends/
+        
+        
+        
+          id="friends"
+        >
+        
+          <i class='fas fa-link fa-fw'></i>
+        
+        友链
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/about/
+        
+        
+        
+          id="about"
+        >
+        
+          <i class='fas fa-info-circle fa-fw'></i>
+        
+        关于
+      </a>
+    </li>
+  
+</ul>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+
+<div class='l_main'>
+  
+    
+      
+  <section class="post-list ">
+    
+      
+        
+          
+        
+      
+    
+    
+      
+        
+          <div class='post-wrapper'>
+            <article class="post white-box shadow reveal ">
+  
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  <h2 class="title">
+    <a href="/2020/02-29/ssr%E7%9A%84pac%E4%B8%AD%E5%8A%A0%E5%85%A5%E5%AD%A6%E6%A0%A1%E5%9B%BE%E4%B9%A6%E9%A6%86%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AEpac.html">
+      ssr的pac中加入学校图书馆数据库访问pac
+    </a>
+  </h2>
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+<div class='new-meta-item author'>
+  <a href="https://schen1024.github.io" rel="nofollow">
+    <img src="https://avatars3.githubusercontent.com/u/12789460">
+    <p>SChen1024</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/SSR/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>SSR</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2020年2月29日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/proxy/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>proxy</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/SSR/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>SSR</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/pac/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>pac</p></a></div>
+
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在家的时候, 需要使用代理, 同时要使用图书馆的数据库, 两个代理有点冲突, 自己研究了一下<br>ssr 的规则, 发现比较简单.</p>
+<p>可以页面后贴出的代码进行研究 <a href="https://gist.github.com/SChen1024/f908a9deeabf1cca78532344abdd24b6" target="_blank" rel="noopener">pac.txt</a></p>
+<p>pac 的内部完全就是 js 的语法逻辑, 不是十分熟悉, 写的有点硬, 可以自己考虑优化</p>
+<p>执行从 <code>FindProxyForURL</code> 开始执行, 然后根据具体内容进行代理访问</p>
+<p>按照学校代理的判断方式,  判断一个 url 是否符合图书馆给出的pac 地址,<br>将访问数据库的链接,执行 <code>PROXY proxy2.lib.whu.edu.cn:81</code> 代理链接, 第一次建立链接的时候, 需要使用图书馆 帐号密码进行验证, </p>
+<p>剩余的链接进行 ssr 验证, 进行正常的代理 执行过程. </p>
+      
+      
+        
+          <div class="button readmore">
+            <a href="/2020/02-29/ssr%E7%9A%84pac%E4%B8%AD%E5%8A%A0%E5%85%A5%E5%AD%A6%E6%A0%A1%E5%9B%BE%E4%B9%A6%E9%A6%86%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AEpac.html">
+              Read More <i class="fas fa-chevron-right"></i>
+            </a>
+          </div>
+        
+      
+    </div>
+  </section>
+</article>
+
+          </div>
+        
+      
+    
+  </section>
+  
+    
+    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
+    
+    
+
+  
+
+
+    
+  
+
+</div>
+<aside class='l_side'>
+  
+  
+    
+    
+
+<section class="widget blogger shadow desktop">
+  <div class='content'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://avatars3.githubusercontent.com/u/12789460'/>
+      </div>
+    
+    
+      <div class='text'>
+        
+          <h2>東木 - 随笔</h2>
+        
+        
+          <p>相信自己的每一分努力终将有所收获</p>
+
+        
+        
+      </div>
+    
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget category shadow desktop">
+    
+  <header>
+    
+      <a href='categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <ul class="entry navigation">
+        
+          <li><a class="flat-box"
+            title="/categories/Alg/" href="/categories/Alg/"
+            id="categoriesAlg"
+            ><div class='name'>Alg</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/C/" href="/categories/C/"
+            id="categoriesC"
+            ><div class='name'>C++</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Config/" href="/categories/Config/"
+            id="categoriesConfig"
+            ><div class='name'>Config</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Essay/" href="/categories/Essay/"
+            id="categoriesEssay"
+            ><div class='name'>Essay</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Game/" href="/categories/Game/"
+            id="categoriesGame"
+            ><div class='name'>Game</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Hexo/" href="/categories/Hexo/"
+            id="categoriesHexo"
+            ><div class='name'>Hexo</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/IOT/" href="/categories/IOT/"
+            id="categoriesIOT"
+            ><div class='name'>IOT</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Interview/" href="/categories/Interview/"
+            id="categoriesInterview"
+            ><div class='name'>Interview</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LaTex/" href="/categories/LaTex/"
+            id="categoriesLaTex"
+            ><div class='name'>LaTex</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode-Contest/" href="/categories/LeetCode-Contest/"
+            id="categoriesLeetCode-Contest"
+            ><div class='name'>LeetCode-Contest</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode/" href="/categories/LeetCode/"
+            id="categoriesLeetCode"
+            ><div class='name'>LeetCode</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Offer/" href="/categories/Offer/"
+            id="categoriesOffer"
+            ><div class='name'>Offer</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/OpenCV/" href="/categories/OpenCV/"
+            id="categoriesOpenCV"
+            ><div class='name'>OpenCV</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Person/" href="/categories/Person/"
+            id="categoriesPerson"
+            ><div class='name'>Person</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/QT/" href="/categories/QT/"
+            id="categoriesQT"
+            ><div class='name'>QT</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SSR/" href="/categories/SSR/"
+            id="categoriesSSR"
+            ><div class='name'>SSR</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Script/" href="/categories/Script/"
+            id="categoriesScript"
+            ><div class='name'>Script</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SerialPort/" href="/categories/SerialPort/"
+            id="categoriesSerialPort"
+            ><div class='name'>SerialPort</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Sword/" href="/categories/Sword/"
+            id="categoriesSword"
+            ><div class='name'>Sword</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/TODO/" href="/categories/TODO/"
+            id="categoriesTODO"
+            ><div class='name'>TODO</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Tools/" href="/categories/Tools/"
+            id="categoriesTools"
+            ><div class='name'>Tools</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Web/" href="/categories/Web/"
+            id="categoriesWeb"
+            ><div class='name'>Web</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Windows/" href="/categories/Windows/"
+            id="categoriesWindows"
+            ><div class='name'>Windows</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/bug/" href="/categories/bug/"
+            id="categoriesbug"
+            ><div class='name'>bug</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/data/" href="/categories/data/"
+            id="categoriesdata"
+            ><div class='name'>data</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/hexo/" href="/categories/hexo/"
+            id="categorieshexo"
+            ><div class='name'>hexo</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/latex/" href="/categories/latex/"
+            id="categorieslatex"
+            ><div class='name'>latex</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/opencv/" href="/categories/opencv/"
+            id="categoriesopencv"
+            ><div class='name'>opencv</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imagelab/" href="/categories/opencv/imagelab/"
+            id="categoriesopencvimagelab"
+            ><div class='name'>imagelab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imaglab/" href="/categories/opencv/imaglab/"
+            id="categoriesopencvimaglab"
+            ><div class='name'>imaglab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/person/" href="/categories/person/"
+            id="categoriesperson"
+            ><div class='name'>person</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/python/" href="/categories/python/"
+            id="categoriespython"
+            ><div class='name'>python</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/uncategorized/" href="/categories/uncategorized/"
+            id="categoriesuncategorized"
+            ><div class='name'>uncategorized</div><div class='badge'>(5)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/xxx/" href="/categories/xxx/"
+            id="categoriesxxx"
+            ><div class='name'>xxx</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E7%AE%97%E6%B3%95/" href="/categories/%E7%AE%97%E6%B3%95/"
+            id="categoriesE7AE97E6B395"
+            ><div class='name'>算法</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget tagcloud shadow desktop mobile">
+    
+  <header>
+    
+      <a href='tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/2019/" style="font-size: 14px; color: #999">2019</a> <a href="/tags/2020/" style="font-size: 14px; color: #999">2020</a> <a href="/tags/51/" style="font-size: 14px; color: #999">51</a> <a href="/tags/996/" style="font-size: 14px; color: #999">996</a> <a href="/tags/Android/" style="font-size: 14px; color: #999">Android</a> <a href="/tags/Array/" style="font-size: 17px; color: #858585">Array</a> <a href="/tags/Atomineer/" style="font-size: 14px; color: #999">Atomineer</a> <a href="/tags/BinarySearch/" style="font-size: 15px; color: #929292">BinarySearch</a> <a href="/tags/Bugs/" style="font-size: 15px; color: #929292">Bugs</a> <a href="/tags/C/" style="font-size: 14px; color: #999">C</a> <a href="/tags/C/" style="font-size: 24px; color: #555">C++</a> <a href="/tags/Cmake/" style="font-size: 14px; color: #999">Cmake</a> <a href="/tags/Code/" style="font-size: 14px; color: #999">Code</a> <a href="/tags/Compass/" style="font-size: 14px; color: #999">Compass</a> <a href="/tags/Contest/" style="font-size: 14px; color: #999">Contest</a> <a href="/tags/Crack/" style="font-size: 14px; color: #999">Crack</a> <a href="/tags/Doctest/" style="font-size: 14px; color: #999">Doctest</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14px; color: #999">Dynamic Programming</a> <a href="/tags/Emotion/" style="font-size: 14px; color: #999">Emotion</a> <a href="/tags/HEX/" style="font-size: 14px; color: #999">HEX</a> <a href="/tags/ICU/" style="font-size: 14px; color: #999">ICU</a> <a href="/tags/Interview/" style="font-size: 16px; color: #8b8b8b">Interview</a> <a href="/tags/Job/" style="font-size: 15px; color: #929292">Job</a> <a href="/tags/Jobs/" style="font-size: 14px; color: #999">Jobs</a> <a href="/tags/Latex/" style="font-size: 14px; color: #999">Latex</a> <a href="/tags/LeetCode/" style="font-size: 20px; color: #707070">LeetCode</a> <a href="/tags/LeetCode-easy-Overflow/" style="font-size: 14px; color: #999">LeetCode,easy,Overflow</a> <a href="/tags/Live/" style="font-size: 14px; color: #999">Live</a> <a href="/tags/Logger/" style="font-size: 14px; color: #999">Logger</a> <a href="/tags/Math/" style="font-size: 14px; color: #999">Math</a> <a href="/tags/Medium/" style="font-size: 15px; color: #929292">Medium</a> <a href="/tags/NameStyle/" style="font-size: 14px; color: #999">NameStyle</a> <a href="/tags/OpenCV/" style="font-size: 14px; color: #999">OpenCV</a> <a href="/tags/PBootCMS/" style="font-size: 15px; color: #929292">PBootCMS</a> <a href="/tags/PID/" style="font-size: 14px; color: #999">PID</a> <a href="/tags/PSO/" style="font-size: 14px; color: #999">PSO</a> <a href="/tags/Person/" style="font-size: 14px; color: #999">Person</a> <a href="/tags/Plugin/" style="font-size: 14px; color: #999">Plugin</a> <a href="/tags/PrimeNum/" style="font-size: 14px; color: #999">PrimeNum</a> <a href="/tags/Protocbuf/" style="font-size: 14px; color: #999">Protocbuf</a> <a href="/tags/QT/" style="font-size: 17px; color: #858585">QT</a> <a href="/tags/QT%E8%87%AA%E5%AE%9A%E4%B9%89/" style="font-size: 14px; color: #999">QT自定义</a> <a href="/tags/SSR/" style="font-size: 14px; color: #999">SSR</a> <a href="/tags/Serial/" style="font-size: 16px; color: #8b8b8b">Serial</a> <a href="/tags/SerialPort/" style="font-size: 14px; color: #999">SerialPort</a> <a href="/tags/She/" style="font-size: 14px; color: #999">She</a> <a href="/tags/String/" style="font-size: 14px; color: #999">String</a> <a href="/tags/TODO/" style="font-size: 14px; color: #999">TODO</a> <a href="/tags/TwoPointers/" style="font-size: 14px; color: #999">TwoPointers</a> <a href="/tags/UART/" style="font-size: 14px; color: #999">UART</a> <a href="/tags/UnitTest/" style="font-size: 14px; color: #999">UnitTest</a> <a href="/tags/Utils/" style="font-size: 14px; color: #999">Utils</a> <a href="/tags/VS/" style="font-size: 15px; color: #929292">VS</a> <a href="/tags/VS2015/" style="font-size: 16px; color: #8b8b8b">VS2015</a> <a href="/tags/Window/" style="font-size: 14px; color: #999">Window</a> <a href="/tags/Work/" style="font-size: 15px; color: #929292">Work</a> <a href="/tags/Wuhan/" style="font-size: 14px; color: #999">Wuhan</a> <a href="/tags/XeLaTex/" style="font-size: 14px; color: #999">XeLaTex</a> <a href="/tags/action/" style="font-size: 14px; color: #999">action</a> <a href="/tags/algorithm/" style="font-size: 14px; color: #999">algorithm</a> <a href="/tags/aliyun/" style="font-size: 14px; color: #999">aliyun</a> <a href="/tags/asp/" style="font-size: 14px; color: #999">asp</a> <a href="/tags/batch/" style="font-size: 14px; color: #999">batch</a> <a href="/tags/blog/" style="font-size: 21px; color: #696969">blog</a> <a href="/tags/blog%EF%BC%8Chexo/" style="font-size: 14px; color: #999">blog，hexo</a> <a href="/tags/bug/" style="font-size: 14px; color: #999">bug</a> <a href="/tags/c/" style="font-size: 22px; color: #636363">c++</a> <a href="/tags/changelog/" style="font-size: 14px; color: #999">changelog</a> <a href="/tags/cnblogs/" style="font-size: 15px; color: #929292">cnblogs</a> <a href="/tags/cov/" style="font-size: 14px; color: #999">cov</a> <a href="/tags/csdn/" style="font-size: 15px; color: #929292">csdn</a> <a href="/tags/data/" style="font-size: 14px; color: #999">data</a> <a href="/tags/depurple/" style="font-size: 14px; color: #999">depurple</a> <a href="/tags/dream/" style="font-size: 14px; color: #999">dream</a> <a href="/tags/easy/" style="font-size: 16px; color: #8b8b8b">easy</a> <a href="/tags/encrypt/" style="font-size: 23px; color: #5c5c5c">encrypt</a> <a href="/tags/file/" style="font-size: 14px; color: #999">file</a> <a href="/tags/fraud/" style="font-size: 14px; color: #999">fraud</a> <a href="/tags/game/" style="font-size: 15px; color: #929292">game</a> <a href="/tags/github/" style="font-size: 15px; color: #929292">github</a> <a href="/tags/hard/" style="font-size: 15px; color: #929292">hard</a> <a href="/tags/hexo/" style="font-size: 19px; color: #777">hexo</a> <a href="/tags/hide/" style="font-size: 21px; color: #696969">hide</a> <a href="/tags/histograms/" style="font-size: 14px; color: #999">histograms</a> <a href="/tags/history/" style="font-size: 14px; color: #999">history</a> <a href="/tags/home/" style="font-size: 15px; color: #929292">home</a> <a href="/tags/html/" style="font-size: 14px; color: #999">html</a> <a href="/tags/imagelab/" style="font-size: 15px; color: #929292">imagelab</a> <a href="/tags/intel/" style="font-size: 14px; color: #999">intel</a> <a href="/tags/js/" style="font-size: 14px; color: #999">js</a> <a href="/tags/latex/" style="font-size: 15px; color: #929292">latex</a> <a href="/tags/learn/" style="font-size: 14px; color: #999">learn</a> <a href="/tags/list/" style="font-size: 14px; color: #999">list</a> <a href="/tags/master/" style="font-size: 15px; color: #929292">master</a> <a href="/tags/mat/" style="font-size: 14px; color: #999">mat</a> <a href="/tags/matlab/" style="font-size: 14px; color: #999">matlab</a> <a href="/tags/offer/" style="font-size: 14px; color: #999">offer</a> <a href="/tags/opencv/" style="font-size: 24px; color: #555">opencv</a> <a href="/tags/outline/" style="font-size: 14px; color: #999">outline</a> <a href="/tags/overleaf/" style="font-size: 14px; color: #999">overleaf</a> <a href="/tags/pac/" style="font-size: 14px; color: #999">pac</a> <a href="/tags/person/" style="font-size: 18px; color: #7e7e7e">person</a> <a href="/tags/php/" style="font-size: 14px; color: #999">php</a> <a href="/tags/ppt/" style="font-size: 14px; color: #999">ppt</a> <a href="/tags/project/" style="font-size: 14px; color: #999">project</a> <a href="/tags/proxy/" style="font-size: 14px; color: #999">proxy</a> <a href="/tags/python/" style="font-size: 14px; color: #999">python</a> <a href="/tags/qt/" style="font-size: 22px; color: #636363">qt</a> <a href="/tags/robot/" style="font-size: 14px; color: #999">robot</a> <a href="/tags/script/" style="font-size: 14px; color: #999">script</a> <a href="/tags/server/" style="font-size: 15px; color: #929292">server</a> <a href="/tags/shopping/" style="font-size: 14px; color: #999">shopping</a> <a href="/tags/sketchup/" style="font-size: 14px; color: #999">sketchup</a> <a href="/tags/soft/" style="font-size: 15px; color: #929292">soft</a> <a href="/tags/sword/" style="font-size: 14px; color: #999">sword</a> <a href="/tags/swordoffer/" style="font-size: 14px; color: #999">swordoffer</a> <a href="/tags/template/" style="font-size: 14px; color: #999">template</a> <a href="/tags/test/" style="font-size: 16px; color: #8b8b8b">test</a> <a href="/tags/theme/" style="font-size: 14px; color: #999">theme</a> <a href="/tags/todo/" style="font-size: 14px; color: #999">todo</a> <a href="/tags/tools/" style="font-size: 14px; color: #999">tools</a> <a href="/tags/washing-machine/" style="font-size: 14px; color: #999">washing machine</a> <a href="/tags/web/" style="font-size: 15px; color: #929292">web</a> <a href="/tags/whu/" style="font-size: 14px; color: #999">whu</a> <a href="/tags/years/" style="font-size: 14px; color: #999">years</a> <a href="/tags/%E4%B8%B2%E5%8F%A3/" style="font-size: 14px; color: #999">串口</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 14px; color: #999">分治</a> <a href="/tags/%E5%9B%BE%E7%89%87/" style="font-size: 14px; color: #999">图片</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 14px; color: #999">多线程</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 14px; color: #999">学习</a> <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" style="font-size: 14px; color: #999">嵌入式</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 14px; color: #999">数学</a> <a href="/tags/%E6%B0%B4%E6%B8%A9%E6%8E%A7%E5%88%B6/" style="font-size: 14px; color: #999">水温控制</a> <a href="/tags/%E9%98%9F%E5%88%97/" style="font-size: 14px; color: #999">队列</a>
+    </div>
+  </section>
+
+
+  
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='false'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='netease'
+      type='playlist'
+      id='3175833810'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="/atom.xml"
+                class="social fas fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="mailto:me@xaoxuu.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://github.com/xaoxuu"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=63035382"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+      
+    
+      
+        本站使用
+        <a href="https://volantis.js.org/" target="_blank" class="codename">Schen00</a>
+        作为主题
+        
+          ，
+          总访问量为
+          <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+          次
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://xaoxuu.com" target="_blank" rel="noopener">Copyright © 2017-2020 Mr. X</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js" async></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js" async></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.1/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copyed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-clipboard-check');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPYED';
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-exclamation-triangle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("div.fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

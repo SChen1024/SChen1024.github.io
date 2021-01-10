@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#2.2.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>opencv-9-图像噪声以及评估指标 PSNR 与SSIM - 東木 - 随笔</title>
+  
+    <meta name="keywords" content="opencv,c++,qt">
+  
+  
+    <meta name="description" content="开始之前我们在将 opencv 的图像显示在了 qt 的label 上, 我们能够将图显示在label 上, 用于显示我们的算法,我们在 opencv 上一篇文章中介绍了 opencv 的核操作, 我们这里就要进入一个很重要的章节了,图像滤波操作, 也是图像核操作应用的一个很重要的章节, 
+那我们就从降噪的角度完...">
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="東木 - 随笔">
+  
+
+  <!-- import meta -->
+  
+    
+      <meta name='theme-color' content='#FFFFFF'>
+    
+      <meta name='msapplication-TileColor' content='#cccccc'>
+    
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+  <link rel="shortcut icon" type='image/x-icon' href="https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  <!-- import link -->
+  
+  
+  <link rel='shortcut icon' type='image/x-icon' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  <link rel='icon' type='image/x-icon' sizes='32x32' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  
+
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <a class="logo flat-box"></a>
+      <ul class='switcher h-list'>
+        <li><a class="s-comment flat-btn fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc flat-btn fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="logo flat-box" target="_self" href='/'>
+          
+            <img class='logo' src='https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png'/>
+          
+          
+          
+          
+        </a>
+      
+
+      
+
+			<div class='menu navigation'>
+				<ul class='h-list'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  
+                    <i class='fas fa-rss fa-fw'></i>
+                  
+                  博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  
+                    <i class='fas fa-folder-open fa-fw'></i>
+                  
+                  分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  
+                    <i class='fas fa-tags fa-fw'></i>
+                  
+                  标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  
+                    <i class='fas fa-archive fa-fw'></i>
+                  
+                  归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  
+                    <i class='fas fa-link fa-fw'></i>
+                  
+                  友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  
+                    <i class='fas fa-info-circle fa-fw'></i>
+                  
+                  关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      
+        <div class="m_search">
+          <form name="searchform" class="form u-search-form">
+            <i class="icon fas fa-search fa-fw"></i>
+            <input type="text" class="input u-search-input" placeholder="搜索" />
+          </form>
+        </div>
+      
+
+			<ul class='switcher h-list'>
+				
+					<li><a class="s-search flat-btn fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li><a class="s-menu flat-btn fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<ul class="menu-phone navigation white-box">
+  
+  
+    <li>
+      <a class="flat-box" href=/
+        
+        
+        
+          id="home"
+        >
+        
+          <i class='fas fa-rss fa-fw'></i>
+        
+        博客
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/categories/
+        
+        
+        
+          id="categories"
+        >
+        
+          <i class='fas fa-folder-open fa-fw'></i>
+        
+        分类
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/tags/
+        
+        
+        
+          id="tags"
+        >
+        
+          <i class='fas fa-tags fa-fw'></i>
+        
+        标签
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/archives/
+        
+        
+        
+          id="archives"
+        >
+        
+          <i class='fas fa-archive fa-fw'></i>
+        
+        归档
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/friends/
+        
+        
+        
+          id="friends"
+        >
+        
+          <i class='fas fa-link fa-fw'></i>
+        
+        友链
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/about/
+        
+        
+        
+          id="about"
+        >
+        
+          <i class='fas fa-info-circle fa-fw'></i>
+        
+        关于
+      </a>
+    </li>
+  
+</ul>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box shadow article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2020/04-28/opencv-9-noise.html">
+        opencv-9-图像噪声以及评估指标 PSNR 与SSIM
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+<div class='new-meta-item author'>
+  <a href="https://schen1024.github.io" rel="nofollow">
+    <img src="https://avatars3.githubusercontent.com/u/12789460">
+    <p>SChen1024</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/opencv/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>opencv</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2020年4月28日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>我们在将 opencv 的图像显示在了 qt 的label 上, 我们能够将图显示在label 上, 用于显示我们的算法,<br>我们在 opencv 上一篇文章中介绍了 opencv 的核操作, 我们这里就要进入一个很重要的章节了,图像滤波操作, 也是图像核操作应用的一个很重要的章节, </p>
+<p>那我们就从降噪的角度完整的讲一下, 并通过 opencv 核的方式进行图像算法操作, <a href="https://zhuanlan.zhihu.com/p/51403693" target="_blank" rel="noopener">【技术综述】一文道尽传统图像降噪方法</a> 这篇文章写的还算比较完整, 也是传统的算法的一个综述过程, </p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[toc]</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>数字成像过程中由于电噪声以及其他因素, 导致我们获取到的图像存在噪声,噪声出现在输入部分, 在后续的每个步骤都会受到影响, 所以在数字图像处理的前面必须要进行的一个步骤就是 <a href="https://baike.baidu.com/item/%E5%9B%BE%E5%83%8F%E9%99%8D%E5%99%AA/4136566" target="_blank" rel="noopener">图像降噪</a> </p>
+<p>每个做信号处理的都会接触到一类问题 , 信号降噪, 让人最头疼的一门课,真是感谢老师给过, 但是后面自己用到的时候反而感觉真的好用, 原来是这样, 然后就慢慢学会了怎么使用吧..(感觉还是弱鸡)<br>知乎<a href="https://zhuanlan.zhihu.com/p/32502816" target="_blank" rel="noopener">可复现的图像降噪算法总结</a>这篇文章列出了一个能够复现的图像降噪操作算法列表, 近年来实现了的算法可以见<a href="https://github.com/wenbihan/reproducible-image-denoising-state-of-the-art" target="_blank" rel="noopener">reproducible-image-denoising-state-of-the-art</a>, 之后使用相应的文章进行算法实现吧.( 又立了一个 flag )</p>
+<h2 id="图像降噪理论基础"><a href="#图像降噪理论基础" class="headerlink" title="图像降噪理论基础"></a>图像降噪理论基础</h2><p>图像降噪主要的目的是在进行去除图像噪声的同时保留尽可能多的主要特征, 对于人眼来说, 区分噪声还算比较容易, 但是对于计算机来说,输入的都是数据, 我怎么区分哪个是噪声, 哪个不是噪声呢, 这里就要引入噪声的理论基础了</p>
+<h3 id="图像噪声的产生"><a href="#图像噪声的产生" class="headerlink" title="图像噪声的产生"></a>图像噪声的产生</h3><p>我们在之前的章节介绍了图像的程序系统, 实际上在成像过程中可能由于点噪声, 量化过程等造成噪声,<br>实际上的噪声主要分为三种: </p>
+<ol>
+<li>加性噪声: 与输入无关,  $f(x,y) = g(x,y) +n(x,y)$</li>
+<li>乘性噪声: 与输入信号有关, $f(x,y) =  g(x,y) + n(x,y) \cdot g(x,y)$</li>
+<li>量化噪声: 与输入无关, 在图像量化过程噪声的量化误差导致的噪声, </li>
+</ol>
+<p>实际上后两种很难解决, 目前处理的都是以 加性噪声为主, 属于随机的噪声信号, 根据统计学的观点, 噪声在无限长时间窗内的噪声和为0, 在第一类中的 $n(x,y)$ 随着时间存在正负信号的不确定变化.</p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588225720321.png" alt="噪声零和特点"></p>
+<blockquote>
+<p>上图所示虚线代表真实信号，红蓝线表示的就是随机噪声信号，所有的随机噪声信号求和后结果为0。</p>
+</blockquote>
+<p>这里关于噪声的说明可以参考<a href="https://www.cnblogs.com/CCBB/archive/2011/01/06/1929033.html" target="_blank" rel="noopener">图像去噪算法简介</a></p>
+<blockquote>
+<p>噪声在理论上可以定义为“不可预测，只能用概率统计方法来认识的随机误差”。因此将图像噪声看成是多维随机过程是合适的，因而描述噪声的方法完全可以借用随机过程的描述，即用其概率分布函数和概率密度分布函数。但在很多情况下，这样的描述方法是很复杂的，甚至是不可能的。而实际应用往往也不必要。通常是用其数字特征，即均值方差，相关函数等。因为这些数字特征都可以从某些方面反映出噪声的特征。</p>
+</blockquote>
+<p>我认为<a href="https://blog.csdn.net/qq_27606639/article/details/80912071" target="_blank" rel="noopener">图像噪声的成因分类与常见图像去噪算法简介</a>这篇文章关于噪声的分类部分讲的还比较细, 可以参考</p>
+<h3 id="图像噪声的模型"><a href="#图像噪声的模型" class="headerlink" title="图像噪声的模型"></a>图像噪声的模型</h3><p>由于我们认为噪声在时间尺度的随机性, 但是我们可以使用噪声的概率分布与概率密度函数进行描述, 那么我们就能将噪声根据其分布特点进行分类,<br>我们稍微介绍一下常见的噪声模型吧</p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588225720295.png" alt="一些重要的噪声概率密度函数"></p>
+<p>噪声模型主要可以分为: </p>
+<ul>
+<li>高斯噪声，高斯噪声模型经常被用于实践中。</li>
+<li>脉冲噪声（椒盐噪声），图像上一个个点，也可称为散粒和尖峰噪声。</li>
+<li>伽马噪声</li>
+<li>瑞利噪声</li>
+<li>指数分布噪声</li>
+<li>均匀分布噪声</li>
+</ul>
+<p>这里能查到的资料很多, 可以看我们的参考部分, 内容都一样, 再写只是浪费时间和精力, 有兴趣的可以自己翻阅</p>
+<h2 id="图像降噪操作"><a href="#图像降噪操作" class="headerlink" title="图像降噪操作"></a>图像降噪操作</h2><p>其实吧, 我就不应该讲那么多, 直接开始图像处理部分就行了, 为了开始进行图像处理, 我们要先进行一点小工作, 我们要按造以下步骤进行降噪算法的比较, </p>
+<ol>
+<li>选择标准图像— lena.png</li>
+<li>添加噪声</li>
+<li>量化噪声</li>
+<li>降噪操作</li>
+<li>量化结果值</li>
+<li>比较结果</li>
+</ol>
+<p>在我们进行算法比对之前, 我们选择的是 lena 的图像, 加入随机噪声, 然后计算出来 一个噪声的比例, 进行降噪操作, 再次计算以下噪声参数, 看下效果值.</p>
+<blockquote>
+<p>如果是进行算法比较的时候, 最好选择现有的降噪的数据集进行比较, 比如, <a href="http://r0k.us/graphics/kodak/" target="_blank" rel="noopener">Kodak</a> , <a href="https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/" target="_blank" rel="noopener">BSD</a></p>
+</blockquote>
+<h3 id="噪声添加"><a href="#噪声添加" class="headerlink" title="噪声添加"></a>噪声添加</h3><p>我们认为噪声是随机的, 我们生成随机数加在原始图像上便能够得到噪声图像, opencv 没有提供相应的实现, 但是知道原理了, 写起来都比较简单, 我比较喜欢<br><a href="https://www.cnblogs.com/wangguchangqing/p/6372025.html" target="_blank" rel="noopener">图像处理基础(1)：噪声的添加和过滤</a> 使用的方法, 他使用的是 <a href="https://zh.wikipedia.org/zh-hans/%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">梅森旋转算法</a>  来实现的伪随机算法, </p>
+<blockquote>
+<p>其实吧这里我也不懂, 但是随机数能用就行了, 我又不是数学家, 然后看到了 <a href="https://liam.page/2018/01/12/Mersenne-twister/" target="_blank" rel="noopener">谈谈梅森旋转：算法及其爆破</a></p>
+</blockquote>
+<p>这里就不重复造轮子了, 直接复制他给出的代码就好,<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加椒盐噪声 // 生成 随机 num 个 白点</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addSaltNoise</span><span class="params">(Mat &amp;m, <span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">true<span class="comment">// 随机数产生器</span></span><br><span class="line">true<span class="built_in">std</span>::random_device rd; <span class="comment">//种子</span></span><br><span class="line">true<span class="function"><span class="built_in">std</span>::mt19937 <span class="title">gen</span><span class="params">(rd())</span></span>; <span class="comment">// 随机数引擎</span></span><br><span class="line"></span><br><span class="line">true<span class="keyword">auto</span> cols = m.cols * m.channels();</span><br><span class="line"></span><br><span class="line">true<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num; i++)</span><br><span class="line">true&#123;</span><br><span class="line">truetrue<span class="keyword">auto</span> row = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(gen() % m.rows);</span><br><span class="line">truetrue<span class="keyword">auto</span> col = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(gen() % cols);</span><br><span class="line"></span><br><span class="line">truetrue<span class="keyword">auto</span> p = m.ptr&lt;uchar&gt;(row);</span><br><span class="line">truetruep[col++] = <span class="number">255</span>;</span><br><span class="line">truetruep[col++] = <span class="number">255</span>;</span><br><span class="line">truetruep[col] = <span class="number">255</span>;</span><br><span class="line">true&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加Gussia噪声</span></span><br><span class="line"><span class="comment">// 使用指针访问</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addGaussianNoise</span><span class="params">(Mat &amp;m, <span class="keyword">int</span> mu, <span class="keyword">int</span> sigma)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">true<span class="comment">// 产生高斯分布随机数发生器</span></span><br><span class="line">true<span class="built_in">std</span>::random_device rd;</span><br><span class="line">true<span class="function"><span class="built_in">std</span>::mt19937 <span class="title">gen</span><span class="params">(rd())</span></span>;</span><br><span class="line"></span><br><span class="line">true<span class="function"><span class="built_in">std</span>::normal_distribution&lt;&gt; <span class="title">d</span><span class="params">(mu, sigma)</span></span>;</span><br><span class="line"></span><br><span class="line">true<span class="keyword">auto</span> rows = m.rows; <span class="comment">// 行数</span></span><br><span class="line">true<span class="keyword">auto</span> cols = m.cols * m.channels(); <span class="comment">// 列数</span></span><br><span class="line"></span><br><span class="line">true<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows; i++)</span><br><span class="line">true&#123;</span><br><span class="line">truetrue<span class="keyword">auto</span> p = m.ptr&lt;uchar&gt;(i); <span class="comment">// 取得行首指针</span></span><br><span class="line">truetrue<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; cols; j++)</span><br><span class="line">truetrue&#123;</span><br><span class="line">truetruetrue<span class="keyword">auto</span> tmp = p[j] + d(gen);</span><br><span class="line">truetruetruetmp = tmp &gt; <span class="number">255</span> ? <span class="number">255</span> : tmp;</span><br><span class="line">truetruetruetmp = tmp &lt; <span class="number">0</span> ? <span class="number">0</span> : tmp;</span><br><span class="line">truetruetruep[j] = tmp;</span><br><span class="line">truetrue&#125;</span><br><span class="line">true&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="噪声量化方法"><a href="#噪声量化方法" class="headerlink" title="噪声量化方法"></a>噪声量化方法</h3><p>这里其实涉及到图像质量评估的领域,可以参考<a href="https://blog.csdn.net/qq_23304241/article/details/80953613" target="_blank" rel="noopener">图像质量评价概述（评估指标、传统检测方法）</a>介绍的方法, 存在太多的计算方式, </p>
+<p>我们必须选择一个量化噪声的方式进行图像质量的评估, 一般进行噪声评估手段就是噪声比(Signal to Noise Ratio,SNR),峰值信噪比(Peak Signal to Noise Ratio, PSNR) , 均方差值(Mean Square Error, MSE), 结构相似性(Structural SIMilarity, SSIM),</p>
+<p>我们一个一个来看, 均方差值是用于比较两幅图像 K, I 的均方差值<br>$$<br>MSE=\frac{1}{mn}\sum_{i=0}^{n-1}\sum_{j=0}^{m-1}\parallel K(i,j)-I(i,j)\parallel^{2}<br>$$</p>
+<p>峰值信噪比PSNR衡量图像失真或是噪声水平的客观标准。2个图像之间PSNR值越大，则越相似。普遍基准为30dB，30dB以下的图像劣化较为明显。定义为，<br>$$<br>PSNR=10log_{10}(\frac{MAX^{2}}{MSE})<br>$$<br>其中$MAX^2$ 为图片可能的最大像素值。如果每个像素都由 8 位二进制来表示，那么就为 255。</p>
+<p>SNR用于描述信号与噪声的比值<br>$$<br>SNR (dB)=10 log_{10}<br>\left[<br>\frac{\sum_{x=0}^{m-1} \sum_{y=0}^{n-1}(f(x, y))^{2}}{\sum_{x=0}^{m-1} \sum_{y=0}^{n-1}(f(x, y)-\hat{f}(x, y))^{2}}\right]<br>$$</p>
+<p>SSIM 描述两个图像的相似性, 通过三个进行比较, 亮度,对比度和结构, 参考<a href="https://zhuanlan.zhihu.com/p/50757421" target="_blank" rel="noopener">图像质量评价指标之 PSNR 和 SSIM</a></p>
+<p>$$l(x, y)=\frac{2 \mu_{x} \mu_{y}+c_{1}}{\mu_{x}^{2}+\mu_{y}^{2}+c_{1}} c(x, y)=\frac{2 \sigma_{x} \sigma_{y}+c_{2}}{\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2}} s(x, y)=\frac{\sigma_{x y}+c_{3}}{\sigma_{x} \sigma_{y}+c_{3}}$$</p>
+<p>$$\operatorname{SSIM}(x, y)=\frac{\left(2 \mu_{x} \mu_{y}+c_{1}\right)\left(2 \sigma_{x y}+c_{2}\right)}{\left(\mu_{x}^{2}+\mu_{y}^{2}+c_{1}\right)\left(\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2}\right)}$$<br>一般取$c_3 = \frac{c_2}{2}$。<br>$u_x$ 为 $x$  的均值<br>$u_y$ 为 $y$ 的均值<br>$\sigma_x^2$ 为$x$ 的方差<br>$\sigma_y^2$ 为$y$ 的方差<br>$\sigma_{xy}$ 为$x$ 和$y$ 的协方差<br>$c_1 = (k_1 L)^2, c_2=(k_2 L)^2$ 为两个常数，避免除零<br>$L$ 为像素值的范围，$(0,255)$<br>$k_1 = 0.01, k_2 = 0.03$ 为默认值<br>默认参数$\alpha = 1, \beta = 1, \gamma = 1$ </p>
+<h3 id="opencv-计算-PSNR-和-SSIM"><a href="#opencv-计算-PSNR-和-SSIM" class="headerlink" title="opencv 计算 PSNR 和 SSIM"></a>opencv 计算 PSNR 和 SSIM</h3><p>本来不想写这么多的, 但是 opencv 给出了一个例程<a href="https://docs.opencv.org/4.3.0/dd/d3d/tutorial_gpu_basics_similarity.html" target="_blank" rel="noopener">Similarity check (PNSR and SSIM) on the GPU</a>, 提供了计算的方法, 自己不用去写了, 岂不是很爽, 所以上面就详细介绍了各个方法的使用.<br>官方给出了普通版本以及 GPU 加速的版本, 我们暂时只使用基础的版本就好,<br>PSNR返回一个浮点数，如果两个输入在30到50之间相似（越高越好）。<br>SSIM返回图像的MSSIM。这也是一个介于零和一之间的浮点数（越高越好），但是每个通道都有一个浮点数。因此，我们返回一个Scalar OpenCV数据结构：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">getPSNR</span><span class="params">(<span class="keyword">const</span> Mat&amp; I1, <span class="keyword">const</span> Mat&amp; I2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Mat s1;</span><br><span class="line">    absdiff(I1, I2, s1);       <span class="comment">// |I1 - I2|</span></span><br><span class="line">    s1.convertTo(s1, CV_32F);  <span class="comment">// cannot make a square on 8 bits</span></span><br><span class="line">    s1 = s1.mul(s1);           <span class="comment">// |I1 - I2|^2</span></span><br><span class="line">    Scalar s = sum(s1);         <span class="comment">// sum elements per channel</span></span><br><span class="line">    <span class="keyword">double</span> sse = s.val[<span class="number">0</span>] + s.val[<span class="number">1</span>] + s.val[<span class="number">2</span>]; <span class="comment">// sum channels</span></span><br><span class="line">    <span class="keyword">if</span>( sse &lt;= <span class="number">1e-10</span>) <span class="comment">// for small values return zero</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span>  mse =sse /(<span class="keyword">double</span>)(I1.channels() * I1.total());</span><br><span class="line">        <span class="keyword">double</span> psnr = <span class="number">10.0</span>*<span class="built_in">log10</span>((<span class="number">255</span>*<span class="number">255</span>)/mse);</span><br><span class="line">        <span class="keyword">return</span> psnr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Scalar <span class="title">getMSSIM</span><span class="params">( <span class="keyword">const</span> Mat&amp; i1, <span class="keyword">const</span> Mat&amp; i2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> C1 = <span class="number">6.5025</span>, C2 = <span class="number">58.5225</span>;</span><br><span class="line">    <span class="comment">/***************************** INITS **********************************/</span></span><br><span class="line">    <span class="keyword">int</span> d     = CV_32F;</span><br><span class="line">    Mat I1, I2;</span><br><span class="line">    i1.convertTo(I1, d);           <span class="comment">// cannot calculate on one byte large values</span></span><br><span class="line">    i2.convertTo(I2, d);</span><br><span class="line">    Mat I2_2   = I2.mul(I2);        <span class="comment">// I2^2</span></span><br><span class="line">    Mat I1_2   = I1.mul(I1);        <span class="comment">// I1^2</span></span><br><span class="line">    Mat I1_I2  = I1.mul(I2);        <span class="comment">// I1 * I2</span></span><br><span class="line">    <span class="comment">/*************************** END INITS **********************************/</span></span><br><span class="line">    Mat mu1, mu2;   <span class="comment">// PRELIMINARY COMPUTING</span></span><br><span class="line">    GaussianBlur(I1, mu1, Size(<span class="number">11</span>, <span class="number">11</span>), <span class="number">1.5</span>);</span><br><span class="line">    GaussianBlur(I2, mu2, Size(<span class="number">11</span>, <span class="number">11</span>), <span class="number">1.5</span>);</span><br><span class="line">    Mat mu1_2   =   mu1.mul(mu1);</span><br><span class="line">    Mat mu2_2   =   mu2.mul(mu2);</span><br><span class="line">    Mat mu1_mu2 =   mu1.mul(mu2);</span><br><span class="line">    Mat sigma1_2, sigma2_2, sigma12;</span><br><span class="line">    GaussianBlur(I1_2, sigma1_2, Size(<span class="number">11</span>, <span class="number">11</span>), <span class="number">1.5</span>);</span><br><span class="line">    sigma1_2 -= mu1_2;</span><br><span class="line">    GaussianBlur(I2_2, sigma2_2, Size(<span class="number">11</span>, <span class="number">11</span>), <span class="number">1.5</span>);</span><br><span class="line">    sigma2_2 -= mu2_2;</span><br><span class="line">    GaussianBlur(I1_I2, sigma12, Size(<span class="number">11</span>, <span class="number">11</span>), <span class="number">1.5</span>);</span><br><span class="line">    sigma12 -= mu1_mu2;</span><br><span class="line">    Mat t1, t2, t3;</span><br><span class="line">    t1 = <span class="number">2</span> * mu1_mu2 + C1;</span><br><span class="line">    t2 = <span class="number">2</span> * sigma12 + C2;</span><br><span class="line">    t3 = t1.mul(t2);              <span class="comment">// t3 = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))</span></span><br><span class="line">    t1 = mu1_2 + mu2_2 + C1;</span><br><span class="line">    t2 = sigma1_2 + sigma2_2 + C2;</span><br><span class="line">    t1 = t1.mul(t2);               <span class="comment">// t1 =((mu1_2 + mu2_2 + C1).*(sigma1_2 + sigma2_2 + C2))</span></span><br><span class="line">    Mat ssim_map;</span><br><span class="line">    divide(t3, t1, ssim_map);      <span class="comment">// ssim_map =  t3./t1;</span></span><br><span class="line">    Scalar mssim = mean( ssim_map ); <span class="comment">// mssim = average of ssim map</span></span><br><span class="line">    <span class="keyword">return</span> mssim;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="算法噪声数据"><a href="#算法噪声数据" class="headerlink" title="算法噪声数据"></a>算法噪声数据</h3><p>我们完成了噪声添加以及噪声的量化, 我们来试一下, 给图像随机添加一定的噪声, 然后看下相应的参数变化情况对比来看就好</p>
+<h4 id="椒盐噪声测试"><a href="#椒盐噪声测试" class="headerlink" title="椒盐噪声测试"></a>椒盐噪声测试</h4><p>我们先来测试椒盐噪声 分别计算没有噪声的图, 以及添加了 1000个 和10000个噪声的数据结果, 并将后面两个显示出来 </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MainWindow::testFunc1</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 添加椒盐噪声 并计算 PSNR和 SSIM</span></span><br><span class="line">    cv::Mat salt_img;</span><br><span class="line">    <span class="keyword">double</span> psnr = <span class="number">0</span>;</span><br><span class="line">    cv::Scalar mssim;</span><br><span class="line"></span><br><span class="line">    QString res_temp = <span class="string">"Salt-%1 : psnr:%2, mssim: B:%3 G:%4 R:%5 "</span>;</span><br><span class="line">    QString res_str;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算三组图像的参数 0, 1000, 10000</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复制原始图像, 添加噪声, 计算 psnr和ssim  显示在 ui上</span></span><br><span class="line">    salt_img = gSrcImg.clone();</span><br><span class="line">    addSaltNoise(salt_img,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    psnr = getPSNR(gSrcImg, salt_img);</span><br><span class="line">    mssim = getMSSIM(gSrcImg,salt_img);</span><br><span class="line">    res_str = res_temp.arg(<span class="number">0</span>)</span><br><span class="line">                        .arg(psnr)</span><br><span class="line">                        .arg(mssim.val[<span class="number">0</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">1</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">2</span>]);</span><br><span class="line">    ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line"></span><br><span class="line">    salt_img = gSrcImg.clone();</span><br><span class="line">    addSaltNoise(salt_img,<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    psnr = getPSNR(gSrcImg, salt_img);</span><br><span class="line">    mssim = getMSSIM(gSrcImg,salt_img);</span><br><span class="line">    res_str = res_temp.arg(<span class="number">1000</span>)</span><br><span class="line">                        .arg(psnr)</span><br><span class="line">                        .arg(mssim.val[<span class="number">0</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">1</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">2</span>]);</span><br><span class="line">    ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 左侧显示 1000 噪声 右侧显示 10000 噪声</span></span><br><span class="line">    ShowMatOnQtLabel(salt_img,ui-&gt;lb_src);</span><br><span class="line"></span><br><span class="line">    salt_img = gSrcImg.clone();</span><br><span class="line">    addSaltNoise(salt_img,<span class="number">10000</span>);</span><br><span class="line"></span><br><span class="line">    psnr = getPSNR(gSrcImg, salt_img);</span><br><span class="line">    mssim = getMSSIM(gSrcImg,salt_img);</span><br><span class="line">    res_str = res_temp.arg(<span class="number">10000</span>)</span><br><span class="line">                        .arg(psnr)</span><br><span class="line">                        .arg(mssim.val[<span class="number">0</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">1</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">2</span>]);</span><br><span class="line">    ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line"></span><br><span class="line">    ShowMatOnQtLabel(salt_img,ui-&gt;lb_dst);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588225720510.png" alt="1000 和 10000 的椒盐噪声对比"></p>
+<p>我们可以直接计算得到椒盐噪声  psnr 和 ssim 都是越大越好的, 可以明显的看到图像质量退化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Salt-0 : psnr:0, mssim: B:1 G:1 R:1 </span><br><span class="line">Salt-1000 : psnr:27.7528, mssim: B:0.865341 G:0.870555 R:0.914122 </span><br><span class="line">Salt-10000 : psnr:17.8062, mssim: B:0.311999 G:0.327485 R:0.493874</span><br></pre></td></tr></table></figure>
+<h4 id="高斯噪声测试"><a href="#高斯噪声测试" class="headerlink" title="高斯噪声测试"></a>高斯噪声测试</h4><p>高斯噪声我们测试了四组 分别使用参数(0,1) (0,10)(10,1)(10,10) 作为高斯参数, 最终得到后面的图, 然后计算得到的结果, 我们做的结果比较简单, 可以参考<a href="https://blog.csdn.net/u012936765/article/details/53200918" target="_blank" rel="noopener">数字图像处理——添加高斯噪声&amp;椒盐噪声</a>, 给出了很多的图, 可以参考学</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MainWindow::testFunc2</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 添加高斯噪声 并计算 PSNR和 SSIM</span></span><br><span class="line">    cv::Mat guass_img;</span><br><span class="line">    <span class="keyword">double</span> psnr = <span class="number">0</span>;</span><br><span class="line">    cv::Scalar mssim;</span><br><span class="line"></span><br><span class="line">    QString res_temp = <span class="string">"gauss-%1- %2 : psnr:%3, mssim: B:%4 G:%5 R:%6 "</span>;</span><br><span class="line">    QString res_str;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算三组图像的参数 (0,1) (0,10), (10,1), (10,10)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 复制原始图像, 添加噪声, 计算 psnr和ssim  显示在 ui上</span></span><br><span class="line">    guass_img = gSrcImg.clone();</span><br><span class="line">    addGaussianNoise(guass_img,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    psnr = getPSNR(gSrcImg, guass_img);</span><br><span class="line">    mssim = getMSSIM(gSrcImg,guass_img);</span><br><span class="line">    res_str = res_temp.arg(<span class="number">0</span>)</span><br><span class="line">                        .arg(<span class="number">1</span>)</span><br><span class="line">                        .arg(psnr)</span><br><span class="line">                        .arg(mssim.val[<span class="number">0</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">1</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">2</span>]);</span><br><span class="line">    ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line">    guass_img = gSrcImg.clone();</span><br><span class="line">    addGaussianNoise(guass_img,<span class="number">0</span>,<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    psnr = getPSNR(gSrcImg, guass_img);</span><br><span class="line">    mssim = getMSSIM(gSrcImg,guass_img);</span><br><span class="line">    res_str = res_temp.arg(<span class="number">0</span>)</span><br><span class="line">                        .arg(<span class="number">10</span>)</span><br><span class="line">                        .arg(psnr)</span><br><span class="line">                        .arg(mssim.val[<span class="number">0</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">1</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">2</span>]);</span><br><span class="line">    ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line"></span><br><span class="line">    guass_img = gSrcImg.clone();</span><br><span class="line">    addGaussianNoise(guass_img,<span class="number">10</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    psnr = getPSNR(gSrcImg, guass_img);</span><br><span class="line">    mssim = getMSSIM(gSrcImg,guass_img);</span><br><span class="line">    res_str = res_temp.arg(<span class="number">10</span>)</span><br><span class="line">                        .arg(<span class="number">1</span>)</span><br><span class="line">                        .arg(psnr)</span><br><span class="line">                        .arg(mssim.val[<span class="number">0</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">1</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">2</span>]);</span><br><span class="line">    ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line"></span><br><span class="line">    guass_img = gSrcImg.clone();</span><br><span class="line">    addGaussianNoise(guass_img,<span class="number">10</span>,<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    psnr = getPSNR(gSrcImg, guass_img);</span><br><span class="line">    mssim = getMSSIM(gSrcImg,guass_img);</span><br><span class="line">    res_str = res_temp.arg(<span class="number">10</span>)</span><br><span class="line">                        .arg(<span class="number">10</span>)</span><br><span class="line">                        .arg(psnr)</span><br><span class="line">                        .arg(mssim.val[<span class="number">0</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">1</span>])</span><br><span class="line">                        .arg(mssim.val[<span class="number">2</span>]);</span><br><span class="line">    ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588226481095.png" alt="四组高斯测试结果对比"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gauss-0- 1 : psnr:46.8791, mssim: B:0.991811 G:0.991622 R:0.992751 </span><br><span class="line">gauss-0- 10 : psnr:28.1229, mssim: B:0.614219 G:0.608773 R:0.648285 </span><br><span class="line">gauss-10- 1 : psnr:28.5293, mssim: B:0.978448 G:0.980308 R:0.987926 </span><br><span class="line">gauss-10- 10 : psnr:25.3511, mssim: B:0.605665 G:0.600491 R:0.646768</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>原本想把滤波一起做了的, 但是越写越, 就不做太多的处理了, 我们算是介绍了噪声的来源, 噪声的模型, 以及个噪声的量化方式,<br>然后介绍了图像添加噪声的方法 我们分别给图像添加椒盐噪声与高斯噪声, 然后分别量化了噪声的结果值, 进行对比展示, </p>
+<p>示例的图不是很多, 程序是在代码库里面的, 可以直接去自己实现, 然后进行 进行更多图的展示</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>《高斯噪声_百度百科》. 见于 2020年4月30日. <a href="https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0" target="_blank" rel="noopener">https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0</a>.</li>
+<li>知乎专栏. 《【技术综述】一文道尽传统图像降噪方法》. 见于 2020年4月29日. <a href="https://zhuanlan.zhihu.com/p/51403693" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/51403693</a>.</li>
+<li>知乎专栏. 《可复现的图像降噪算法总结》. 见于 2020年4月29日. <a href="https://zhuanlan.zhihu.com/p/32502816" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/32502816</a>.</li>
+<li>《梅森旋转算法》. 收入 维基百科，自由的百科全书, 2019年11月4日. <a href="https://zh.wikipedia.org/w/index.php?title=%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95&amp;oldid=56745942" target="_blank" rel="noopener">https://zh.wikipedia.org/w/index.php?title=%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95&amp;oldid=56745942</a>.</li>
+<li>《实现灰度图像峰值信噪比计算<em>人工智能</em>松子茶的专栏-CSDN博客》. 见于 2020年4月30日. <a href="https://blog.csdn.net/songzitea/article/details/17529445" target="_blank" rel="noopener">https://blog.csdn.net/songzitea/article/details/17529445</a>.</li>
+<li>《数字图像处理-噪声 - Mohanson》. 见于 2020年4月30日. <a href="http://accu.cc/content/pil/noise/" target="_blank" rel="noopener">http://accu.cc/content/pil/noise/</a>.</li>
+<li>《图像处理基础(1)：噪声的添加和过滤 - Brook_icv - 博客园》. 见于 2020年4月30日. <a href="https://www.cnblogs.com/wangguchangqing/p/6372025.html" target="_blank" rel="noopener">https://www.cnblogs.com/wangguchangqing/p/6372025.html</a>.</li>
+<li>《图像处理PSNR及其计算（OpenCV和matlab实现）<em>人工智能</em>无机器不学习-加大码的分享-CSDN博客》. 见于 2020年4月30日. <a href="https://blog.csdn.net/laoxuan2011/article/details/51519062" target="_blank" rel="noopener">https://blog.csdn.net/laoxuan2011/article/details/51519062</a>.</li>
+<li>《图像的 SNR 和 PSNR 的计算 - rldts - 博客园》. 见于 2020年4月30日. <a href="https://www.cnblogs.com/qrlozte/p/5340216.html" target="_blank" rel="noopener">https://www.cnblogs.com/qrlozte/p/5340216.html</a>.</li>
+<li>《图像去噪算法简介 - InfantSorrow - 博客园》. 见于 2020年4月29日. <a href="https://www.cnblogs.com/CCBB/archive/2011/01/06/1929033.html" target="_blank" rel="noopener">https://www.cnblogs.com/CCBB/archive/2011/01/06/1929033.html</a>.</li>
+<li>《图像噪声的成因分类与常见图像去噪算法简介_Java_qq_27606639的博客-CSDN博客》. 见于 2020年4月30日. <a href="https://blog.csdn.net/qq_27606639/article/details/80912071" target="_blank" rel="noopener">https://blog.csdn.net/qq_27606639/article/details/80912071</a>.</li>
+<li>《图像质量评估指标 SSIM / PSNR / MSE_人工智能_兔角与禅-CSDN博客》. 见于 2020年4月30日. <a href="https://blog.csdn.net/edogawachia/article/details/78756680" target="_blank" rel="noopener">https://blog.csdn.net/edogawachia/article/details/78756680</a>.</li>
+<li>《图像质量评价概述（评估指标、传统检测方法）_人工智能_qq_23304241的博客-CSDN博客》. 见于 2020年4月30日. <a href="https://blog.csdn.net/qq_23304241/article/details/80953613" target="_blank" rel="noopener">https://blog.csdn.net/qq_23304241/article/details/80953613</a>.</li>
+<li>《影像降噪》. 收入 维基百科，自由的百科全书, 2018年9月20日. <a href="https://zh.wikipedia.org/w/index.php?title=%E5%BD%B1%E5%83%8F%E9%99%8D%E5%99%AA&amp;oldid=51354600" target="_blank" rel="noopener">https://zh.wikipedia.org/w/index.php?title=%E5%BD%B1%E5%83%8F%E9%99%8D%E5%99%AA&amp;oldid=51354600</a>.</li>
+</ol>
+<a id="more"></a>
+          
+            <br>
+            
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+          
+            <p>本文永久链接是：<a href=https://schen1024.github.io/2020/04-28/opencv-9-noise.html>https://schen1024.github.io/2020/04-28/opencv-9-noise.html</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+  </div>
+</section>
+
+  
+
+
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-12-24T05:36:13+00:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2020年12月24日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/opencv/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>opencv</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/c/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>c++</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/qt/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>qt</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2020/04-28/opencv-9-noise.html&title=opencv-9-图像噪声以及评估指标 PSNR 与SSIM - 東木 - 随笔&summary=开始之前我们在将 opencv 的图像显示在了 qt 的label 上, 我们能够将图显示在label 上, 用于显示我们的算法,我们在 opencv 上一篇文章中介绍了 opencv 的核操作, 我们这里就要进入一个很重要的章节了,图像滤波操作, 也是图像核操作应用的一个很重要的章节, 
+那我们就从降噪的角度完整的讲一下, 并通过 opencv 核的方式进行图像算法操作, 【技术综述】一文道尽传统图像降噪方法 这篇文章写的还算比较完整, 也是传统的算法的一个综述过程, 
+目录[toc]
+前言数字成像过程中由于电噪声以及其他因素, 导致我们获取到的图像存在噪声,噪声出现在输入部分, 在后续的每个步骤都会受到影响, 所以在数字图像处理的前面必须要进行的一个步骤就是 图像降噪 
+每个做信号处理的都会接触到一类问题 , 信号降噪, 让人最头疼的一门课,真是感谢老师给过, 但是后面自己用到的时候反而感觉真的好用, 原来是这样, 然后就慢慢学会了怎么使用吧..(感觉还是弱鸡)知乎可复现的图像降噪算法总结这篇文章列出了一个能够复现的图像降噪操作算法列表, 近年来实现了的算法可以见reproducible-image-denoising-state-of-the-art, 之后使用相应的文章进行算法实现吧.( 又立了一个 flag )
+图像降噪理论基础图像降噪主要的目的是在进行去除图像噪声的同时保留尽可能多的主要特征, 对于人眼来说, 区分噪声还算比较容易, 但是对于计算机来说,输入的都是数据, 我怎么区分哪个是噪声, 哪个不是噪声呢, 这里就要引入噪声的理论基础了
+图像噪声的产生我们在之前的章节介绍了图像的程序系统, 实际上在成像过程中可能由于点噪声, 量化过程等造成噪声,实际上的噪声主要分为三种: 
+
+加性噪声: 与输入无关,  $f(x,y) = g(x,y) +n(x,y)$
+乘性噪声: 与输入信号有关, $f(x,y) =  g(x,y) + n(x,y) \cdot g(x,y)$
+量化噪声: 与输入无关, 在图像量化过程噪声的量化误差导致的噪声, 
+
+实际上后两种很难解决, 目前处理的都是以 加性噪声为主, 属于随机的噪声信号, 根据统计学的观点, 噪声在无限长时间窗内的噪声和为0, 在第一类中的 $n(x,y)$ 随着时间存在正负信号的不确定变化.
+
+
+上图所示虚线代表真实信号，红蓝线表示的就是随机噪声信号，所有的随机噪声信号求和后结果为0。
+
+这里关于噪声的说明可以参考图像去噪算法简介
+
+噪声在理论上可以定义为“不可预测，只能用概率统计方法来认识的随机误差”。因此将图像噪声看成是多维随机过程是合适的，因而描述噪声的方法完全可以借用随机过程的描述，即用其概率分布函数和概率密度分布函数。但在很多情况下，这样的描述方法是很复杂的，甚至是不可能的。而实际应用往往也不必要。通常是用其数字特征，即均值方差，相关函数等。因为这些数字特征都可以从某些方面反映出噪声的特征。
+
+我认为图像噪声的成因分类与常见图像去噪算法简介这篇文章关于噪声的分类部分讲的还比较细, 可以参考
+图像噪声的模型由于我们认为噪声在时间尺度的随机性, 但是我们可以使用噪声的概率分布与概率密度函数进行描述, 那么我们就能将噪声根据其分布特点进行分类,我们稍微介绍一下常见的噪声模型吧
+
+噪声模型主要可以分为: 
+
+高斯噪声，高斯噪声模型经常被用于实践中。
+脉冲噪声（椒盐噪声），图像上一个个点，也可称为散粒和尖峰噪声。
+伽马噪声
+瑞利噪声
+指数分布噪声
+均匀分布噪声
+
+这里能查到的资料很多, 可以看我们的参考部分, 内容都一样, 再写只是浪费时间和精力, 有兴趣的可以自己翻阅
+图像降噪操作其实吧, 我就不应该讲那么多, 直接开始图像处理部分就行了, 为了开始进行图像处理, 我们要先进行一点小工作, 我们要按造以下步骤进行降噪算法的比较, 
+
+选择标准图像— lena.png
+添加噪声
+量化噪声
+降噪操作
+量化结果值
+比较结果
+
+在我们进行算法比对之前, 我们选择的是 lena 的图像, 加入随机噪声, 然后计算出来 一个噪声的比例, 进行降噪操作, 再次计算以下噪声参数, 看下效果值.
+
+如果是进行算法比较的时候, 最好选择现有的降噪的数据集进行比较, 比如, Kodak , BSD
+
+噪声添加我们认为噪声是随机的, 我们生成随机数加在原始图像上便能够得到噪声图像, opencv 没有提供相应的实现, 但是知道原理了, 写起来都比较简单, 我比较喜欢图像处理基础(1)：噪声的添加和过滤 使用的方法, 他使用的是 梅森旋转算法  来实现的伪随机算法, 
+
+其实吧这里我也不懂, 但是随机数能用就行了, 我又不是数学家, 然后看到了 谈谈梅森旋转：算法及其爆破
+
+这里就不重复造轮子了, 直接复制他给出的代码就好,12345678910111213141516171819202122232425262728293031323334353637383940414243444546// 添加椒盐噪声 // 生成 随机 num 个 白点void addSaltNoise(Mat &amp;m, int num)&#123;true// 随机数产生器truestd::random_device rd; //种子truestd::mt19937 gen(rd()); // 随机数引擎trueauto cols = m.cols * m.channels();truefor (int i = 0; i &lt; num; i++)true&#123;truetrueauto row = static_cast&lt;int&gt;(gen() % m.rows);truetrueauto col = static_cast&lt;int&gt;(gen() % cols);truetrueauto p = m.ptr&lt;uchar&gt;(row);truetruep[col++] = 255;truetruep[col++] = 255;truetruep[col] = 255;true&#125;&#125;// 添加Gussia噪声// 使用指针访问void addGaussianNoise(Mat &amp;m, int mu, int sigma)&#123;true// 产生高斯分布随机数发生器truestd::random_device rd;truestd::mt19937 gen(rd());truestd::normal_distribution&lt;&gt; d(mu, sigma);trueauto rows = m.rows; // 行数trueauto cols = m.cols * m.channels(); // 列数truefor (int i = 0; i &lt; rows; i++)true&#123;truetrueauto p = m.ptr&lt;uchar&gt;(i); // 取得行首指针truetruefor (int j = 0; j &lt; cols; j++)truetrue&#123;truetruetrueauto tmp = p[j] + d(gen);truetruetruetmp = tmp &gt; 255 ? 255 : tmp;truetruetruetmp = tmp &lt; 0 ? 0 : tmp;truetruetruep[j] = tmp;truetrue&#125;true&#125;&#125;
+噪声量化方法这里其实涉及到图像质量评估的领域,可以参考图像质量评价概述（评估指标、传统检测方法）介绍的方法, 存在太多的计算方式, 
+我们必须选择一个量化噪声的方式进行图像质量的评估, 一般进行噪声评估手段就是噪声比(Signal to Noise Ratio,SNR),峰值信噪比(Peak Signal to Noise Ratio, PSNR) , 均方差值(Mean Square Error, MSE), 结构相似性(Structural SIMilarity, SSIM),
+我们一个一个来看, 均方差值是用于比较两幅图像 K, I 的均方差值$$MSE=\frac{1}{mn}\sum_{i=0}^{n-1}\sum_{j=0}^{m-1}\parallel K(i,j)-I(i,j)\parallel^{2}$$
+峰值信噪比PSNR衡量图像失真或是噪声水平的客观标准。2个图像之间PSNR值越大，则越相似。普遍基准为30dB，30dB以下的图像劣化较为明显。定义为，$$PSNR=10log_{10}(\frac{MAX^{2}}{MSE})$$其中$MAX^2$ 为图片可能的最大像素值。如果每个像素都由 8 位二进制来表示，那么就为 255。
+SNR用于描述信号与噪声的比值$$SNR (dB)=10 log_{10}\left[\frac{\sum_{x=0}^{m-1} \sum_{y=0}^{n-1}(f(x, y))^{2}}{\sum_{x=0}^{m-1} \sum_{y=0}^{n-1}(f(x, y)-\hat{f}(x, y))^{2}}\right]$$
+SSIM 描述两个图像的相似性, 通过三个进行比较, 亮度,对比度和结构, 参考图像质量评价指标之 PSNR 和 SSIM
+$$l(x, y)=\frac{2 \mu_{x} \mu_{y}+c_{1}}{\mu_{x}^{2}+\mu_{y}^{2}+c_{1}} c(x, y)=\frac{2 \sigma_{x} \sigma_{y}+c_{2}}{\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2}} s(x, y)=\frac{\sigma_{x y}+c_{3}}{\sigma_{x} \sigma_{y}+c_{3}}$$
+$$\operatorname{SSIM}(x, y)=\frac{\left(2 \mu_{x} \mu_{y}+c_{1}\right)\left(2 \sigma_{x y}+c_{2}\right)}{\left(\mu_{x}^{2}+\mu_{y}^{2}+c_{1}\right)\left(\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2}\right)}$$一般取$c_3 = \frac{c_2}{2}$。$u_x$ 为 $x$  的均值$u_y$ 为 $y$ 的均值$\sigma_x^2$ 为$x$ 的方差$\sigma_y^2$ 为$y$ 的方差$\sigma_{xy}$ 为$x$ 和$y$ 的协方差$c_1 = (k_1 L)^2, c_2=(k_2 L)^2$ 为两个常数，避免除零$L$ 为像素值的范围，$(0,255)$$k_1 = 0.01, k_2 = 0.03$ 为默认值默认参数$\alpha = 1, \beta = 1, \gamma = 1$ 
+opencv 计算 PSNR 和 SSIM本来不想写这么多的, 但是 opencv 给出了一个例程Similarity check (PNSR and SSIM) on the GPU, 提供了计算的方法, 自己不用去写了, 岂不是很爽, 所以上面就详细介绍了各个方法的使用.官方给出了普通版本以及 GPU 加速的版本, 我们暂时只使用基础的版本就好,PSNR返回一个浮点数，如果两个输入在30到50之间相似（越高越好）。SSIM返回图像的MSSIM。这也是一个介于零和一之间的浮点数（越高越好），但是每个通道都有一个浮点数。因此，我们返回一个Scalar OpenCV数据结构：123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354double getPSNR(const Mat&amp; I1, const Mat&amp; I2)&#123;    Mat s1;    absdiff(I1, I2, s1);       // |I1 - I2|    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits    s1 = s1.mul(s1);           // |I1 - I2|^2    Scalar s = sum(s1);         // sum elements per channel    double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels    if( sse &lt;= 1e-10) // for small values return zero        return 0;    else    &#123;        double  mse =sse /(double)(I1.channels() * I1.total());        double psnr = 10.0*log10((255*255)/mse);        return psnr;    &#125;&#125;Scalar getMSSIM( const Mat&amp; i1, const Mat&amp; i2)&#123;    const double C1 = 6.5025, C2 = 58.5225;    /***************************** INITS **********************************/    int d     = CV_32F;    Mat I1, I2;    i1.convertTo(I1, d);           // cannot calculate on one byte large values    i2.convertTo(I2, d);    Mat I2_2   = I2.mul(I2);        // I2^2    Mat I1_2   = I1.mul(I1);        // I1^2    Mat I1_I2  = I1.mul(I2);        // I1 * I2    /*************************** END INITS **********************************/    Mat mu1, mu2;   // PRELIMINARY COMPUTING    GaussianBlur(I1, mu1, Size(11, 11), 1.5);    GaussianBlur(I2, mu2, Size(11, 11), 1.5);    Mat mu1_2   =   mu1.mul(mu1);    Mat mu2_2   =   mu2.mul(mu2);    Mat mu1_mu2 =   mu1.mul(mu2);    Mat sigma1_2, sigma2_2, sigma12;    GaussianBlur(I1_2, sigma1_2, Size(11, 11), 1.5);    sigma1_2 -= mu1_2;    GaussianBlur(I2_2, sigma2_2, Size(11, 11), 1.5);    sigma2_2 -= mu2_2;    GaussianBlur(I1_I2, sigma12, Size(11, 11), 1.5);    sigma12 -= mu1_mu2;    Mat t1, t2, t3;    t1 = 2 * mu1_mu2 + C1;    t2 = 2 * sigma12 + C2;    t3 = t1.mul(t2);              // t3 = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))    t1 = mu1_2 + mu2_2 + C1;    t2 = sigma1_2 + sigma2_2 + C2;    t1 = t1.mul(t2);               // t1 =((mu1_2 + mu2_2 + C1).*(sigma1_2 + sigma2_2 + C2))    Mat ssim_map;    divide(t3, t1, ssim_map);      // ssim_map =  t3./t1;    Scalar mssim = mean( ssim_map ); // mssim = average of ssim map    return mssim;&#125;
+算法噪声数据我们完成了噪声添加以及噪声的量化, 我们来试一下, 给图像随机添加一定的噪声, 然后看下相应的参数变化情况对比来看就好
+椒盐噪声测试我们先来测试椒盐噪声 分别计算没有噪声的图, 以及添加了 1000个 和10000个噪声的数据结果, 并将后面两个显示出来 
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455void MainWindow::testFunc1(void)&#123;    // 添加椒盐噪声 并计算 PSNR和 SSIM    cv::Mat salt_img;    double psnr = 0;    cv::Scalar mssim;    QString res_temp = "Salt-%1 : psnr:%2, mssim: B:%3 G:%4 R:%5 ";    QString res_str;    // 计算三组图像的参数 0, 1000, 10000    // 复制原始图像, 添加噪声, 计算 psnr和ssim  显示在 ui上    salt_img = gSrcImg.clone();    addSaltNoise(salt_img,0);    psnr = getPSNR(gSrcImg, salt_img);    mssim = getMSSIM(gSrcImg,salt_img);    res_str = res_temp.arg(0)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    salt_img = gSrcImg.clone();    addSaltNoise(salt_img,1000);    psnr = getPSNR(gSrcImg, salt_img);    mssim = getMSSIM(gSrcImg,salt_img);    res_str = res_temp.arg(1000)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    // 左侧显示 1000 噪声 右侧显示 10000 噪声    ShowMatOnQtLabel(salt_img,ui-&gt;lb_src);    salt_img = gSrcImg.clone();    addSaltNoise(salt_img,10000);    psnr = getPSNR(gSrcImg, salt_img);    mssim = getMSSIM(gSrcImg,salt_img);    res_str = res_temp.arg(10000)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    ShowMatOnQtLabel(salt_img,ui-&gt;lb_dst);&#125;
+
+我们可以直接计算得到椒盐噪声  psnr 和 ssim 都是越大越好的, 可以明显的看到图像质量退化
+123Salt-0 : psnr:0, mssim: B:1 G:1 R:1 Salt-1000 : psnr:27.7528, mssim: B:0.865341 G:0.870555 R:0.914122 Salt-10000 : psnr:17.8062, mssim: B:0.311999 G:0.327485 R:0.493874
+高斯噪声测试高斯噪声我们测试了四组 分别使用参数(0,1) (0,10)(10,1)(10,10) 作为高斯参数, 最终得到后面的图, 然后计算得到的结果, 我们做的结果比较简单, 可以参考数字图像处理——添加高斯噪声&amp;椒盐噪声, 给出了很多的图, 可以参考学
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465void MainWindow::testFunc2(void)&#123;    // 添加高斯噪声 并计算 PSNR和 SSIM    cv::Mat guass_img;    double psnr = 0;    cv::Scalar mssim;    QString res_temp = "gauss-%1- %2 : psnr:%3, mssim: B:%4 G:%5 R:%6 ";    QString res_str;    // 计算三组图像的参数 (0,1) (0,10), (10,1), (10,10)    // 复制原始图像, 添加噪声, 计算 psnr和ssim  显示在 ui上    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,0,1);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(0)                        .arg(1)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,0,10);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(0)                        .arg(10)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,10,1);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(10)                        .arg(1)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,10,10);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(10)                        .arg(10)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);&#125;
+
+1234gauss-0- 1 : psnr:46.8791, mssim: B:0.991811 G:0.991622 R:0.992751 gauss-0- 10 : psnr:28.1229, mssim: B:0.614219 G:0.608773 R:0.648285 gauss-10- 1 : psnr:28.5293, mssim: B:0.978448 G:0.980308 R:0.987926 gauss-10- 10 : psnr:25.3511, mssim: B:0.605665 G:0.600491 R:0.646768
+总结原本想把滤波一起做了的, 但是越写越, 就不做太多的处理了, 我们算是介绍了噪声的来源, 噪声的模型, 以及个噪声的量化方式,然后介绍了图像添加噪声的方法 我们分别给图像添加椒盐噪声与高斯噪声, 然后分别量化了噪声的结果值, 进行对比展示, 
+示例的图不是很多, 程序是在代码库里面的, 可以直接去自己实现, 然后进行 进行更多图的展示
+参考
+《高斯噪声_百度百科》. 见于 2020年4月30日. https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0.
+知乎专栏. 《【技术综述】一文道尽传统图像降噪方法》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/51403693.
+知乎专栏. 《可复现的图像降噪算法总结》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/32502816.
+《梅森旋转算法》. 收入 维基百科，自由的百科全书, 2019年11月4日. https://zh.wikipedia.org/w/index.php?title=%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95&amp;oldid=56745942.
+《实现灰度图像峰值信噪比计算人工智能松子茶的专栏-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/songzitea/article/details/17529445.
+《数字图像处理-噪声 - Mohanson》. 见于 2020年4月30日. http://accu.cc/content/pil/noise/.
+《图像处理基础(1)：噪声的添加和过滤 - Brook_icv - 博客园》. 见于 2020年4月30日. https://www.cnblogs.com/wangguchangqing/p/6372025.html.
+《图像处理PSNR及其计算（OpenCV和matlab实现）人工智能无机器不学习-加大码的分享-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/laoxuan2011/article/details/51519062.
+《图像的 SNR 和 PSNR 的计算 - rldts - 博客园》. 见于 2020年4月30日. https://www.cnblogs.com/qrlozte/p/5340216.html.
+《图像去噪算法简介 - InfantSorrow - 博客园》. 见于 2020年4月29日. https://www.cnblogs.com/CCBB/archive/2011/01/06/1929033.html.
+《图像噪声的成因分类与常见图像去噪算法简介_Java_qq_27606639的博客-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/qq_27606639/article/details/80912071.
+《图像质量评估指标 SSIM / PSNR / MSE_人工智能_兔角与禅-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/edogawachia/article/details/78756680.
+《图像质量评价概述（评估指标、传统检测方法）_人工智能_qq_23304241的博客-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/qq_23304241/article/details/80953613.
+《影像降噪》. 收入 维基百科，自由的百科全书, 2018年9月20日. https://zh.wikipedia.org/w/index.php?title=%E5%BD%B1%E5%83%8F%E9%99%8D%E5%99%AA&amp;oldid=51354600.
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://schen1024.github.io/2020/04-28/opencv-9-noise.html&title=opencv-9-图像噪声以及评估指标 PSNR 与SSIM - 東木 - 随笔&summary=开始之前我们在将 opencv 的图像显示在了 qt 的label 上, 我们能够将图显示在label 上, 用于显示我们的算法,我们在 opencv 上一篇文章中介绍了 opencv 的核操作, 我们这里就要进入一个很重要的章节了,图像滤波操作, 也是图像核操作应用的一个很重要的章节, 
+那我们就从降噪的角度完整的讲一下, 并通过 opencv 核的方式进行图像算法操作, 【技术综述】一文道尽传统图像降噪方法 这篇文章写的还算比较完整, 也是传统的算法的一个综述过程, 
+目录[toc]
+前言数字成像过程中由于电噪声以及其他因素, 导致我们获取到的图像存在噪声,噪声出现在输入部分, 在后续的每个步骤都会受到影响, 所以在数字图像处理的前面必须要进行的一个步骤就是 图像降噪 
+每个做信号处理的都会接触到一类问题 , 信号降噪, 让人最头疼的一门课,真是感谢老师给过, 但是后面自己用到的时候反而感觉真的好用, 原来是这样, 然后就慢慢学会了怎么使用吧..(感觉还是弱鸡)知乎可复现的图像降噪算法总结这篇文章列出了一个能够复现的图像降噪操作算法列表, 近年来实现了的算法可以见reproducible-image-denoising-state-of-the-art, 之后使用相应的文章进行算法实现吧.( 又立了一个 flag )
+图像降噪理论基础图像降噪主要的目的是在进行去除图像噪声的同时保留尽可能多的主要特征, 对于人眼来说, 区分噪声还算比较容易, 但是对于计算机来说,输入的都是数据, 我怎么区分哪个是噪声, 哪个不是噪声呢, 这里就要引入噪声的理论基础了
+图像噪声的产生我们在之前的章节介绍了图像的程序系统, 实际上在成像过程中可能由于点噪声, 量化过程等造成噪声,实际上的噪声主要分为三种: 
+
+加性噪声: 与输入无关,  $f(x,y) = g(x,y) +n(x,y)$
+乘性噪声: 与输入信号有关, $f(x,y) =  g(x,y) + n(x,y) \cdot g(x,y)$
+量化噪声: 与输入无关, 在图像量化过程噪声的量化误差导致的噪声, 
+
+实际上后两种很难解决, 目前处理的都是以 加性噪声为主, 属于随机的噪声信号, 根据统计学的观点, 噪声在无限长时间窗内的噪声和为0, 在第一类中的 $n(x,y)$ 随着时间存在正负信号的不确定变化.
+
+
+上图所示虚线代表真实信号，红蓝线表示的就是随机噪声信号，所有的随机噪声信号求和后结果为0。
+
+这里关于噪声的说明可以参考图像去噪算法简介
+
+噪声在理论上可以定义为“不可预测，只能用概率统计方法来认识的随机误差”。因此将图像噪声看成是多维随机过程是合适的，因而描述噪声的方法完全可以借用随机过程的描述，即用其概率分布函数和概率密度分布函数。但在很多情况下，这样的描述方法是很复杂的，甚至是不可能的。而实际应用往往也不必要。通常是用其数字特征，即均值方差，相关函数等。因为这些数字特征都可以从某些方面反映出噪声的特征。
+
+我认为图像噪声的成因分类与常见图像去噪算法简介这篇文章关于噪声的分类部分讲的还比较细, 可以参考
+图像噪声的模型由于我们认为噪声在时间尺度的随机性, 但是我们可以使用噪声的概率分布与概率密度函数进行描述, 那么我们就能将噪声根据其分布特点进行分类,我们稍微介绍一下常见的噪声模型吧
+
+噪声模型主要可以分为: 
+
+高斯噪声，高斯噪声模型经常被用于实践中。
+脉冲噪声（椒盐噪声），图像上一个个点，也可称为散粒和尖峰噪声。
+伽马噪声
+瑞利噪声
+指数分布噪声
+均匀分布噪声
+
+这里能查到的资料很多, 可以看我们的参考部分, 内容都一样, 再写只是浪费时间和精力, 有兴趣的可以自己翻阅
+图像降噪操作其实吧, 我就不应该讲那么多, 直接开始图像处理部分就行了, 为了开始进行图像处理, 我们要先进行一点小工作, 我们要按造以下步骤进行降噪算法的比较, 
+
+选择标准图像— lena.png
+添加噪声
+量化噪声
+降噪操作
+量化结果值
+比较结果
+
+在我们进行算法比对之前, 我们选择的是 lena 的图像, 加入随机噪声, 然后计算出来 一个噪声的比例, 进行降噪操作, 再次计算以下噪声参数, 看下效果值.
+
+如果是进行算法比较的时候, 最好选择现有的降噪的数据集进行比较, 比如, Kodak , BSD
+
+噪声添加我们认为噪声是随机的, 我们生成随机数加在原始图像上便能够得到噪声图像, opencv 没有提供相应的实现, 但是知道原理了, 写起来都比较简单, 我比较喜欢图像处理基础(1)：噪声的添加和过滤 使用的方法, 他使用的是 梅森旋转算法  来实现的伪随机算法, 
+
+其实吧这里我也不懂, 但是随机数能用就行了, 我又不是数学家, 然后看到了 谈谈梅森旋转：算法及其爆破
+
+这里就不重复造轮子了, 直接复制他给出的代码就好,12345678910111213141516171819202122232425262728293031323334353637383940414243444546// 添加椒盐噪声 // 生成 随机 num 个 白点void addSaltNoise(Mat &amp;m, int num)&#123;true// 随机数产生器truestd::random_device rd; //种子truestd::mt19937 gen(rd()); // 随机数引擎trueauto cols = m.cols * m.channels();truefor (int i = 0; i &lt; num; i++)true&#123;truetrueauto row = static_cast&lt;int&gt;(gen() % m.rows);truetrueauto col = static_cast&lt;int&gt;(gen() % cols);truetrueauto p = m.ptr&lt;uchar&gt;(row);truetruep[col++] = 255;truetruep[col++] = 255;truetruep[col] = 255;true&#125;&#125;// 添加Gussia噪声// 使用指针访问void addGaussianNoise(Mat &amp;m, int mu, int sigma)&#123;true// 产生高斯分布随机数发生器truestd::random_device rd;truestd::mt19937 gen(rd());truestd::normal_distribution&lt;&gt; d(mu, sigma);trueauto rows = m.rows; // 行数trueauto cols = m.cols * m.channels(); // 列数truefor (int i = 0; i &lt; rows; i++)true&#123;truetrueauto p = m.ptr&lt;uchar&gt;(i); // 取得行首指针truetruefor (int j = 0; j &lt; cols; j++)truetrue&#123;truetruetrueauto tmp = p[j] + d(gen);truetruetruetmp = tmp &gt; 255 ? 255 : tmp;truetruetruetmp = tmp &lt; 0 ? 0 : tmp;truetruetruep[j] = tmp;truetrue&#125;true&#125;&#125;
+噪声量化方法这里其实涉及到图像质量评估的领域,可以参考图像质量评价概述（评估指标、传统检测方法）介绍的方法, 存在太多的计算方式, 
+我们必须选择一个量化噪声的方式进行图像质量的评估, 一般进行噪声评估手段就是噪声比(Signal to Noise Ratio,SNR),峰值信噪比(Peak Signal to Noise Ratio, PSNR) , 均方差值(Mean Square Error, MSE), 结构相似性(Structural SIMilarity, SSIM),
+我们一个一个来看, 均方差值是用于比较两幅图像 K, I 的均方差值$$MSE=\frac{1}{mn}\sum_{i=0}^{n-1}\sum_{j=0}^{m-1}\parallel K(i,j)-I(i,j)\parallel^{2}$$
+峰值信噪比PSNR衡量图像失真或是噪声水平的客观标准。2个图像之间PSNR值越大，则越相似。普遍基准为30dB，30dB以下的图像劣化较为明显。定义为，$$PSNR=10log_{10}(\frac{MAX^{2}}{MSE})$$其中$MAX^2$ 为图片可能的最大像素值。如果每个像素都由 8 位二进制来表示，那么就为 255。
+SNR用于描述信号与噪声的比值$$SNR (dB)=10 log_{10}\left[\frac{\sum_{x=0}^{m-1} \sum_{y=0}^{n-1}(f(x, y))^{2}}{\sum_{x=0}^{m-1} \sum_{y=0}^{n-1}(f(x, y)-\hat{f}(x, y))^{2}}\right]$$
+SSIM 描述两个图像的相似性, 通过三个进行比较, 亮度,对比度和结构, 参考图像质量评价指标之 PSNR 和 SSIM
+$$l(x, y)=\frac{2 \mu_{x} \mu_{y}+c_{1}}{\mu_{x}^{2}+\mu_{y}^{2}+c_{1}} c(x, y)=\frac{2 \sigma_{x} \sigma_{y}+c_{2}}{\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2}} s(x, y)=\frac{\sigma_{x y}+c_{3}}{\sigma_{x} \sigma_{y}+c_{3}}$$
+$$\operatorname{SSIM}(x, y)=\frac{\left(2 \mu_{x} \mu_{y}+c_{1}\right)\left(2 \sigma_{x y}+c_{2}\right)}{\left(\mu_{x}^{2}+\mu_{y}^{2}+c_{1}\right)\left(\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2}\right)}$$一般取$c_3 = \frac{c_2}{2}$。$u_x$ 为 $x$  的均值$u_y$ 为 $y$ 的均值$\sigma_x^2$ 为$x$ 的方差$\sigma_y^2$ 为$y$ 的方差$\sigma_{xy}$ 为$x$ 和$y$ 的协方差$c_1 = (k_1 L)^2, c_2=(k_2 L)^2$ 为两个常数，避免除零$L$ 为像素值的范围，$(0,255)$$k_1 = 0.01, k_2 = 0.03$ 为默认值默认参数$\alpha = 1, \beta = 1, \gamma = 1$ 
+opencv 计算 PSNR 和 SSIM本来不想写这么多的, 但是 opencv 给出了一个例程Similarity check (PNSR and SSIM) on the GPU, 提供了计算的方法, 自己不用去写了, 岂不是很爽, 所以上面就详细介绍了各个方法的使用.官方给出了普通版本以及 GPU 加速的版本, 我们暂时只使用基础的版本就好,PSNR返回一个浮点数，如果两个输入在30到50之间相似（越高越好）。SSIM返回图像的MSSIM。这也是一个介于零和一之间的浮点数（越高越好），但是每个通道都有一个浮点数。因此，我们返回一个Scalar OpenCV数据结构：123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354double getPSNR(const Mat&amp; I1, const Mat&amp; I2)&#123;    Mat s1;    absdiff(I1, I2, s1);       // |I1 - I2|    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits    s1 = s1.mul(s1);           // |I1 - I2|^2    Scalar s = sum(s1);         // sum elements per channel    double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels    if( sse &lt;= 1e-10) // for small values return zero        return 0;    else    &#123;        double  mse =sse /(double)(I1.channels() * I1.total());        double psnr = 10.0*log10((255*255)/mse);        return psnr;    &#125;&#125;Scalar getMSSIM( const Mat&amp; i1, const Mat&amp; i2)&#123;    const double C1 = 6.5025, C2 = 58.5225;    /***************************** INITS **********************************/    int d     = CV_32F;    Mat I1, I2;    i1.convertTo(I1, d);           // cannot calculate on one byte large values    i2.convertTo(I2, d);    Mat I2_2   = I2.mul(I2);        // I2^2    Mat I1_2   = I1.mul(I1);        // I1^2    Mat I1_I2  = I1.mul(I2);        // I1 * I2    /*************************** END INITS **********************************/    Mat mu1, mu2;   // PRELIMINARY COMPUTING    GaussianBlur(I1, mu1, Size(11, 11), 1.5);    GaussianBlur(I2, mu2, Size(11, 11), 1.5);    Mat mu1_2   =   mu1.mul(mu1);    Mat mu2_2   =   mu2.mul(mu2);    Mat mu1_mu2 =   mu1.mul(mu2);    Mat sigma1_2, sigma2_2, sigma12;    GaussianBlur(I1_2, sigma1_2, Size(11, 11), 1.5);    sigma1_2 -= mu1_2;    GaussianBlur(I2_2, sigma2_2, Size(11, 11), 1.5);    sigma2_2 -= mu2_2;    GaussianBlur(I1_I2, sigma12, Size(11, 11), 1.5);    sigma12 -= mu1_mu2;    Mat t1, t2, t3;    t1 = 2 * mu1_mu2 + C1;    t2 = 2 * sigma12 + C2;    t3 = t1.mul(t2);              // t3 = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))    t1 = mu1_2 + mu2_2 + C1;    t2 = sigma1_2 + sigma2_2 + C2;    t1 = t1.mul(t2);               // t1 =((mu1_2 + mu2_2 + C1).*(sigma1_2 + sigma2_2 + C2))    Mat ssim_map;    divide(t3, t1, ssim_map);      // ssim_map =  t3./t1;    Scalar mssim = mean( ssim_map ); // mssim = average of ssim map    return mssim;&#125;
+算法噪声数据我们完成了噪声添加以及噪声的量化, 我们来试一下, 给图像随机添加一定的噪声, 然后看下相应的参数变化情况对比来看就好
+椒盐噪声测试我们先来测试椒盐噪声 分别计算没有噪声的图, 以及添加了 1000个 和10000个噪声的数据结果, 并将后面两个显示出来 
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455void MainWindow::testFunc1(void)&#123;    // 添加椒盐噪声 并计算 PSNR和 SSIM    cv::Mat salt_img;    double psnr = 0;    cv::Scalar mssim;    QString res_temp = "Salt-%1 : psnr:%2, mssim: B:%3 G:%4 R:%5 ";    QString res_str;    // 计算三组图像的参数 0, 1000, 10000    // 复制原始图像, 添加噪声, 计算 psnr和ssim  显示在 ui上    salt_img = gSrcImg.clone();    addSaltNoise(salt_img,0);    psnr = getPSNR(gSrcImg, salt_img);    mssim = getMSSIM(gSrcImg,salt_img);    res_str = res_temp.arg(0)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    salt_img = gSrcImg.clone();    addSaltNoise(salt_img,1000);    psnr = getPSNR(gSrcImg, salt_img);    mssim = getMSSIM(gSrcImg,salt_img);    res_str = res_temp.arg(1000)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    // 左侧显示 1000 噪声 右侧显示 10000 噪声    ShowMatOnQtLabel(salt_img,ui-&gt;lb_src);    salt_img = gSrcImg.clone();    addSaltNoise(salt_img,10000);    psnr = getPSNR(gSrcImg, salt_img);    mssim = getMSSIM(gSrcImg,salt_img);    res_str = res_temp.arg(10000)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    ShowMatOnQtLabel(salt_img,ui-&gt;lb_dst);&#125;
+
+我们可以直接计算得到椒盐噪声  psnr 和 ssim 都是越大越好的, 可以明显的看到图像质量退化
+123Salt-0 : psnr:0, mssim: B:1 G:1 R:1 Salt-1000 : psnr:27.7528, mssim: B:0.865341 G:0.870555 R:0.914122 Salt-10000 : psnr:17.8062, mssim: B:0.311999 G:0.327485 R:0.493874
+高斯噪声测试高斯噪声我们测试了四组 分别使用参数(0,1) (0,10)(10,1)(10,10) 作为高斯参数, 最终得到后面的图, 然后计算得到的结果, 我们做的结果比较简单, 可以参考数字图像处理——添加高斯噪声&amp;椒盐噪声, 给出了很多的图, 可以参考学
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465void MainWindow::testFunc2(void)&#123;    // 添加高斯噪声 并计算 PSNR和 SSIM    cv::Mat guass_img;    double psnr = 0;    cv::Scalar mssim;    QString res_temp = "gauss-%1- %2 : psnr:%3, mssim: B:%4 G:%5 R:%6 ";    QString res_str;    // 计算三组图像的参数 (0,1) (0,10), (10,1), (10,10)    // 复制原始图像, 添加噪声, 计算 psnr和ssim  显示在 ui上    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,0,1);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(0)                        .arg(1)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,0,10);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(0)                        .arg(10)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,10,1);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(10)                        .arg(1)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,10,10);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(10)                        .arg(10)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);&#125;
+
+1234gauss-0- 1 : psnr:46.8791, mssim: B:0.991811 G:0.991622 R:0.992751 gauss-0- 10 : psnr:28.1229, mssim: B:0.614219 G:0.608773 R:0.648285 gauss-10- 1 : psnr:28.5293, mssim: B:0.978448 G:0.980308 R:0.987926 gauss-10- 10 : psnr:25.3511, mssim: B:0.605665 G:0.600491 R:0.646768
+总结原本想把滤波一起做了的, 但是越写越, 就不做太多的处理了, 我们算是介绍了噪声的来源, 噪声的模型, 以及个噪声的量化方式,然后介绍了图像添加噪声的方法 我们分别给图像添加椒盐噪声与高斯噪声, 然后分别量化了噪声的结果值, 进行对比展示, 
+示例的图不是很多, 程序是在代码库里面的, 可以直接去自己实现, 然后进行 进行更多图的展示
+参考
+《高斯噪声_百度百科》. 见于 2020年4月30日. https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0.
+知乎专栏. 《【技术综述】一文道尽传统图像降噪方法》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/51403693.
+知乎专栏. 《可复现的图像降噪算法总结》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/32502816.
+《梅森旋转算法》. 收入 维基百科，自由的百科全书, 2019年11月4日. https://zh.wikipedia.org/w/index.php?title=%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95&amp;oldid=56745942.
+《实现灰度图像峰值信噪比计算人工智能松子茶的专栏-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/songzitea/article/details/17529445.
+《数字图像处理-噪声 - Mohanson》. 见于 2020年4月30日. http://accu.cc/content/pil/noise/.
+《图像处理基础(1)：噪声的添加和过滤 - Brook_icv - 博客园》. 见于 2020年4月30日. https://www.cnblogs.com/wangguchangqing/p/6372025.html.
+《图像处理PSNR及其计算（OpenCV和matlab实现）人工智能无机器不学习-加大码的分享-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/laoxuan2011/article/details/51519062.
+《图像的 SNR 和 PSNR 的计算 - rldts - 博客园》. 见于 2020年4月30日. https://www.cnblogs.com/qrlozte/p/5340216.html.
+《图像去噪算法简介 - InfantSorrow - 博客园》. 见于 2020年4月29日. https://www.cnblogs.com/CCBB/archive/2011/01/06/1929033.html.
+《图像噪声的成因分类与常见图像去噪算法简介_Java_qq_27606639的博客-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/qq_27606639/article/details/80912071.
+《图像质量评估指标 SSIM / PSNR / MSE_人工智能_兔角与禅-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/edogawachia/article/details/78756680.
+《图像质量评价概述（评估指标、传统检测方法）_人工智能_qq_23304241的博客-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/qq_23304241/article/details/80953613.
+《影像降噪》. 收入 维基百科，自由的百科全书, 2018年9月20日. https://zh.wikipedia.org/w/index.php?title=%E5%BD%B1%E5%83%8F%E9%99%8D%E5%99%AA&amp;oldid=51354600.
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2020/04-28/opencv-9-noise.html&title=opencv-9-图像噪声以及评估指标 PSNR 与SSIM - 東木 - 随笔&summary=开始之前我们在将 opencv 的图像显示在了 qt 的label 上, 我们能够将图显示在label 上, 用于显示我们的算法,我们在 opencv 上一篇文章中介绍了 opencv 的核操作, 我们这里就要进入一个很重要的章节了,图像滤波操作, 也是图像核操作应用的一个很重要的章节, 
+那我们就从降噪的角度完整的讲一下, 并通过 opencv 核的方式进行图像算法操作, 【技术综述】一文道尽传统图像降噪方法 这篇文章写的还算比较完整, 也是传统的算法的一个综述过程, 
+目录[toc]
+前言数字成像过程中由于电噪声以及其他因素, 导致我们获取到的图像存在噪声,噪声出现在输入部分, 在后续的每个步骤都会受到影响, 所以在数字图像处理的前面必须要进行的一个步骤就是 图像降噪 
+每个做信号处理的都会接触到一类问题 , 信号降噪, 让人最头疼的一门课,真是感谢老师给过, 但是后面自己用到的时候反而感觉真的好用, 原来是这样, 然后就慢慢学会了怎么使用吧..(感觉还是弱鸡)知乎可复现的图像降噪算法总结这篇文章列出了一个能够复现的图像降噪操作算法列表, 近年来实现了的算法可以见reproducible-image-denoising-state-of-the-art, 之后使用相应的文章进行算法实现吧.( 又立了一个 flag )
+图像降噪理论基础图像降噪主要的目的是在进行去除图像噪声的同时保留尽可能多的主要特征, 对于人眼来说, 区分噪声还算比较容易, 但是对于计算机来说,输入的都是数据, 我怎么区分哪个是噪声, 哪个不是噪声呢, 这里就要引入噪声的理论基础了
+图像噪声的产生我们在之前的章节介绍了图像的程序系统, 实际上在成像过程中可能由于点噪声, 量化过程等造成噪声,实际上的噪声主要分为三种: 
+
+加性噪声: 与输入无关,  $f(x,y) = g(x,y) +n(x,y)$
+乘性噪声: 与输入信号有关, $f(x,y) =  g(x,y) + n(x,y) \cdot g(x,y)$
+量化噪声: 与输入无关, 在图像量化过程噪声的量化误差导致的噪声, 
+
+实际上后两种很难解决, 目前处理的都是以 加性噪声为主, 属于随机的噪声信号, 根据统计学的观点, 噪声在无限长时间窗内的噪声和为0, 在第一类中的 $n(x,y)$ 随着时间存在正负信号的不确定变化.
+
+
+上图所示虚线代表真实信号，红蓝线表示的就是随机噪声信号，所有的随机噪声信号求和后结果为0。
+
+这里关于噪声的说明可以参考图像去噪算法简介
+
+噪声在理论上可以定义为“不可预测，只能用概率统计方法来认识的随机误差”。因此将图像噪声看成是多维随机过程是合适的，因而描述噪声的方法完全可以借用随机过程的描述，即用其概率分布函数和概率密度分布函数。但在很多情况下，这样的描述方法是很复杂的，甚至是不可能的。而实际应用往往也不必要。通常是用其数字特征，即均值方差，相关函数等。因为这些数字特征都可以从某些方面反映出噪声的特征。
+
+我认为图像噪声的成因分类与常见图像去噪算法简介这篇文章关于噪声的分类部分讲的还比较细, 可以参考
+图像噪声的模型由于我们认为噪声在时间尺度的随机性, 但是我们可以使用噪声的概率分布与概率密度函数进行描述, 那么我们就能将噪声根据其分布特点进行分类,我们稍微介绍一下常见的噪声模型吧
+
+噪声模型主要可以分为: 
+
+高斯噪声，高斯噪声模型经常被用于实践中。
+脉冲噪声（椒盐噪声），图像上一个个点，也可称为散粒和尖峰噪声。
+伽马噪声
+瑞利噪声
+指数分布噪声
+均匀分布噪声
+
+这里能查到的资料很多, 可以看我们的参考部分, 内容都一样, 再写只是浪费时间和精力, 有兴趣的可以自己翻阅
+图像降噪操作其实吧, 我就不应该讲那么多, 直接开始图像处理部分就行了, 为了开始进行图像处理, 我们要先进行一点小工作, 我们要按造以下步骤进行降噪算法的比较, 
+
+选择标准图像— lena.png
+添加噪声
+量化噪声
+降噪操作
+量化结果值
+比较结果
+
+在我们进行算法比对之前, 我们选择的是 lena 的图像, 加入随机噪声, 然后计算出来 一个噪声的比例, 进行降噪操作, 再次计算以下噪声参数, 看下效果值.
+
+如果是进行算法比较的时候, 最好选择现有的降噪的数据集进行比较, 比如, Kodak , BSD
+
+噪声添加我们认为噪声是随机的, 我们生成随机数加在原始图像上便能够得到噪声图像, opencv 没有提供相应的实现, 但是知道原理了, 写起来都比较简单, 我比较喜欢图像处理基础(1)：噪声的添加和过滤 使用的方法, 他使用的是 梅森旋转算法  来实现的伪随机算法, 
+
+其实吧这里我也不懂, 但是随机数能用就行了, 我又不是数学家, 然后看到了 谈谈梅森旋转：算法及其爆破
+
+这里就不重复造轮子了, 直接复制他给出的代码就好,12345678910111213141516171819202122232425262728293031323334353637383940414243444546// 添加椒盐噪声 // 生成 随机 num 个 白点void addSaltNoise(Mat &amp;m, int num)&#123;true// 随机数产生器truestd::random_device rd; //种子truestd::mt19937 gen(rd()); // 随机数引擎trueauto cols = m.cols * m.channels();truefor (int i = 0; i &lt; num; i++)true&#123;truetrueauto row = static_cast&lt;int&gt;(gen() % m.rows);truetrueauto col = static_cast&lt;int&gt;(gen() % cols);truetrueauto p = m.ptr&lt;uchar&gt;(row);truetruep[col++] = 255;truetruep[col++] = 255;truetruep[col] = 255;true&#125;&#125;// 添加Gussia噪声// 使用指针访问void addGaussianNoise(Mat &amp;m, int mu, int sigma)&#123;true// 产生高斯分布随机数发生器truestd::random_device rd;truestd::mt19937 gen(rd());truestd::normal_distribution&lt;&gt; d(mu, sigma);trueauto rows = m.rows; // 行数trueauto cols = m.cols * m.channels(); // 列数truefor (int i = 0; i &lt; rows; i++)true&#123;truetrueauto p = m.ptr&lt;uchar&gt;(i); // 取得行首指针truetruefor (int j = 0; j &lt; cols; j++)truetrue&#123;truetruetrueauto tmp = p[j] + d(gen);truetruetruetmp = tmp &gt; 255 ? 255 : tmp;truetruetruetmp = tmp &lt; 0 ? 0 : tmp;truetruetruep[j] = tmp;truetrue&#125;true&#125;&#125;
+噪声量化方法这里其实涉及到图像质量评估的领域,可以参考图像质量评价概述（评估指标、传统检测方法）介绍的方法, 存在太多的计算方式, 
+我们必须选择一个量化噪声的方式进行图像质量的评估, 一般进行噪声评估手段就是噪声比(Signal to Noise Ratio,SNR),峰值信噪比(Peak Signal to Noise Ratio, PSNR) , 均方差值(Mean Square Error, MSE), 结构相似性(Structural SIMilarity, SSIM),
+我们一个一个来看, 均方差值是用于比较两幅图像 K, I 的均方差值$$MSE=\frac{1}{mn}\sum_{i=0}^{n-1}\sum_{j=0}^{m-1}\parallel K(i,j)-I(i,j)\parallel^{2}$$
+峰值信噪比PSNR衡量图像失真或是噪声水平的客观标准。2个图像之间PSNR值越大，则越相似。普遍基准为30dB，30dB以下的图像劣化较为明显。定义为，$$PSNR=10log_{10}(\frac{MAX^{2}}{MSE})$$其中$MAX^2$ 为图片可能的最大像素值。如果每个像素都由 8 位二进制来表示，那么就为 255。
+SNR用于描述信号与噪声的比值$$SNR (dB)=10 log_{10}\left[\frac{\sum_{x=0}^{m-1} \sum_{y=0}^{n-1}(f(x, y))^{2}}{\sum_{x=0}^{m-1} \sum_{y=0}^{n-1}(f(x, y)-\hat{f}(x, y))^{2}}\right]$$
+SSIM 描述两个图像的相似性, 通过三个进行比较, 亮度,对比度和结构, 参考图像质量评价指标之 PSNR 和 SSIM
+$$l(x, y)=\frac{2 \mu_{x} \mu_{y}+c_{1}}{\mu_{x}^{2}+\mu_{y}^{2}+c_{1}} c(x, y)=\frac{2 \sigma_{x} \sigma_{y}+c_{2}}{\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2}} s(x, y)=\frac{\sigma_{x y}+c_{3}}{\sigma_{x} \sigma_{y}+c_{3}}$$
+$$\operatorname{SSIM}(x, y)=\frac{\left(2 \mu_{x} \mu_{y}+c_{1}\right)\left(2 \sigma_{x y}+c_{2}\right)}{\left(\mu_{x}^{2}+\mu_{y}^{2}+c_{1}\right)\left(\sigma_{x}^{2}+\sigma_{y}^{2}+c_{2}\right)}$$一般取$c_3 = \frac{c_2}{2}$。$u_x$ 为 $x$  的均值$u_y$ 为 $y$ 的均值$\sigma_x^2$ 为$x$ 的方差$\sigma_y^2$ 为$y$ 的方差$\sigma_{xy}$ 为$x$ 和$y$ 的协方差$c_1 = (k_1 L)^2, c_2=(k_2 L)^2$ 为两个常数，避免除零$L$ 为像素值的范围，$(0,255)$$k_1 = 0.01, k_2 = 0.03$ 为默认值默认参数$\alpha = 1, \beta = 1, \gamma = 1$ 
+opencv 计算 PSNR 和 SSIM本来不想写这么多的, 但是 opencv 给出了一个例程Similarity check (PNSR and SSIM) on the GPU, 提供了计算的方法, 自己不用去写了, 岂不是很爽, 所以上面就详细介绍了各个方法的使用.官方给出了普通版本以及 GPU 加速的版本, 我们暂时只使用基础的版本就好,PSNR返回一个浮点数，如果两个输入在30到50之间相似（越高越好）。SSIM返回图像的MSSIM。这也是一个介于零和一之间的浮点数（越高越好），但是每个通道都有一个浮点数。因此，我们返回一个Scalar OpenCV数据结构：123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354double getPSNR(const Mat&amp; I1, const Mat&amp; I2)&#123;    Mat s1;    absdiff(I1, I2, s1);       // |I1 - I2|    s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits    s1 = s1.mul(s1);           // |I1 - I2|^2    Scalar s = sum(s1);         // sum elements per channel    double sse = s.val[0] + s.val[1] + s.val[2]; // sum channels    if( sse &lt;= 1e-10) // for small values return zero        return 0;    else    &#123;        double  mse =sse /(double)(I1.channels() * I1.total());        double psnr = 10.0*log10((255*255)/mse);        return psnr;    &#125;&#125;Scalar getMSSIM( const Mat&amp; i1, const Mat&amp; i2)&#123;    const double C1 = 6.5025, C2 = 58.5225;    /***************************** INITS **********************************/    int d     = CV_32F;    Mat I1, I2;    i1.convertTo(I1, d);           // cannot calculate on one byte large values    i2.convertTo(I2, d);    Mat I2_2   = I2.mul(I2);        // I2^2    Mat I1_2   = I1.mul(I1);        // I1^2    Mat I1_I2  = I1.mul(I2);        // I1 * I2    /*************************** END INITS **********************************/    Mat mu1, mu2;   // PRELIMINARY COMPUTING    GaussianBlur(I1, mu1, Size(11, 11), 1.5);    GaussianBlur(I2, mu2, Size(11, 11), 1.5);    Mat mu1_2   =   mu1.mul(mu1);    Mat mu2_2   =   mu2.mul(mu2);    Mat mu1_mu2 =   mu1.mul(mu2);    Mat sigma1_2, sigma2_2, sigma12;    GaussianBlur(I1_2, sigma1_2, Size(11, 11), 1.5);    sigma1_2 -= mu1_2;    GaussianBlur(I2_2, sigma2_2, Size(11, 11), 1.5);    sigma2_2 -= mu2_2;    GaussianBlur(I1_I2, sigma12, Size(11, 11), 1.5);    sigma12 -= mu1_mu2;    Mat t1, t2, t3;    t1 = 2 * mu1_mu2 + C1;    t2 = 2 * sigma12 + C2;    t3 = t1.mul(t2);              // t3 = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))    t1 = mu1_2 + mu2_2 + C1;    t2 = sigma1_2 + sigma2_2 + C2;    t1 = t1.mul(t2);               // t1 =((mu1_2 + mu2_2 + C1).*(sigma1_2 + sigma2_2 + C2))    Mat ssim_map;    divide(t3, t1, ssim_map);      // ssim_map =  t3./t1;    Scalar mssim = mean( ssim_map ); // mssim = average of ssim map    return mssim;&#125;
+算法噪声数据我们完成了噪声添加以及噪声的量化, 我们来试一下, 给图像随机添加一定的噪声, 然后看下相应的参数变化情况对比来看就好
+椒盐噪声测试我们先来测试椒盐噪声 分别计算没有噪声的图, 以及添加了 1000个 和10000个噪声的数据结果, 并将后面两个显示出来 
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455void MainWindow::testFunc1(void)&#123;    // 添加椒盐噪声 并计算 PSNR和 SSIM    cv::Mat salt_img;    double psnr = 0;    cv::Scalar mssim;    QString res_temp = "Salt-%1 : psnr:%2, mssim: B:%3 G:%4 R:%5 ";    QString res_str;    // 计算三组图像的参数 0, 1000, 10000    // 复制原始图像, 添加噪声, 计算 psnr和ssim  显示在 ui上    salt_img = gSrcImg.clone();    addSaltNoise(salt_img,0);    psnr = getPSNR(gSrcImg, salt_img);    mssim = getMSSIM(gSrcImg,salt_img);    res_str = res_temp.arg(0)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    salt_img = gSrcImg.clone();    addSaltNoise(salt_img,1000);    psnr = getPSNR(gSrcImg, salt_img);    mssim = getMSSIM(gSrcImg,salt_img);    res_str = res_temp.arg(1000)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    // 左侧显示 1000 噪声 右侧显示 10000 噪声    ShowMatOnQtLabel(salt_img,ui-&gt;lb_src);    salt_img = gSrcImg.clone();    addSaltNoise(salt_img,10000);    psnr = getPSNR(gSrcImg, salt_img);    mssim = getMSSIM(gSrcImg,salt_img);    res_str = res_temp.arg(10000)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    ShowMatOnQtLabel(salt_img,ui-&gt;lb_dst);&#125;
+
+我们可以直接计算得到椒盐噪声  psnr 和 ssim 都是越大越好的, 可以明显的看到图像质量退化
+123Salt-0 : psnr:0, mssim: B:1 G:1 R:1 Salt-1000 : psnr:27.7528, mssim: B:0.865341 G:0.870555 R:0.914122 Salt-10000 : psnr:17.8062, mssim: B:0.311999 G:0.327485 R:0.493874
+高斯噪声测试高斯噪声我们测试了四组 分别使用参数(0,1) (0,10)(10,1)(10,10) 作为高斯参数, 最终得到后面的图, 然后计算得到的结果, 我们做的结果比较简单, 可以参考数字图像处理——添加高斯噪声&amp;椒盐噪声, 给出了很多的图, 可以参考学
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465void MainWindow::testFunc2(void)&#123;    // 添加高斯噪声 并计算 PSNR和 SSIM    cv::Mat guass_img;    double psnr = 0;    cv::Scalar mssim;    QString res_temp = "gauss-%1- %2 : psnr:%3, mssim: B:%4 G:%5 R:%6 ";    QString res_str;    // 计算三组图像的参数 (0,1) (0,10), (10,1), (10,10)    // 复制原始图像, 添加噪声, 计算 psnr和ssim  显示在 ui上    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,0,1);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(0)                        .arg(1)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,0,10);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(0)                        .arg(10)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,10,1);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(10)                        .arg(1)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);    guass_img = gSrcImg.clone();    addGaussianNoise(guass_img,10,10);    psnr = getPSNR(gSrcImg, guass_img);    mssim = getMSSIM(gSrcImg,guass_img);    res_str = res_temp.arg(10)                        .arg(10)                        .arg(psnr)                        .arg(mssim.val[0])                        .arg(mssim.val[1])                        .arg(mssim.val[2]);    ui-&gt;pt_log-&gt;appendPlainText(res_str);&#125;
+
+1234gauss-0- 1 : psnr:46.8791, mssim: B:0.991811 G:0.991622 R:0.992751 gauss-0- 10 : psnr:28.1229, mssim: B:0.614219 G:0.608773 R:0.648285 gauss-10- 1 : psnr:28.5293, mssim: B:0.978448 G:0.980308 R:0.987926 gauss-10- 10 : psnr:25.3511, mssim: B:0.605665 G:0.600491 R:0.646768
+总结原本想把滤波一起做了的, 但是越写越, 就不做太多的处理了, 我们算是介绍了噪声的来源, 噪声的模型, 以及个噪声的量化方式,然后介绍了图像添加噪声的方法 我们分别给图像添加椒盐噪声与高斯噪声, 然后分别量化了噪声的结果值, 进行对比展示, 
+示例的图不是很多, 程序是在代码库里面的, 可以直接去自己实现, 然后进行 进行更多图的展示
+参考
+《高斯噪声_百度百科》. 见于 2020年4月30日. https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0.
+知乎专栏. 《【技术综述】一文道尽传统图像降噪方法》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/51403693.
+知乎专栏. 《可复现的图像降噪算法总结》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/32502816.
+《梅森旋转算法》. 收入 维基百科，自由的百科全书, 2019年11月4日. https://zh.wikipedia.org/w/index.php?title=%E6%A2%85%E6%A3%AE%E6%97%8B%E8%BD%AC%E7%AE%97%E6%B3%95&amp;oldid=56745942.
+《实现灰度图像峰值信噪比计算人工智能松子茶的专栏-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/songzitea/article/details/17529445.
+《数字图像处理-噪声 - Mohanson》. 见于 2020年4月30日. http://accu.cc/content/pil/noise/.
+《图像处理基础(1)：噪声的添加和过滤 - Brook_icv - 博客园》. 见于 2020年4月30日. https://www.cnblogs.com/wangguchangqing/p/6372025.html.
+《图像处理PSNR及其计算（OpenCV和matlab实现）人工智能无机器不学习-加大码的分享-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/laoxuan2011/article/details/51519062.
+《图像的 SNR 和 PSNR 的计算 - rldts - 博客园》. 见于 2020年4月30日. https://www.cnblogs.com/qrlozte/p/5340216.html.
+《图像去噪算法简介 - InfantSorrow - 博客园》. 见于 2020年4月29日. https://www.cnblogs.com/CCBB/archive/2011/01/06/1929033.html.
+《图像噪声的成因分类与常见图像去噪算法简介_Java_qq_27606639的博客-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/qq_27606639/article/details/80912071.
+《图像质量评估指标 SSIM / PSNR / MSE_人工智能_兔角与禅-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/edogawachia/article/details/78756680.
+《图像质量评价概述（评估指标、传统检测方法）_人工智能_qq_23304241的博客-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/qq_23304241/article/details/80953613.
+《影像降噪》. 收入 维基百科，自由的百科全书, 2018年9月20日. https://zh.wikipedia.org/w/index.php?title=%E5%BD%B1%E5%83%8F%E9%99%8D%E5%99%AA&amp;oldid=51354600.
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+              <a class='prev' href='/2020/04-29/Imagelab-1-QTopencv.html'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>Imagelab-1-QT 工程重构</p>
+                <p class='content'>输入密码, 查看文章1d8a7bfca21f8016ab4202dd0e7ed6412eb5f0ed152ffd89cabaf10f2dfe97dda6ac938f89a891df079e3e8...</p>
+              </a>
+            
+            
+              <a class='next' href='/2020/04-27/Imagelab-0-init.html'>
+                <p class='title'>Imagelab-0-QT label显示 opencv 图像<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>开始之前这其实也是opencv 处理图像的系列, 只是想我们在进一步复杂化我们的代码之前, 每次给出代码我们都要给出很多, 然后窗口的显示上也有很多不必要的东西, 我们为了后面进行更好的算法效果...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-spinner fa-spin fa-fw"></i>
+          </div>
+        </section>
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'opencv-9-图像噪声以及评估指标 PSNR 与SSIM',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始之前"><span class="toc-text">开始之前</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图像降噪理论基础"><span class="toc-text">图像降噪理论基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图像噪声的产生"><span class="toc-text">图像噪声的产生</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像噪声的模型"><span class="toc-text">图像噪声的模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图像降噪操作"><span class="toc-text">图像降噪操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#噪声添加"><span class="toc-text">噪声添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#噪声量化方法"><span class="toc-text">噪声量化方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#opencv-计算-PSNR-和-SSIM"><span class="toc-text">opencv 计算 PSNR 和 SSIM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#算法噪声数据"><span class="toc-text">算法噪声数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#椒盐噪声测试"><span class="toc-text">椒盐噪声测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#高斯噪声测试"><span class="toc-text">高斯噪声测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget category shadow desktop">
+    
+  <header>
+    
+      <a href='categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <ul class="entry navigation">
+        
+          <li><a class="flat-box"
+            title="/categories/Alg/" href="/categories/Alg/"
+            id="categoriesAlg"
+            ><div class='name'>Alg</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/C/" href="/categories/C/"
+            id="categoriesC"
+            ><div class='name'>C++</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Config/" href="/categories/Config/"
+            id="categoriesConfig"
+            ><div class='name'>Config</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Essay/" href="/categories/Essay/"
+            id="categoriesEssay"
+            ><div class='name'>Essay</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Game/" href="/categories/Game/"
+            id="categoriesGame"
+            ><div class='name'>Game</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Hexo/" href="/categories/Hexo/"
+            id="categoriesHexo"
+            ><div class='name'>Hexo</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/IOT/" href="/categories/IOT/"
+            id="categoriesIOT"
+            ><div class='name'>IOT</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Interview/" href="/categories/Interview/"
+            id="categoriesInterview"
+            ><div class='name'>Interview</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LaTex/" href="/categories/LaTex/"
+            id="categoriesLaTex"
+            ><div class='name'>LaTex</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode-Contest/" href="/categories/LeetCode-Contest/"
+            id="categoriesLeetCode-Contest"
+            ><div class='name'>LeetCode-Contest</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode/" href="/categories/LeetCode/"
+            id="categoriesLeetCode"
+            ><div class='name'>LeetCode</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Offer/" href="/categories/Offer/"
+            id="categoriesOffer"
+            ><div class='name'>Offer</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/OpenCV/" href="/categories/OpenCV/"
+            id="categoriesOpenCV"
+            ><div class='name'>OpenCV</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Person/" href="/categories/Person/"
+            id="categoriesPerson"
+            ><div class='name'>Person</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/QT/" href="/categories/QT/"
+            id="categoriesQT"
+            ><div class='name'>QT</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SSR/" href="/categories/SSR/"
+            id="categoriesSSR"
+            ><div class='name'>SSR</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Script/" href="/categories/Script/"
+            id="categoriesScript"
+            ><div class='name'>Script</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SerialPort/" href="/categories/SerialPort/"
+            id="categoriesSerialPort"
+            ><div class='name'>SerialPort</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Sword/" href="/categories/Sword/"
+            id="categoriesSword"
+            ><div class='name'>Sword</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/TODO/" href="/categories/TODO/"
+            id="categoriesTODO"
+            ><div class='name'>TODO</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Tools/" href="/categories/Tools/"
+            id="categoriesTools"
+            ><div class='name'>Tools</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Web/" href="/categories/Web/"
+            id="categoriesWeb"
+            ><div class='name'>Web</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Windows/" href="/categories/Windows/"
+            id="categoriesWindows"
+            ><div class='name'>Windows</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/bug/" href="/categories/bug/"
+            id="categoriesbug"
+            ><div class='name'>bug</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/data/" href="/categories/data/"
+            id="categoriesdata"
+            ><div class='name'>data</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/hexo/" href="/categories/hexo/"
+            id="categorieshexo"
+            ><div class='name'>hexo</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/latex/" href="/categories/latex/"
+            id="categorieslatex"
+            ><div class='name'>latex</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/opencv/" href="/categories/opencv/"
+            id="categoriesopencv"
+            ><div class='name'>opencv</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imagelab/" href="/categories/opencv/imagelab/"
+            id="categoriesopencvimagelab"
+            ><div class='name'>imagelab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imaglab/" href="/categories/opencv/imaglab/"
+            id="categoriesopencvimaglab"
+            ><div class='name'>imaglab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/person/" href="/categories/person/"
+            id="categoriesperson"
+            ><div class='name'>person</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/python/" href="/categories/python/"
+            id="categoriespython"
+            ><div class='name'>python</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/uncategorized/" href="/categories/uncategorized/"
+            id="categoriesuncategorized"
+            ><div class='name'>uncategorized</div><div class='badge'>(5)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/xxx/" href="/categories/xxx/"
+            id="categoriesxxx"
+            ><div class='name'>xxx</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E7%AE%97%E6%B3%95/" href="/categories/%E7%AE%97%E6%B3%95/"
+            id="categoriesE7AE97E6B395"
+            ><div class='name'>算法</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget tagcloud shadow desktop mobile">
+    
+  <header>
+    
+      <a href='tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/2019/" style="font-size: 14px; color: #999">2019</a> <a href="/tags/2020/" style="font-size: 14px; color: #999">2020</a> <a href="/tags/51/" style="font-size: 14px; color: #999">51</a> <a href="/tags/996/" style="font-size: 14px; color: #999">996</a> <a href="/tags/Android/" style="font-size: 14px; color: #999">Android</a> <a href="/tags/Array/" style="font-size: 17px; color: #858585">Array</a> <a href="/tags/Atomineer/" style="font-size: 14px; color: #999">Atomineer</a> <a href="/tags/BinarySearch/" style="font-size: 15px; color: #929292">BinarySearch</a> <a href="/tags/Bugs/" style="font-size: 15px; color: #929292">Bugs</a> <a href="/tags/C/" style="font-size: 14px; color: #999">C</a> <a href="/tags/C/" style="font-size: 24px; color: #555">C++</a> <a href="/tags/Cmake/" style="font-size: 14px; color: #999">Cmake</a> <a href="/tags/Code/" style="font-size: 14px; color: #999">Code</a> <a href="/tags/Compass/" style="font-size: 14px; color: #999">Compass</a> <a href="/tags/Contest/" style="font-size: 14px; color: #999">Contest</a> <a href="/tags/Crack/" style="font-size: 14px; color: #999">Crack</a> <a href="/tags/Doctest/" style="font-size: 14px; color: #999">Doctest</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14px; color: #999">Dynamic Programming</a> <a href="/tags/Emotion/" style="font-size: 14px; color: #999">Emotion</a> <a href="/tags/HEX/" style="font-size: 14px; color: #999">HEX</a> <a href="/tags/ICU/" style="font-size: 14px; color: #999">ICU</a> <a href="/tags/Interview/" style="font-size: 16px; color: #8b8b8b">Interview</a> <a href="/tags/Job/" style="font-size: 15px; color: #929292">Job</a> <a href="/tags/Jobs/" style="font-size: 14px; color: #999">Jobs</a> <a href="/tags/Latex/" style="font-size: 14px; color: #999">Latex</a> <a href="/tags/LeetCode/" style="font-size: 20px; color: #707070">LeetCode</a> <a href="/tags/LeetCode-easy-Overflow/" style="font-size: 14px; color: #999">LeetCode,easy,Overflow</a> <a href="/tags/Live/" style="font-size: 14px; color: #999">Live</a> <a href="/tags/Logger/" style="font-size: 14px; color: #999">Logger</a> <a href="/tags/Math/" style="font-size: 14px; color: #999">Math</a> <a href="/tags/Medium/" style="font-size: 15px; color: #929292">Medium</a> <a href="/tags/NameStyle/" style="font-size: 14px; color: #999">NameStyle</a> <a href="/tags/OpenCV/" style="font-size: 14px; color: #999">OpenCV</a> <a href="/tags/PBootCMS/" style="font-size: 15px; color: #929292">PBootCMS</a> <a href="/tags/PID/" style="font-size: 14px; color: #999">PID</a> <a href="/tags/PSO/" style="font-size: 14px; color: #999">PSO</a> <a href="/tags/Person/" style="font-size: 14px; color: #999">Person</a> <a href="/tags/Plugin/" style="font-size: 14px; color: #999">Plugin</a> <a href="/tags/PrimeNum/" style="font-size: 14px; color: #999">PrimeNum</a> <a href="/tags/Protocbuf/" style="font-size: 14px; color: #999">Protocbuf</a> <a href="/tags/QT/" style="font-size: 17px; color: #858585">QT</a> <a href="/tags/QT%E8%87%AA%E5%AE%9A%E4%B9%89/" style="font-size: 14px; color: #999">QT自定义</a> <a href="/tags/SSR/" style="font-size: 14px; color: #999">SSR</a> <a href="/tags/Serial/" style="font-size: 16px; color: #8b8b8b">Serial</a> <a href="/tags/SerialPort/" style="font-size: 14px; color: #999">SerialPort</a> <a href="/tags/She/" style="font-size: 14px; color: #999">She</a> <a href="/tags/String/" style="font-size: 14px; color: #999">String</a> <a href="/tags/TODO/" style="font-size: 14px; color: #999">TODO</a> <a href="/tags/TwoPointers/" style="font-size: 14px; color: #999">TwoPointers</a> <a href="/tags/UART/" style="font-size: 14px; color: #999">UART</a> <a href="/tags/UnitTest/" style="font-size: 14px; color: #999">UnitTest</a> <a href="/tags/Utils/" style="font-size: 14px; color: #999">Utils</a> <a href="/tags/VS/" style="font-size: 15px; color: #929292">VS</a> <a href="/tags/VS2015/" style="font-size: 16px; color: #8b8b8b">VS2015</a> <a href="/tags/Window/" style="font-size: 14px; color: #999">Window</a> <a href="/tags/Work/" style="font-size: 15px; color: #929292">Work</a> <a href="/tags/Wuhan/" style="font-size: 14px; color: #999">Wuhan</a> <a href="/tags/XeLaTex/" style="font-size: 14px; color: #999">XeLaTex</a> <a href="/tags/action/" style="font-size: 14px; color: #999">action</a> <a href="/tags/algorithm/" style="font-size: 14px; color: #999">algorithm</a> <a href="/tags/aliyun/" style="font-size: 14px; color: #999">aliyun</a> <a href="/tags/asp/" style="font-size: 14px; color: #999">asp</a> <a href="/tags/batch/" style="font-size: 14px; color: #999">batch</a> <a href="/tags/blog/" style="font-size: 21px; color: #696969">blog</a> <a href="/tags/blog%EF%BC%8Chexo/" style="font-size: 14px; color: #999">blog，hexo</a> <a href="/tags/bug/" style="font-size: 14px; color: #999">bug</a> <a href="/tags/c/" style="font-size: 22px; color: #636363">c++</a> <a href="/tags/changelog/" style="font-size: 14px; color: #999">changelog</a> <a href="/tags/cnblogs/" style="font-size: 15px; color: #929292">cnblogs</a> <a href="/tags/cov/" style="font-size: 14px; color: #999">cov</a> <a href="/tags/csdn/" style="font-size: 15px; color: #929292">csdn</a> <a href="/tags/data/" style="font-size: 14px; color: #999">data</a> <a href="/tags/depurple/" style="font-size: 14px; color: #999">depurple</a> <a href="/tags/dream/" style="font-size: 14px; color: #999">dream</a> <a href="/tags/easy/" style="font-size: 16px; color: #8b8b8b">easy</a> <a href="/tags/encrypt/" style="font-size: 23px; color: #5c5c5c">encrypt</a> <a href="/tags/file/" style="font-size: 14px; color: #999">file</a> <a href="/tags/fraud/" style="font-size: 14px; color: #999">fraud</a> <a href="/tags/game/" style="font-size: 15px; color: #929292">game</a> <a href="/tags/github/" style="font-size: 15px; color: #929292">github</a> <a href="/tags/hard/" style="font-size: 15px; color: #929292">hard</a> <a href="/tags/hexo/" style="font-size: 19px; color: #777">hexo</a> <a href="/tags/hide/" style="font-size: 21px; color: #696969">hide</a> <a href="/tags/histograms/" style="font-size: 14px; color: #999">histograms</a> <a href="/tags/history/" style="font-size: 14px; color: #999">history</a> <a href="/tags/home/" style="font-size: 15px; color: #929292">home</a> <a href="/tags/html/" style="font-size: 14px; color: #999">html</a> <a href="/tags/imagelab/" style="font-size: 15px; color: #929292">imagelab</a> <a href="/tags/intel/" style="font-size: 14px; color: #999">intel</a> <a href="/tags/js/" style="font-size: 14px; color: #999">js</a> <a href="/tags/latex/" style="font-size: 15px; color: #929292">latex</a> <a href="/tags/learn/" style="font-size: 14px; color: #999">learn</a> <a href="/tags/list/" style="font-size: 14px; color: #999">list</a> <a href="/tags/master/" style="font-size: 15px; color: #929292">master</a> <a href="/tags/mat/" style="font-size: 14px; color: #999">mat</a> <a href="/tags/matlab/" style="font-size: 14px; color: #999">matlab</a> <a href="/tags/offer/" style="font-size: 14px; color: #999">offer</a> <a href="/tags/opencv/" style="font-size: 24px; color: #555">opencv</a> <a href="/tags/outline/" style="font-size: 14px; color: #999">outline</a> <a href="/tags/overleaf/" style="font-size: 14px; color: #999">overleaf</a> <a href="/tags/pac/" style="font-size: 14px; color: #999">pac</a> <a href="/tags/person/" style="font-size: 18px; color: #7e7e7e">person</a> <a href="/tags/php/" style="font-size: 14px; color: #999">php</a> <a href="/tags/ppt/" style="font-size: 14px; color: #999">ppt</a> <a href="/tags/project/" style="font-size: 14px; color: #999">project</a> <a href="/tags/proxy/" style="font-size: 14px; color: #999">proxy</a> <a href="/tags/python/" style="font-size: 14px; color: #999">python</a> <a href="/tags/qt/" style="font-size: 22px; color: #636363">qt</a> <a href="/tags/robot/" style="font-size: 14px; color: #999">robot</a> <a href="/tags/script/" style="font-size: 14px; color: #999">script</a> <a href="/tags/server/" style="font-size: 15px; color: #929292">server</a> <a href="/tags/shopping/" style="font-size: 14px; color: #999">shopping</a> <a href="/tags/sketchup/" style="font-size: 14px; color: #999">sketchup</a> <a href="/tags/soft/" style="font-size: 15px; color: #929292">soft</a> <a href="/tags/sword/" style="font-size: 14px; color: #999">sword</a> <a href="/tags/swordoffer/" style="font-size: 14px; color: #999">swordoffer</a> <a href="/tags/template/" style="font-size: 14px; color: #999">template</a> <a href="/tags/test/" style="font-size: 16px; color: #8b8b8b">test</a> <a href="/tags/theme/" style="font-size: 14px; color: #999">theme</a> <a href="/tags/todo/" style="font-size: 14px; color: #999">todo</a> <a href="/tags/tools/" style="font-size: 14px; color: #999">tools</a> <a href="/tags/washing-machine/" style="font-size: 14px; color: #999">washing machine</a> <a href="/tags/web/" style="font-size: 15px; color: #929292">web</a> <a href="/tags/whu/" style="font-size: 14px; color: #999">whu</a> <a href="/tags/years/" style="font-size: 14px; color: #999">years</a> <a href="/tags/%E4%B8%B2%E5%8F%A3/" style="font-size: 14px; color: #999">串口</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 14px; color: #999">分治</a> <a href="/tags/%E5%9B%BE%E7%89%87/" style="font-size: 14px; color: #999">图片</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 14px; color: #999">多线程</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 14px; color: #999">学习</a> <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" style="font-size: 14px; color: #999">嵌入式</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 14px; color: #999">数学</a> <a href="/tags/%E6%B0%B4%E6%B8%A9%E6%8E%A7%E5%88%B6/" style="font-size: 14px; color: #999">水温控制</a> <a href="/tags/%E9%98%9F%E5%88%97/" style="font-size: 14px; color: #999">队列</a>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='false'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='netease'
+      type='playlist'
+      id='3175833810'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="/atom.xml"
+                class="social fas fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="mailto:me@xaoxuu.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://github.com/xaoxuu"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=63035382"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+      
+    
+      
+        本站使用
+        <a href="https://volantis.js.org/" target="_blank" class="codename">Schen00</a>
+        作为主题
+        
+          ，
+          总访问量为
+          <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+          次
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://xaoxuu.com" target="_blank" rel="noopener">Copyright © 2017-2020 Mr. X</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js" async></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js" async></script>
+
+  
+
+
+
+
+
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.2.0/js/valine.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var notify = 'false' == true;
+  var verify = 'false' == true;
+  var valine = new Valine();
+  valine.init({
+    el: '#valine_container',
+    notify: notify,
+    verify: verify,
+    guest_info: guest_info,
+    
+    appId: "aB4XKwq00t6BFhV80u7mCg6z-gzGzoHsz",
+    appKey: "RndTSESgwxQgJtumDIvUeWvk",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'mp',
+    lang:'zh-cn',
+    visitor: 'false',
+    highlight:'true'
+  })
+  </script>
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.1/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copyed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-clipboard-check');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPYED';
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-exclamation-triangle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("div.fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

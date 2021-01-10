@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#2.2.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>AtomineerUtils使用说明 - 東木 - 随笔</title>
+  
+    <meta name="keywords" content="VS2015,Plugin,Crack,Atomineer">
+  
+  
+    <meta name="description" content="介绍AtomineerUtils 是国外的一款用于生成源代码注释的一款 VS 插件工具.这款插件，支持 C、C++、C++/CLI、C#、Java 语言等，由此可以看出其强大，注释的风格可以灵活配置。
+安装方法软件是付费软件, 具体使用版本见附件 AtomineerUtils936 也可以在参考链接给出的网页内找...">
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="東木 - 随笔">
+  
+
+  <!-- import meta -->
+  
+    
+      <meta name='theme-color' content='#FFFFFF'>
+    
+      <meta name='msapplication-TileColor' content='#cccccc'>
+    
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+  <link rel="shortcut icon" type='image/x-icon' href="https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  <!-- import link -->
+  
+  
+  <link rel='shortcut icon' type='image/x-icon' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  <link rel='icon' type='image/x-icon' sizes='32x32' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  
+
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <a class="logo flat-box"></a>
+      <ul class='switcher h-list'>
+        <li><a class="s-comment flat-btn fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc flat-btn fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="logo flat-box" target="_self" href='/'>
+          
+            <img class='logo' src='https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png'/>
+          
+          
+          
+          
+        </a>
+      
+
+      
+
+			<div class='menu navigation'>
+				<ul class='h-list'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  
+                    <i class='fas fa-rss fa-fw'></i>
+                  
+                  博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  
+                    <i class='fas fa-folder-open fa-fw'></i>
+                  
+                  分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  
+                    <i class='fas fa-tags fa-fw'></i>
+                  
+                  标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  
+                    <i class='fas fa-archive fa-fw'></i>
+                  
+                  归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  
+                    <i class='fas fa-link fa-fw'></i>
+                  
+                  友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  
+                    <i class='fas fa-info-circle fa-fw'></i>
+                  
+                  关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      
+        <div class="m_search">
+          <form name="searchform" class="form u-search-form">
+            <i class="icon fas fa-search fa-fw"></i>
+            <input type="text" class="input u-search-input" placeholder="搜索" />
+          </form>
+        </div>
+      
+
+			<ul class='switcher h-list'>
+				
+					<li><a class="s-search flat-btn fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li><a class="s-menu flat-btn fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<ul class="menu-phone navigation white-box">
+  
+  
+    <li>
+      <a class="flat-box" href=/
+        
+        
+        
+          id="home"
+        >
+        
+          <i class='fas fa-rss fa-fw'></i>
+        
+        博客
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/categories/
+        
+        
+        
+          id="categories"
+        >
+        
+          <i class='fas fa-folder-open fa-fw'></i>
+        
+        分类
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/tags/
+        
+        
+        
+          id="tags"
+        >
+        
+          <i class='fas fa-tags fa-fw'></i>
+        
+        标签
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/archives/
+        
+        
+        
+          id="archives"
+        >
+        
+          <i class='fas fa-archive fa-fw'></i>
+        
+        归档
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/friends/
+        
+        
+        
+          id="friends"
+        >
+        
+          <i class='fas fa-link fa-fw'></i>
+        
+        友链
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/about/
+        
+        
+        
+          id="about"
+        >
+        
+          <i class='fas fa-info-circle fa-fw'></i>
+        
+        关于
+      </a>
+    </li>
+  
+</ul>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box shadow article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html">
+        AtomineerUtils使用说明
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+<div class='new-meta-item author'>
+  <a href="https://schen1024.github.io" rel="nofollow">
+    <img src="https://avatars3.githubusercontent.com/u/12789460">
+    <p>SChen1024</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/Tools/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>Tools</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2019年11月14日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><a href="https://www.atomineerutils.com/products.php" target="_blank" rel="noopener">AtomineerUtils</a> 是国外的一款用于生成源代码注释的一款 VS 插件工具.<br>这款插件，支持 C、C++、C++/CLI、C#、Java 语言等，由此可以看出其强大，注释的风格可以灵活配置。</p>
+<h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><p>软件是付费软件, 具体使用版本见附件 <a href="AtomineerUtils使用说明/AtomineerUtils936.zip">AtomineerUtils936</a> 也可以在参考链接给出的网页内找到 使用方法.</p>
+<p>具体安装方法可以看压缩包内附件文档,</p>
+<hr>
+<ol start="0">
+<li>正常安装相应文件夹内的VS插件,本人使用的是 VS2015 插件</li>
+<li>第一次请务必断网进入VS，在插件里面把本工具的自动更新关闭掉，更新到最新版本将直接无法使用破解版本(如果刚好试用到期也不就不能用了)。</li>
+</ol>
+<p>VS 2015之下的版本(未测试是否可用):<br>    安装路径自己选的，然后找到：你的安装路径/visual studio 20**/Addins/AtomineerUtils/<br>替换掉里面的Atomineer.Utils.dll就好了</p>
+<p>VS 2015版本:<br>    替换位置: %LocalAppData%/Microsoft/VisualStudio/14.0/Extensions/<strong>**</strong>(随机的名称)/<br>VS 2017版本:<br>    替换位置: %LocalAppData%/Microsoft/VisualStudio/15.0_<strong><em>**</em></strong> (随机的名称) /Extensions/<strong>**</strong>(随机的名称)/</p>
+<ol start="2">
+<li>在相应文件夹内找到文件, 使用附件文件夹内的 同名文件替换掉里面的AtomineerProDocumentation.dll就好了</li>
+</ol>
+<p>可以在VS 的拓展目录<code>C:\Users\Chen\AppData\Local\Microsoft\VisualStudio\14.0\Extensions</code> 下搜索文件名可以快速找到</p>
+<p>例如个人最终的路径为</p>
+<blockquote>
+<p>C:\Users\Chen\AppData\Local\Microsoft\VisualStudio\14.0\Extensions\g2iuajz1.bzo\AtomineerProDocumentation.dll</p>
+</blockquote>
+<p>PS:如果使用过程中出现路径错误的情况，菜单栏-&gt;工具-&gt;Atomineer…Trial-&gt;…options 进去点下确定出来就好了。</p>
+<p>或者进入安装路径找到AtomineerUtilsWizard.exe，通过一下配置向导</p>
+<hr>
+<a id="more"></a>
+<h2 id="使用方法说明"><a href="#使用方法说明" class="headerlink" title="使用方法说明"></a>使用方法说明</h2><p>由于插件没有中文, 但是并不难理解,<br>使用的详细方法可以分为以下几步</p>
+<h3 id="1-VS-进入设置方法"><a href="#1-VS-进入设置方法" class="headerlink" title="1. VS 进入设置方法"></a>1. VS 进入设置方法</h3><p>工具-&gt;AtomineerProDocumentation Trail -&gt; Atominee Option</p>
+<p><img src="/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/atomineer_2.png" alt="进入方法"></p>
+<h3 id="2-初始设定"><a href="#2-初始设定" class="headerlink" title="2. 初始设定"></a>2. 初始设定</h3><p>建议点击 quick 选择设置方案,根据自己感觉比较好看的方式设定即可, 因为后续需求, 这里选择的方案是 doxygen 的方式, 后续可以根据注释生成项目文档<br>仅供参考</p>
+<p><img src="/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/atomineer_3.png" alt="初始设定"></p>
+<h3 id="3-注释模板路径"><a href="#3-注释模板路径" class="headerlink" title="3. 注释模板路径"></a>3. 注释模板路径</h3><p>在通用设置界面, 选择注释模板文件的搜索路径, 会先从给出的路径进行搜索,如果存在会优先使用,如果找不到就会使用程序默认的方式生成注释, 附件<a href="AtomineerUtils使用说明/DoxygenTemplates.xml">详细配置文档</a> 给出了自己的一份配置文件, 比较满意 如果自己感觉不舒服可以自己调整</p>
+<p><img src="/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/atomineer_4.png" alt="注释模板"></p>
+<p>在通用设置的上半部分还可以设置右键显示的快捷菜单和菜单栏二级菜单显示的内容</p>
+<h3 id="4-注释规则"><a href="#4-注释规则" class="headerlink" title="4. 注释规则"></a>4. 注释规则</h3><p>可以根据不同的规则生成不同的注释, 这里使用较少, 暂时不了解怎么使用的, </p>
+<p><img src="/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/atomineer_5.png" alt="不同规则"></p>
+<h2 id="详细配置文档"><a href="#详细配置文档" class="headerlink" title="详细配置文档"></a>详细配置文档</h2><p>详细配置文档定义了相应的行 执行相应的内容  在执行生成注释的时候会根据xml 配置文件以及在软件中的设置自动生成相关内容 <a href="AtomineerUtils使用说明/DoxygenTemplates.xml">详细配置文档</a></p>
+<details><br><br><summary>详细配置文档  DoxygenTemplates.xml </summary><br><br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">DoxygenTemplates</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">      Templates for Doxygen/JavaDoc/Qt Comment blocks</span></span><br><span class="line"><span class="comment">      ===============================================</span></span><br><span class="line"><span class="comment">      These control which entries are added to the doc-comment for each type of code element,</span></span><br><span class="line"><span class="comment">      and their order.</span></span><br><span class="line"><span class="comment">      </span></span><br><span class="line"><span class="comment">      Full documentation can be found in the Atomineer user manual.</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Global settings for the entry types.</span></span><br><span class="line"><span class="comment">       These control the style and formatting of the individual types of entries defined in the templates below.</span></span><br><span class="line"><span class="comment">       Each element here should match one of the entries in your template blocks, and should either match the</span></span><br><span class="line"><span class="comment">       entry names Atomineer supports (e.g. "summary") or a custom entry type. If you wish to use a different </span></span><br><span class="line"><span class="comment">       name in your entries than Atomineer (e.g. you prefer "brief" to "summary", then use the &lt;summary&gt; element</span></span><br><span class="line"><span class="comment">       and set its _tagName attribute to "brief". You can also add a comma-separated list of _aliases to allow</span></span><br><span class="line"><span class="comment">       for conversions from legacy comments.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">       Primary settings (see the user manual for more details) are:</span></span><br><span class="line"><span class="comment">        _optional		true indicates this entry is not to be added by Atomineer, but shuld be preserved</span></span><br><span class="line"><span class="comment">                false indicates that this entry type is required, so Atomineer should automtaically add it</span></span><br><span class="line"><span class="comment">        _punctuate		true/false to control automatic punctuation insertion</span></span><br><span class="line"><span class="comment">        _wordwrap		true/false to control whether word-wrapping is applied to the description</span></span><br><span class="line"><span class="comment">        _copyFromBase	true/fase to control whether this type of entry can be copied from base-class documentation</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        _tagName		The entry tag you want to use in your documentation, e.g. for Atomineer's "summary" you might</span></span><br><span class="line"><span class="comment">                prefer to use the tag "description"</span></span><br><span class="line"><span class="comment">        _aliases		A comma-separated list of other tags that should be considered equivalent (to convert legacy comments)</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--  条目类型的全局设置。=""</span></span><br><span class="line"><span class="comment">       它们控制下面模板中定义的各种条目类型的样式和格式。=""</span></span><br><span class="line"><span class="comment">       这里的每个元素都应该匹配模板块中的一个条目，并且应该匹配=""</span></span><br><span class="line"><span class="comment">       条目名称Atomineer支持（例如“摘要”）或自定义条目类型。如果你想使用不同的=""</span></span><br><span class="line"><span class="comment">       您的条目中的名称不是Atomineer（例如，您更喜欢“简要”到“摘要”，然后使用=""    元素</span></span><br><span class="line"><span class="comment">           并将其_tagName属性设置为“brief”。您还可以添加逗号分隔的_aliases列表以允许</span></span><br><span class="line"><span class="comment">           来自遗留评论的转换。</span></span><br><span class="line"><span class="comment">           主要设置（有关详细信息，请参阅用户手册）包括：</span></span><br><span class="line"><span class="comment">            _optional true表示Atomineer不会添加此条目，但会保留该条目</span></span><br><span class="line"><span class="comment">                    false表示此条目类型是必需的，因此Atomineer应自动添加它</span></span><br><span class="line"><span class="comment">            _punctuate true / false控制自动标点符号插入</span></span><br><span class="line"><span class="comment">            _wordwrap true / false控制是否将自动换行应用于描述</span></span><br><span class="line"><span class="comment">            _copyFromBase true / fase控制是否可以从基类文档中复制此类条目</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">            _tagName您要在文档中使用的条目标记，例如对于Atomineer的“总结”你可能会</span></span><br><span class="line"><span class="comment">                    更喜欢使用标签“description”</span></span><br><span class="line"><span class="comment">            _aliases以逗号分隔的其他标记列表，应视为等效（转换旧版注释）</span></span><br><span class="line"><span class="comment">         --&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- prototye is a template placeholder for the code element type (fn,method,class,interface,etc) --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">EntrySettings</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> <span class="attr">_optional</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">copyright</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> <span class="attr">_optional</span>=<span class="string">"true"</span> <span class="attr">_aliases</span>=<span class="string">"copyright,Copyright,Copy,copy"</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> <span class="attr">_optional</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">remarks</span> <span class="attr">_optional</span>=<span class="string">"true"</span> <span class="attr">_aliases</span>=<span class="string">"remark"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> <span class="attr">_tagName</span>=<span class="string">"brief"</span> <span class="attr">_aliases</span>=<span class="string">"summary,desc,description,details,purpose,short"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> <span class="attr">_tagName</span>=<span class="string">"exception"</span> <span class="attr">_aliases</span>=<span class="string">"throw,throws"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> <span class="attr">_tagName</span>=<span class="string">"param"</span> <span class="attr">_aliases</span>=<span class="string">"parameter"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">typeparam</span> <span class="attr">_tagName</span>=<span class="string">"tparam"</span> <span class="attr">_aliases</span>=<span class="string">"typeparam"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">returns</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> <span class="attr">_tagName</span>=<span class="string">"returns"</span> <span class="attr">_aliases</span>=<span class="string">"return,retval,result,value"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> <span class="attr">_optional</span>=<span class="string">"true"</span> <span class="attr">_tagName</span>=<span class="string">"sa"</span> <span class="attr">_aliases</span>=<span class="string">"see,seealso"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">example</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> <span class="attr">_optional</span>=<span class="string">"true"</span> <span class="attr">_tagName</span>=<span class="string">"example"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">inheritdoc</span> <span class="attr">_punctuate</span>=<span class="string">"false"</span> <span class="attr">_optional</span>=<span class="string">"true"</span> <span class="attr">_tagName</span>=<span class="string">"inheritdoc"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">EntrySettings</span>&gt;</span>`</span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Special header and footer pair for .h and .hpp files, which will automatically add an</span></span><br><span class="line"><span class="comment">         include-once mechanism to the file.--&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- .h 文件 自动添加 #If endif--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--&lt;file _filetypes=".h .hpp" _addfooter="true" _separators="false"&gt;</span></span><br><span class="line"><span class="comment">      &lt;prototype&gt;%projectpathname%&lt;/prototype&gt;</span></span><br><span class="line"><span class="comment">      &lt;_ /&gt;</span></span><br><span class="line"><span class="comment">      &lt;summary /&gt;</span></span><br><span class="line"><span class="comment">      &lt;changelog&gt;%date%    %user%	Created&lt;/changelog&gt;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">      #ifndef __%leafname%_H__</span></span><br><span class="line"><span class="comment">      #define __%leafname%_H__</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    &lt;/file&gt;</span></span><br><span class="line"><span class="comment">  </span></span><br><span class="line"><span class="comment">    &lt;filefooter filetypes=".h.hpp" _separators="false"&gt;</span></span><br><span class="line"><span class="comment">      End of %projectpathname%</span></span><br><span class="line"><span class="comment">      #endif	// __%leafname%_H__</span></span><br><span class="line"><span class="comment">    &lt;/filefooter&gt;--&gt;</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- 文件头  comment 格式--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span>&gt;</span>%projectpathname%<span class="tag">&lt;/<span class="name">prototype</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">copyright</span>&gt;</span> Copyright (c) 2019 IRIS_Chen IRIS Lab <span class="tag">&lt;/<span class="name">copyright</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">changelog</span>&gt;</span>%date%    %user%	Created<span class="tag">&lt;/<span class="name">changelog</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">file-vb</span> <span class="attr">_separators</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span>&gt;</span>%projectpathname%<span class="tag">&lt;/<span class="name">prototype</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">file-vb</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Free-form text example</span></span><br><span class="line"><span class="comment">    &lt;file&gt;</span></span><br><span class="line"><span class="comment">      // project:	%project%</span></span><br><span class="line"><span class="comment">      // file:	%projectpathname%</span></span><br><span class="line"><span class="comment">      //</span></span><br><span class="line"><span class="comment">      // summary:	%fileDescription%</span></span><br><span class="line"><span class="comment">      //</span></span><br><span class="line"><span class="comment">      //			%copyright%</span></span><br><span class="line"><span class="comment">      //</span></span><br><span class="line"><span class="comment">      //			Date		Developer		Change</span></span><br><span class="line"><span class="comment">      //			%date%	%user%	Created</span></span><br><span class="line"><span class="comment">    &lt;/file&gt;</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Default plain-text Atomineer file footer. These follow the same form as the file headers above --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filefooter</span>&gt;</span></span><br><span class="line">      End of %projectpathname%</span><br><span class="line">    <span class="tag">&lt;/<span class="name">filefooter</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">filefooter-vb</span> <span class="attr">_separators</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">      '---------------------------------------------------------------------------------------------------</span><br><span class="line">      ' End of %projectpathname%</span><br><span class="line">    <span class="tag">&lt;/<span class="name">filefooter-vb</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">      Comment template for catch-all comments. These are added when the filetype of the document</span></span><br><span class="line"><span class="comment">      is not one of the core languages that Atomineer can parse to auto-document. The separators</span></span><br><span class="line"><span class="comment">      and line headers used for each file extension (e.g. .html, .sql) are configured in your</span></span><br><span class="line"><span class="comment">      Prefs.xml, allowing Atomineer to correctly insert simple "boilerplate" comments into any</span></span><br><span class="line"><span class="comment">      file format.</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">catchall</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">catchall</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">      Default namespace comment. As with file comments, you can use plain-text or XML commenting for</span></span><br><span class="line"><span class="comment">      this entry.</span></span><br><span class="line"><span class="comment">    --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">namespace</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">namespace</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">typedef</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">typedef</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">enum</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">enum</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bitfield</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bitfield</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">struct</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">struct</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">union</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">union</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">class</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">class</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">interface</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">interface</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">module</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- C/C++ #define macro --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">def</span>&gt;</span>	</span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">def</span>&gt;</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">&lt;!-- C++ Function Method 头部声明 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">method</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">returns</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">method</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">indexer</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">returns</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">indexer</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">delegate</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">returns</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">delegate</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">constructor</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">destructor</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">destructor</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">finaliser</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">finaliser</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">operator</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">returns</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">operator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">eventhandler</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">returns</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">eventhandler</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">eventsender</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">author</span>&gt;</span>%user%<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">date</span>&gt;</span>%date%<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exception</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">returns</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">eventsender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">member</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">member</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Templates for methods in abstract classes and interfaces --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">interfacemethod</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">returns</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">interfacemethod</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">interfaceproperty</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">interfaceproperty</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">interfaceindexer</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">prototype</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">summary</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">returns</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">_</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">seealso</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">interfaceindexer</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">DoxygenTemplates</span>&gt;</span></span><br></pre></td></tr></table></figure><br><br><br><br></details>
+
+
+
+
+
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
+<li><a href="https://blog.windawings.com/reverse/atomineer-crack.html" target="_blank" rel="noopener">Atomineer Pro Documentation Trial 9.36 Crack</a></li>
+<li><a href="https://www.jb51.net/softs/577153.html" target="_blank" rel="noopener">atomineer pro documentation utils(visual studio常用插件) V9.45 官方版</a></li>
+<li><a href="https://blog.csdn.net/windawings/article/details/50607159" target="_blank" rel="noopener">Atomineer Pro Documentation Trial 9.36 Cracked</a></li>
+</ol>
+
+          
+            <br>
+            
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+          
+            <p>本文永久链接是：<a href=https://schen1024.github.io/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html>https://schen1024.github.io/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+  </div>
+</section>
+
+  
+
+
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-12-24T05:36:12+00:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2020年12月24日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/VS2015/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>VS2015</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Plugin/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Plugin</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Crack/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Crack</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Atomineer/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Atomineer</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html&title=AtomineerUtils使用说明 - 東木 - 随笔&summary=介绍AtomineerUtils 是国外的一款用于生成源代码注释的一款 VS 插件工具.这款插件，支持 C、C++、C++/CLI、C#、Java 语言等，由此可以看出其强大，注释的风格可以灵活配置。
+安装方法软件是付费软件, 具体使用版本见附件 AtomineerUtils936 也可以在参考链接给出的网页内找到 使用方法.
+具体安装方法可以看压缩包内附件文档,
+
+
+正常安装相应文件夹内的VS插件,本人使用的是 VS2015 插件
+第一次请务必断网进入VS，在插件里面把本工具的自动更新关闭掉，更新到最新版本将直接无法使用破解版本(如果刚好试用到期也不就不能用了)。
+
+VS 2015之下的版本(未测试是否可用):    安装路径自己选的，然后找到：你的安装路径/visual studio 20**/Addins/AtomineerUtils/替换掉里面的Atomineer.Utils.dll就好了
+VS 2015版本:    替换位置: %LocalAppData%/Microsoft/VisualStudio/14.0/Extensions/**(随机的名称)/VS 2017版本:    替换位置: %LocalAppData%/Microsoft/VisualStudio/15.0_** (随机的名称) /Extensions/**(随机的名称)/
+
+在相应文件夹内找到文件, 使用附件文件夹内的 同名文件替换掉里面的AtomineerProDocumentation.dll就好了
+
+可以在VS 的拓展目录C:\Users\Chen\AppData\Local\Microsoft\VisualStudio\14.0\Extensions 下搜索文件名可以快速找到
+例如个人最终的路径为
+
+C:\Users\Chen\AppData\Local\Microsoft\VisualStudio\14.0\Extensions\g2iuajz1.bzo\AtomineerProDocumentation.dll
+
+PS:如果使用过程中出现路径错误的情况，菜单栏-&gt;工具-&gt;Atomineer…Trial-&gt;…options 进去点下确定出来就好了。
+或者进入安装路径找到AtomineerUtilsWizard.exe，通过一下配置向导
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://schen1024.github.io/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html&title=AtomineerUtils使用说明 - 東木 - 随笔&summary=介绍AtomineerUtils 是国外的一款用于生成源代码注释的一款 VS 插件工具.这款插件，支持 C、C++、C++/CLI、C#、Java 语言等，由此可以看出其强大，注释的风格可以灵活配置。
+安装方法软件是付费软件, 具体使用版本见附件 AtomineerUtils936 也可以在参考链接给出的网页内找到 使用方法.
+具体安装方法可以看压缩包内附件文档,
+
+
+正常安装相应文件夹内的VS插件,本人使用的是 VS2015 插件
+第一次请务必断网进入VS，在插件里面把本工具的自动更新关闭掉，更新到最新版本将直接无法使用破解版本(如果刚好试用到期也不就不能用了)。
+
+VS 2015之下的版本(未测试是否可用):    安装路径自己选的，然后找到：你的安装路径/visual studio 20**/Addins/AtomineerUtils/替换掉里面的Atomineer.Utils.dll就好了
+VS 2015版本:    替换位置: %LocalAppData%/Microsoft/VisualStudio/14.0/Extensions/**(随机的名称)/VS 2017版本:    替换位置: %LocalAppData%/Microsoft/VisualStudio/15.0_** (随机的名称) /Extensions/**(随机的名称)/
+
+在相应文件夹内找到文件, 使用附件文件夹内的 同名文件替换掉里面的AtomineerProDocumentation.dll就好了
+
+可以在VS 的拓展目录C:\Users\Chen\AppData\Local\Microsoft\VisualStudio\14.0\Extensions 下搜索文件名可以快速找到
+例如个人最终的路径为
+
+C:\Users\Chen\AppData\Local\Microsoft\VisualStudio\14.0\Extensions\g2iuajz1.bzo\AtomineerProDocumentation.dll
+
+PS:如果使用过程中出现路径错误的情况，菜单栏-&gt;工具-&gt;Atomineer…Trial-&gt;…options 进去点下确定出来就好了。
+或者进入安装路径找到AtomineerUtilsWizard.exe，通过一下配置向导
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2019/11-14/AtomineerUtils%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html&title=AtomineerUtils使用说明 - 東木 - 随笔&summary=介绍AtomineerUtils 是国外的一款用于生成源代码注释的一款 VS 插件工具.这款插件，支持 C、C++、C++/CLI、C#、Java 语言等，由此可以看出其强大，注释的风格可以灵活配置。
+安装方法软件是付费软件, 具体使用版本见附件 AtomineerUtils936 也可以在参考链接给出的网页内找到 使用方法.
+具体安装方法可以看压缩包内附件文档,
+
+
+正常安装相应文件夹内的VS插件,本人使用的是 VS2015 插件
+第一次请务必断网进入VS，在插件里面把本工具的自动更新关闭掉，更新到最新版本将直接无法使用破解版本(如果刚好试用到期也不就不能用了)。
+
+VS 2015之下的版本(未测试是否可用):    安装路径自己选的，然后找到：你的安装路径/visual studio 20**/Addins/AtomineerUtils/替换掉里面的Atomineer.Utils.dll就好了
+VS 2015版本:    替换位置: %LocalAppData%/Microsoft/VisualStudio/14.0/Extensions/**(随机的名称)/VS 2017版本:    替换位置: %LocalAppData%/Microsoft/VisualStudio/15.0_** (随机的名称) /Extensions/**(随机的名称)/
+
+在相应文件夹内找到文件, 使用附件文件夹内的 同名文件替换掉里面的AtomineerProDocumentation.dll就好了
+
+可以在VS 的拓展目录C:\Users\Chen\AppData\Local\Microsoft\VisualStudio\14.0\Extensions 下搜索文件名可以快速找到
+例如个人最终的路径为
+
+C:\Users\Chen\AppData\Local\Microsoft\VisualStudio\14.0\Extensions\g2iuajz1.bzo\AtomineerProDocumentation.dll
+
+PS:如果使用过程中出现路径错误的情况，菜单栏-&gt;工具-&gt;Atomineer…Trial-&gt;…options 进去点下确定出来就好了。
+或者进入安装路径找到AtomineerUtilsWizard.exe，通过一下配置向导
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+              <a class='prev' href='/2019/11-15/%E5%BC%95%E5%85%A5OpenCV%E5%AF%BC%E8%87%B4%E7%A7%81%E6%9C%89%E5%86%85%E5%AD%98%E5%B7%A8%E5%A4%A7.html'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>引入OpenCV导致私有内存巨大</p>
+                <p class='content'>说明在调试程序的时候 发现自己的程序在VS的调试窗口占用很高,花时间关注了一下这个问题, 手动写了小的程序复现这个问题,最终确定了占用巨大的问题. 
+VS的调试工具表示的内存占用是统计的程序 私...</p>
+              </a>
+            
+            
+              <a class='next' href='/2019/11-10/QT%E4%BD%BF%E7%94%A8%E6%8F%90%E5%8D%87%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6.html'>
+                <p class='title'>QT使用提升自定义组件<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>QT 组件提升来实现自定义功能
+介绍我们在使用QT设置界面之后,往往需要自己实现一些方法,如果是单独 的还好,但是如果遇到很多同类型的都有需求,
+比如 我们使用 QLineEdit 来处理数据,...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-spinner fa-spin fa-fw"></i>
+          </div>
+        </section>
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'AtomineerUtils使用说明',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装方法"><span class="toc-text">安装方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用方法说明"><span class="toc-text">使用方法说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-VS-进入设置方法"><span class="toc-text">1. VS 进入设置方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-初始设定"><span class="toc-text">2. 初始设定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-注释模板路径"><span class="toc-text">3. 注释模板路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-注释规则"><span class="toc-text">4. 注释规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详细配置文档"><span class="toc-text">详细配置文档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考链接"><span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget category shadow desktop">
+    
+  <header>
+    
+      <a href='categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <ul class="entry navigation">
+        
+          <li><a class="flat-box"
+            title="/categories/Alg/" href="/categories/Alg/"
+            id="categoriesAlg"
+            ><div class='name'>Alg</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/C/" href="/categories/C/"
+            id="categoriesC"
+            ><div class='name'>C++</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Config/" href="/categories/Config/"
+            id="categoriesConfig"
+            ><div class='name'>Config</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Essay/" href="/categories/Essay/"
+            id="categoriesEssay"
+            ><div class='name'>Essay</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Game/" href="/categories/Game/"
+            id="categoriesGame"
+            ><div class='name'>Game</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Hexo/" href="/categories/Hexo/"
+            id="categoriesHexo"
+            ><div class='name'>Hexo</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/IOT/" href="/categories/IOT/"
+            id="categoriesIOT"
+            ><div class='name'>IOT</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Interview/" href="/categories/Interview/"
+            id="categoriesInterview"
+            ><div class='name'>Interview</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LaTex/" href="/categories/LaTex/"
+            id="categoriesLaTex"
+            ><div class='name'>LaTex</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode-Contest/" href="/categories/LeetCode-Contest/"
+            id="categoriesLeetCode-Contest"
+            ><div class='name'>LeetCode-Contest</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode/" href="/categories/LeetCode/"
+            id="categoriesLeetCode"
+            ><div class='name'>LeetCode</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Offer/" href="/categories/Offer/"
+            id="categoriesOffer"
+            ><div class='name'>Offer</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/OpenCV/" href="/categories/OpenCV/"
+            id="categoriesOpenCV"
+            ><div class='name'>OpenCV</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Person/" href="/categories/Person/"
+            id="categoriesPerson"
+            ><div class='name'>Person</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/QT/" href="/categories/QT/"
+            id="categoriesQT"
+            ><div class='name'>QT</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SSR/" href="/categories/SSR/"
+            id="categoriesSSR"
+            ><div class='name'>SSR</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Script/" href="/categories/Script/"
+            id="categoriesScript"
+            ><div class='name'>Script</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SerialPort/" href="/categories/SerialPort/"
+            id="categoriesSerialPort"
+            ><div class='name'>SerialPort</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Sword/" href="/categories/Sword/"
+            id="categoriesSword"
+            ><div class='name'>Sword</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/TODO/" href="/categories/TODO/"
+            id="categoriesTODO"
+            ><div class='name'>TODO</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Tools/" href="/categories/Tools/"
+            id="categoriesTools"
+            ><div class='name'>Tools</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Web/" href="/categories/Web/"
+            id="categoriesWeb"
+            ><div class='name'>Web</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Windows/" href="/categories/Windows/"
+            id="categoriesWindows"
+            ><div class='name'>Windows</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/bug/" href="/categories/bug/"
+            id="categoriesbug"
+            ><div class='name'>bug</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/data/" href="/categories/data/"
+            id="categoriesdata"
+            ><div class='name'>data</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/hexo/" href="/categories/hexo/"
+            id="categorieshexo"
+            ><div class='name'>hexo</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/latex/" href="/categories/latex/"
+            id="categorieslatex"
+            ><div class='name'>latex</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/opencv/" href="/categories/opencv/"
+            id="categoriesopencv"
+            ><div class='name'>opencv</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imagelab/" href="/categories/opencv/imagelab/"
+            id="categoriesopencvimagelab"
+            ><div class='name'>imagelab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imaglab/" href="/categories/opencv/imaglab/"
+            id="categoriesopencvimaglab"
+            ><div class='name'>imaglab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/person/" href="/categories/person/"
+            id="categoriesperson"
+            ><div class='name'>person</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/python/" href="/categories/python/"
+            id="categoriespython"
+            ><div class='name'>python</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/uncategorized/" href="/categories/uncategorized/"
+            id="categoriesuncategorized"
+            ><div class='name'>uncategorized</div><div class='badge'>(5)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/xxx/" href="/categories/xxx/"
+            id="categoriesxxx"
+            ><div class='name'>xxx</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E7%AE%97%E6%B3%95/" href="/categories/%E7%AE%97%E6%B3%95/"
+            id="categoriesE7AE97E6B395"
+            ><div class='name'>算法</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget tagcloud shadow desktop mobile">
+    
+  <header>
+    
+      <a href='tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/2019/" style="font-size: 14px; color: #999">2019</a> <a href="/tags/2020/" style="font-size: 14px; color: #999">2020</a> <a href="/tags/51/" style="font-size: 14px; color: #999">51</a> <a href="/tags/996/" style="font-size: 14px; color: #999">996</a> <a href="/tags/Android/" style="font-size: 14px; color: #999">Android</a> <a href="/tags/Array/" style="font-size: 17px; color: #858585">Array</a> <a href="/tags/Atomineer/" style="font-size: 14px; color: #999">Atomineer</a> <a href="/tags/BinarySearch/" style="font-size: 15px; color: #929292">BinarySearch</a> <a href="/tags/Bugs/" style="font-size: 15px; color: #929292">Bugs</a> <a href="/tags/C/" style="font-size: 14px; color: #999">C</a> <a href="/tags/C/" style="font-size: 24px; color: #555">C++</a> <a href="/tags/Cmake/" style="font-size: 14px; color: #999">Cmake</a> <a href="/tags/Code/" style="font-size: 14px; color: #999">Code</a> <a href="/tags/Compass/" style="font-size: 14px; color: #999">Compass</a> <a href="/tags/Contest/" style="font-size: 14px; color: #999">Contest</a> <a href="/tags/Crack/" style="font-size: 14px; color: #999">Crack</a> <a href="/tags/Doctest/" style="font-size: 14px; color: #999">Doctest</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14px; color: #999">Dynamic Programming</a> <a href="/tags/Emotion/" style="font-size: 14px; color: #999">Emotion</a> <a href="/tags/HEX/" style="font-size: 14px; color: #999">HEX</a> <a href="/tags/ICU/" style="font-size: 14px; color: #999">ICU</a> <a href="/tags/Interview/" style="font-size: 16px; color: #8b8b8b">Interview</a> <a href="/tags/Job/" style="font-size: 15px; color: #929292">Job</a> <a href="/tags/Jobs/" style="font-size: 14px; color: #999">Jobs</a> <a href="/tags/Latex/" style="font-size: 14px; color: #999">Latex</a> <a href="/tags/LeetCode/" style="font-size: 20px; color: #707070">LeetCode</a> <a href="/tags/LeetCode-easy-Overflow/" style="font-size: 14px; color: #999">LeetCode,easy,Overflow</a> <a href="/tags/Live/" style="font-size: 14px; color: #999">Live</a> <a href="/tags/Logger/" style="font-size: 14px; color: #999">Logger</a> <a href="/tags/Math/" style="font-size: 14px; color: #999">Math</a> <a href="/tags/Medium/" style="font-size: 15px; color: #929292">Medium</a> <a href="/tags/NameStyle/" style="font-size: 14px; color: #999">NameStyle</a> <a href="/tags/OpenCV/" style="font-size: 14px; color: #999">OpenCV</a> <a href="/tags/PBootCMS/" style="font-size: 15px; color: #929292">PBootCMS</a> <a href="/tags/PID/" style="font-size: 14px; color: #999">PID</a> <a href="/tags/PSO/" style="font-size: 14px; color: #999">PSO</a> <a href="/tags/Person/" style="font-size: 14px; color: #999">Person</a> <a href="/tags/Plugin/" style="font-size: 14px; color: #999">Plugin</a> <a href="/tags/PrimeNum/" style="font-size: 14px; color: #999">PrimeNum</a> <a href="/tags/Protocbuf/" style="font-size: 14px; color: #999">Protocbuf</a> <a href="/tags/QT/" style="font-size: 17px; color: #858585">QT</a> <a href="/tags/QT%E8%87%AA%E5%AE%9A%E4%B9%89/" style="font-size: 14px; color: #999">QT自定义</a> <a href="/tags/SSR/" style="font-size: 14px; color: #999">SSR</a> <a href="/tags/Serial/" style="font-size: 16px; color: #8b8b8b">Serial</a> <a href="/tags/SerialPort/" style="font-size: 14px; color: #999">SerialPort</a> <a href="/tags/She/" style="font-size: 14px; color: #999">She</a> <a href="/tags/String/" style="font-size: 14px; color: #999">String</a> <a href="/tags/TODO/" style="font-size: 14px; color: #999">TODO</a> <a href="/tags/TwoPointers/" style="font-size: 14px; color: #999">TwoPointers</a> <a href="/tags/UART/" style="font-size: 14px; color: #999">UART</a> <a href="/tags/UnitTest/" style="font-size: 14px; color: #999">UnitTest</a> <a href="/tags/Utils/" style="font-size: 14px; color: #999">Utils</a> <a href="/tags/VS/" style="font-size: 15px; color: #929292">VS</a> <a href="/tags/VS2015/" style="font-size: 16px; color: #8b8b8b">VS2015</a> <a href="/tags/Window/" style="font-size: 14px; color: #999">Window</a> <a href="/tags/Work/" style="font-size: 15px; color: #929292">Work</a> <a href="/tags/Wuhan/" style="font-size: 14px; color: #999">Wuhan</a> <a href="/tags/XeLaTex/" style="font-size: 14px; color: #999">XeLaTex</a> <a href="/tags/action/" style="font-size: 14px; color: #999">action</a> <a href="/tags/algorithm/" style="font-size: 14px; color: #999">algorithm</a> <a href="/tags/aliyun/" style="font-size: 14px; color: #999">aliyun</a> <a href="/tags/asp/" style="font-size: 14px; color: #999">asp</a> <a href="/tags/batch/" style="font-size: 14px; color: #999">batch</a> <a href="/tags/blog/" style="font-size: 21px; color: #696969">blog</a> <a href="/tags/blog%EF%BC%8Chexo/" style="font-size: 14px; color: #999">blog，hexo</a> <a href="/tags/bug/" style="font-size: 14px; color: #999">bug</a> <a href="/tags/c/" style="font-size: 22px; color: #636363">c++</a> <a href="/tags/changelog/" style="font-size: 14px; color: #999">changelog</a> <a href="/tags/cnblogs/" style="font-size: 15px; color: #929292">cnblogs</a> <a href="/tags/cov/" style="font-size: 14px; color: #999">cov</a> <a href="/tags/csdn/" style="font-size: 15px; color: #929292">csdn</a> <a href="/tags/data/" style="font-size: 14px; color: #999">data</a> <a href="/tags/depurple/" style="font-size: 14px; color: #999">depurple</a> <a href="/tags/dream/" style="font-size: 14px; color: #999">dream</a> <a href="/tags/easy/" style="font-size: 16px; color: #8b8b8b">easy</a> <a href="/tags/encrypt/" style="font-size: 23px; color: #5c5c5c">encrypt</a> <a href="/tags/file/" style="font-size: 14px; color: #999">file</a> <a href="/tags/fraud/" style="font-size: 14px; color: #999">fraud</a> <a href="/tags/game/" style="font-size: 15px; color: #929292">game</a> <a href="/tags/github/" style="font-size: 15px; color: #929292">github</a> <a href="/tags/hard/" style="font-size: 15px; color: #929292">hard</a> <a href="/tags/hexo/" style="font-size: 19px; color: #777">hexo</a> <a href="/tags/hide/" style="font-size: 21px; color: #696969">hide</a> <a href="/tags/histograms/" style="font-size: 14px; color: #999">histograms</a> <a href="/tags/history/" style="font-size: 14px; color: #999">history</a> <a href="/tags/home/" style="font-size: 15px; color: #929292">home</a> <a href="/tags/html/" style="font-size: 14px; color: #999">html</a> <a href="/tags/imagelab/" style="font-size: 15px; color: #929292">imagelab</a> <a href="/tags/intel/" style="font-size: 14px; color: #999">intel</a> <a href="/tags/js/" style="font-size: 14px; color: #999">js</a> <a href="/tags/latex/" style="font-size: 15px; color: #929292">latex</a> <a href="/tags/learn/" style="font-size: 14px; color: #999">learn</a> <a href="/tags/list/" style="font-size: 14px; color: #999">list</a> <a href="/tags/master/" style="font-size: 15px; color: #929292">master</a> <a href="/tags/mat/" style="font-size: 14px; color: #999">mat</a> <a href="/tags/matlab/" style="font-size: 14px; color: #999">matlab</a> <a href="/tags/offer/" style="font-size: 14px; color: #999">offer</a> <a href="/tags/opencv/" style="font-size: 24px; color: #555">opencv</a> <a href="/tags/outline/" style="font-size: 14px; color: #999">outline</a> <a href="/tags/overleaf/" style="font-size: 14px; color: #999">overleaf</a> <a href="/tags/pac/" style="font-size: 14px; color: #999">pac</a> <a href="/tags/person/" style="font-size: 18px; color: #7e7e7e">person</a> <a href="/tags/php/" style="font-size: 14px; color: #999">php</a> <a href="/tags/ppt/" style="font-size: 14px; color: #999">ppt</a> <a href="/tags/project/" style="font-size: 14px; color: #999">project</a> <a href="/tags/proxy/" style="font-size: 14px; color: #999">proxy</a> <a href="/tags/python/" style="font-size: 14px; color: #999">python</a> <a href="/tags/qt/" style="font-size: 22px; color: #636363">qt</a> <a href="/tags/robot/" style="font-size: 14px; color: #999">robot</a> <a href="/tags/script/" style="font-size: 14px; color: #999">script</a> <a href="/tags/server/" style="font-size: 15px; color: #929292">server</a> <a href="/tags/shopping/" style="font-size: 14px; color: #999">shopping</a> <a href="/tags/sketchup/" style="font-size: 14px; color: #999">sketchup</a> <a href="/tags/soft/" style="font-size: 15px; color: #929292">soft</a> <a href="/tags/sword/" style="font-size: 14px; color: #999">sword</a> <a href="/tags/swordoffer/" style="font-size: 14px; color: #999">swordoffer</a> <a href="/tags/template/" style="font-size: 14px; color: #999">template</a> <a href="/tags/test/" style="font-size: 16px; color: #8b8b8b">test</a> <a href="/tags/theme/" style="font-size: 14px; color: #999">theme</a> <a href="/tags/todo/" style="font-size: 14px; color: #999">todo</a> <a href="/tags/tools/" style="font-size: 14px; color: #999">tools</a> <a href="/tags/washing-machine/" style="font-size: 14px; color: #999">washing machine</a> <a href="/tags/web/" style="font-size: 15px; color: #929292">web</a> <a href="/tags/whu/" style="font-size: 14px; color: #999">whu</a> <a href="/tags/years/" style="font-size: 14px; color: #999">years</a> <a href="/tags/%E4%B8%B2%E5%8F%A3/" style="font-size: 14px; color: #999">串口</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 14px; color: #999">分治</a> <a href="/tags/%E5%9B%BE%E7%89%87/" style="font-size: 14px; color: #999">图片</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 14px; color: #999">多线程</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 14px; color: #999">学习</a> <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" style="font-size: 14px; color: #999">嵌入式</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 14px; color: #999">数学</a> <a href="/tags/%E6%B0%B4%E6%B8%A9%E6%8E%A7%E5%88%B6/" style="font-size: 14px; color: #999">水温控制</a> <a href="/tags/%E9%98%9F%E5%88%97/" style="font-size: 14px; color: #999">队列</a>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='false'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='netease'
+      type='playlist'
+      id='3175833810'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="/atom.xml"
+                class="social fas fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="mailto:me@xaoxuu.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://github.com/xaoxuu"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=63035382"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+      
+    
+      
+        本站使用
+        <a href="https://volantis.js.org/" target="_blank" class="codename">Schen00</a>
+        作为主题
+        
+          ，
+          总访问量为
+          <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+          次
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://xaoxuu.com" target="_blank" rel="noopener">Copyright © 2017-2020 Mr. X</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js" async></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js" async></script>
+
+  
+
+
+
+
+
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.2.0/js/valine.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var notify = 'false' == true;
+  var verify = 'false' == true;
+  var valine = new Valine();
+  valine.init({
+    el: '#valine_container',
+    notify: notify,
+    verify: verify,
+    guest_info: guest_info,
+    
+    appId: "aB4XKwq00t6BFhV80u7mCg6z-gzGzoHsz",
+    appKey: "RndTSESgwxQgJtumDIvUeWvk",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'mp',
+    lang:'zh-cn',
+    visitor: 'false',
+    highlight:'true'
+  })
+  </script>
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.1/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copyed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-clipboard-check');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPYED';
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-exclamation-triangle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("div.fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

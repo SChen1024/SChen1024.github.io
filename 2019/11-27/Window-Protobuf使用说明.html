@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#2.2.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>Window+Protobuf使用说明 - 東木 - 随笔</title>
+  
+    <meta name="keywords" content="C++,Window,Cmake,Protocbuf">
+  
+  
+    <meta name="description" content="介绍起因由于项目中要用到二进制存储数据,之前使用的方式是按照字节数依次将数据写入字节流中, 但是这样做起来做文件的协议兼容比较难做,所以我们考虑使用 protobuf 来做格式定义, 便于不同版本的文件兼容, 这边使用用起来十分方便且后续添加参数之后, 版本之间的改动很好处理,多出来的参数或者未找到的参数可以使用...">
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="東木 - 随笔">
+  
+
+  <!-- import meta -->
+  
+    
+      <meta name='theme-color' content='#FFFFFF'>
+    
+      <meta name='msapplication-TileColor' content='#cccccc'>
+    
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+  <link rel="shortcut icon" type='image/x-icon' href="https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  <!-- import link -->
+  
+  
+  <link rel='shortcut icon' type='image/x-icon' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  <link rel='icon' type='image/x-icon' sizes='32x32' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  
+
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <a class="logo flat-box"></a>
+      <ul class='switcher h-list'>
+        <li><a class="s-comment flat-btn fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc flat-btn fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="logo flat-box" target="_self" href='/'>
+          
+            <img class='logo' src='https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png'/>
+          
+          
+          
+          
+        </a>
+      
+
+      
+
+			<div class='menu navigation'>
+				<ul class='h-list'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  
+                    <i class='fas fa-rss fa-fw'></i>
+                  
+                  博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  
+                    <i class='fas fa-folder-open fa-fw'></i>
+                  
+                  分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  
+                    <i class='fas fa-tags fa-fw'></i>
+                  
+                  标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  
+                    <i class='fas fa-archive fa-fw'></i>
+                  
+                  归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  
+                    <i class='fas fa-link fa-fw'></i>
+                  
+                  友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  
+                    <i class='fas fa-info-circle fa-fw'></i>
+                  
+                  关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      
+        <div class="m_search">
+          <form name="searchform" class="form u-search-form">
+            <i class="icon fas fa-search fa-fw"></i>
+            <input type="text" class="input u-search-input" placeholder="搜索" />
+          </form>
+        </div>
+      
+
+			<ul class='switcher h-list'>
+				
+					<li><a class="s-search flat-btn fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li><a class="s-menu flat-btn fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<ul class="menu-phone navigation white-box">
+  
+  
+    <li>
+      <a class="flat-box" href=/
+        
+        
+        
+          id="home"
+        >
+        
+          <i class='fas fa-rss fa-fw'></i>
+        
+        博客
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/categories/
+        
+        
+        
+          id="categories"
+        >
+        
+          <i class='fas fa-folder-open fa-fw'></i>
+        
+        分类
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/tags/
+        
+        
+        
+          id="tags"
+        >
+        
+          <i class='fas fa-tags fa-fw'></i>
+        
+        标签
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/archives/
+        
+        
+        
+          id="archives"
+        >
+        
+          <i class='fas fa-archive fa-fw'></i>
+        
+        归档
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/friends/
+        
+        
+        
+          id="friends"
+        >
+        
+          <i class='fas fa-link fa-fw'></i>
+        
+        友链
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/about/
+        
+        
+        
+          id="about"
+        >
+        
+          <i class='fas fa-info-circle fa-fw'></i>
+        
+        关于
+      </a>
+    </li>
+  
+</ul>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box shadow article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2019/11-27/Window-Protobuf%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html">
+        Window+Protobuf使用说明
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+<div class='new-meta-item author'>
+  <a href="https://schen1024.github.io" rel="nofollow">
+    <img src="https://avatars3.githubusercontent.com/u/12789460">
+    <p>SChen1024</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/Windows/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>Windows</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2019年11月27日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>由于项目中要用到二进制存储数据,之前使用的方式是按照字节数依次将数据写入字节流中, 但是这样做起来做文件的协议兼容比较难做,所以我们考虑使用 protobuf 来做格式定义, 便于不同版本的文件兼容, 这边使用用起来十分方便且后续添加参数之后, 版本之间的改动很好处理,多出来的参数或者未找到的参数可以使用默认处理即可,十分方便</p>
+<h3 id="常用配置文件介绍"><a href="#常用配置文件介绍" class="headerlink" title="常用配置文件介绍"></a>常用配置文件介绍</h3><p>程序的配置文件是一个很常用的手段, 每次读取配置文件的信息, 容纳后根据参数决定我们的执行顺序, 是程序的一个很好的设计方式, 常用的配置文件我们会选择使用自己可读的文件格式,进行一定的程序注释之类的,然后在通过配置接口,将我们需要的参数依次读取到内存中,进行读写. </p>
+<p>常用的配置文件格式有:</p>
+<ul>
+<li>xml</li>
+<li>yaml</li>
+<li>json</li>
+<li>ini</li>
+<li>properties</li>
+<li>……</li>
+</ul>
+<p>具体的参数区别与优劣比较自己可以查阅 <a href="https://colobu.com/2017/08/31/configuration-file-format/" target="_blank" rel="noopener">常用配置文件格式</a> </p>
+<a id="more"></a>
+<h3 id="protocbuf-介绍"><a href="#protocbuf-介绍" class="headerlink" title="protocbuf 介绍"></a>protocbuf 介绍</h3><p>Protocol buffers 是一种语言中立，平台无关，可扩展的序列化数据的格式，可用于通信协议，数据存储等。</p>
+<p>Protocol buffers 在序列化数据方面，它是灵活的，高效的。相比于 XML 来说，Protocol buffers 更加小巧，更加快速，更加简单。一旦定义了要处理的数据的数据结构之后，就可以利用 Protocol buffers 的代码生成工具生成相关的代码。甚至可以在无需重新部署程序的情况下更新数据结构。只需使用 Protobuf 对数据结构进行一次描述，即可利用各种不同语言或从各种不同数据流中对你的结构化数据轻松读写。</p>
+<p>Protocol buffers 很适合做数据存储或 RPC 数据交换格式。可用于通讯协议、数据存储等领域的语言无关、平台无关、可扩展的序列化结构数据格式。</p>
+<h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><h3 id="环境列表"><a href="#环境列表" class="headerlink" title="环境列表"></a>环境列表</h3><p>本次使用的环境列表如下</p>
+<ul>
+<li>protobuf 3.11.0  <a href="https://github.com/protocolbuffers/protobuf/releases/download/v3.11.0/protobuf-all-3.11.0.zip" target="_blank" rel="noopener">protobuf-all-3.11.0.zip</a></li>
+<li>cmake 3.14.2</li>
+<li>VS2015</li>
+</ul>
+<h3 id="本机配置开源库编译"><a href="#本机配置开源库编译" class="headerlink" title="本机配置开源库编译"></a>本机配置开源库编译</h3><p>由于是在 Windows 下面编译, 所以这边使用了 cmake-gui 的编译方式, 按照如下步骤配置</p>
+<ol start="0">
+<li>假设已经新建了一个文件夹,后续的操作都在此文件夹下 假设操作的所有文件夹都在 D:/Soft/Protobuf 文件夹下面, 新建三个文件夹,便于后续操作, 我们使用 $() 代替在你自己设备中的路径, 不要弄错<ul>
+<li><code>source</code>  $(SOURCE)   原始文件</li>
+<li><code>build</code>   $(BUILD)    工程文件和编译文件</li>
+<li><code>install</code> $(INSTALL)  软件最后安装的路径</li>
+</ul>
+</li>
+<li>下载原始项目,如果压缩包,将全部文件解压到 $(SOURCE) 文件夹下面</li>
+<li>使用 cmake-gui 配置相应的原始文件夹, 一般打开到 原始文件夹下有 <code>CMakeLists.txt</code>的文件目录即可, 如: <code>$(SOURCE)/protobuf-3.11.0/cmake</code></li>
+<li>目标目录打开到 $(BUILD)</li>
+<li>点击左下角,Configure, 选择 自己本机的 VS版本 可以选择架构 例如: VS2015 x64 架构</li>
+<li>再次点击 Configure ,程序会开始读取 CMakeLists 里面的参数, 输出窗口会输出log 信息, 如果有红色会报错,我们需要排查相应的库是否完成依赖项,如果有重要依赖, 可能无法完成编译</li>
+<li>如果一切无措,我们可以看到 如图的cmake 编译参数, 这是简略参数, 根据具体内容, 我们勾选相应的参数并设置相应的安装路径即可完成配置,</li>
+<li>再次点击配置, 程序会进行配置, 选项会取消红色, 等生成完成即可, </li>
+<li>点击 Generate 生成 VS2015 工程, 我们可以选择 open Project 快速打开,或者到 $(BUILD) 文件夹 点击对应的 sln 文件打开项目</li>
+</ol>
+<p><img src="/2019/11-27/Window-Protobuf%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/cmake-311.png" alt="Cmake 编译参数"></p>
+<!--more-->
+<h3 id="使用-VS2015-编译库"><a href="#使用-VS2015-编译库" class="headerlink" title="使用 VS2015 编译库"></a>使用 VS2015 编译库</h3><ol>
+<li>一般 我们打开之后, 选择 Debug 或者 Release 选择 生成-生成解决方案, VS就开始了编译过程, 开始进行了项目编译过程</li>
+<li>可能存在编译错误, 一般不会出现, 不建议更改源项目, 可以查看是否自己错误</li>
+<li>编译好的之后的安装文件夹可能存在如下的文件夹结构, 将 $(INSTALL)/bin 加入到 path 环境中, 里面有 dll 文件和 exe 文件便于使用<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">├─bin          </span><br><span class="line">├─examples     </span><br><span class="line">├─include      </span><br><span class="line">└─lib</span><br></pre></td></tr></table></figure>
+<h3 id="使用编译好的库-lib"><a href="#使用编译好的库-lib" class="headerlink" title="使用编译好的库 lib"></a>使用编译好的库 lib</h3></li>
+<li><p>假设我们需要测试 lib 文件, 建立 VS2015 工程, 新建 <code>main.cpp</code> <code>addressbook.proto</code> 的文件</p>
+</li>
+<li><p>在我们使用编译好的库的时候, 需要引用 include 文件才能进行编译, <code>$(INSTALL)/include</code></p>
+</li>
+<li>我们使用 protobuf 的例程文件里面的  <code>addressbook.proto</code>, 配置相应的消息格式,</li>
+</ol>
+<details><br><summary> 自定义 message 格式 </summary><br><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// See README.txt for information and build instructions.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Note: START and END tags are used in comments to define sections used in</span></span><br><span class="line"><span class="comment">// tutorials.  They are not part of the syntax for Protocol Buffers.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// To get an in-depth walkthrough of this file and the related examples, see:</span></span><br><span class="line"><span class="comment">// https://developers.google.com/protocol-buffers/docs/tutorials</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// [START declaration]</span></span><br><span class="line">syntax = <span class="string">"proto3"</span>;</span><br><span class="line">package tutorial;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"google/protobuf/timestamp.proto"</span>;</span><br><span class="line"><span class="comment">// [END declaration]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// [START java_declaration]</span></span><br><span class="line">option java_package = <span class="string">"com.example.tutorial"</span>;</span><br><span class="line">option java_outer_classname = <span class="string">"AddressBookProtos"</span>;</span><br><span class="line"><span class="comment">// [END java_declaration]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// [START csharp_declaration]</span></span><br><span class="line">option csharp_namespace = <span class="string">"Google.Protobuf.Examples.AddressBook"</span>;</span><br><span class="line"><span class="comment">// [END csharp_declaration]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// [START messages]</span></span><br><span class="line">message Person &#123;</span><br><span class="line">  <span class="built_in">string</span> name = <span class="number">1</span>;</span><br><span class="line">  int32 id = <span class="number">2</span>;  <span class="comment">// Unique ID number for this person.</span></span><br><span class="line">  <span class="built_in">string</span> email = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">enum</span> PhoneType &#123;</span><br><span class="line">    MOBILE = <span class="number">0</span>;</span><br><span class="line">    HOME = <span class="number">1</span>;</span><br><span class="line">    WORK = <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  message PhoneNumber &#123;</span><br><span class="line">    <span class="built_in">string</span> number = <span class="number">1</span>;</span><br><span class="line">    PhoneType type = <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  repeated PhoneNumber phones = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">  google.protobuf.Timestamp last_updated = <span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Our address book file is just one of these.</span></span><br><span class="line">message AddressBook &#123;</span><br><span class="line">  repeated Person people = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// [END messages]</span></span><br></pre></td></tr></table></figure><br></details>
+
+<ol start="3">
+<li>在工作目录下打开命令行, 使用bash 执行命令 将 <code>.proto</code> 文件编译成 对应的 <code>.h</code> 和 <code>.cpp</code> 文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc ./addressbook.proto --cpp_out=./</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>将样例里面的 列出人员和新加人员复制到自定义文件中</li>
+</ol>
+<details><br><summary>根据测试样例改写的 Main.cpp </summary><br><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// See README.txt for information and build instructions.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;google/protobuf/util/time_util.h&gt;</span></span></span><br><span class="line"><span class="comment">// #include &lt;google/protobuf/&gt;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"addressbook.pb.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> google::protobuf::util::TimeUtil;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Iterates though all people in the AddressBook and prints info about them.</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ListPeople</span><span class="params">(<span class="keyword">const</span> tutorial::AddressBook&amp; address_book)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; address_book.people_size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">const</span> tutorial::Person&amp; person = address_book.people(i);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Person ID: "</span> &lt;&lt; person.id() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"  Name: "</span> &lt;&lt; person.name() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">if</span> (person.email() != <span class="string">""</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"  E-mail address: "</span> &lt;&lt; person.email() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; person.phones_size(); j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">const</span> tutorial::Person::PhoneNumber&amp; phone_number = person.phones(j);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">switch</span> (phone_number.type())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">case</span> tutorial::Person::MOBILE:</span><br><span class="line">                    <span class="built_in">cout</span> &lt;&lt; <span class="string">"  Mobile phone #: "</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> tutorial::Person::HOME:</span><br><span class="line">                    <span class="built_in">cout</span> &lt;&lt; <span class="string">"  Home phone #: "</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> tutorial::Person::WORK:</span><br><span class="line">                    <span class="built_in">cout</span> &lt;&lt; <span class="string">"  Work phone #: "</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">default</span>:</span><br><span class="line">                    <span class="built_in">cout</span> &lt;&lt; <span class="string">"  Unknown phone #: "</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; phone_number.number() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (person.has_last_updated())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"  Updated: "</span> &lt;&lt; TimeUtil::ToString(person.last_updated()) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This function fills in a Person message based on user input.</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PromptForAddress</span><span class="params">(tutorial::Person* person)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter person ID number: "</span>;</span><br><span class="line">  <span class="keyword">int</span> id;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; id;</span><br><span class="line">  person-&gt;set_id(id);</span><br><span class="line">  <span class="built_in">cin</span>.ignore(<span class="number">256</span>, <span class="string">'\n'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter name: "</span>;</span><br><span class="line">  getline(<span class="built_in">cin</span>, *person-&gt;mutable_name());</span><br><span class="line"></span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter email address (blank for none): "</span>;</span><br><span class="line">  <span class="built_in">string</span> email;</span><br><span class="line">  getline(<span class="built_in">cin</span>, email);</span><br><span class="line">  <span class="keyword">if</span> (!email.empty()) &#123;</span><br><span class="line">    person-&gt;set_email(email);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter a phone number (or leave blank to finish): "</span>;</span><br><span class="line">    <span class="built_in">string</span> number;</span><br><span class="line">    getline(<span class="built_in">cin</span>, number);</span><br><span class="line">    <span class="keyword">if</span> (number.empty()) &#123;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    tutorial::Person::PhoneNumber* phone_number = person-&gt;add_phones();</span><br><span class="line">    phone_number-&gt;set_number(number);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Is this a mobile, home, or work phone? "</span>;</span><br><span class="line">    <span class="built_in">string</span> type;</span><br><span class="line">    getline(<span class="built_in">cin</span>, type);</span><br><span class="line">    <span class="keyword">if</span> (type == <span class="string">"mobile"</span>) &#123;</span><br><span class="line">      phone_number-&gt;set_type(tutorial::Person::MOBILE);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type == <span class="string">"home"</span>) &#123;</span><br><span class="line">      phone_number-&gt;set_type(tutorial::Person::HOME);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type == <span class="string">"work"</span>) &#123;</span><br><span class="line">      phone_number-&gt;set_type(tutorial::Person::WORK);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Unknown phone type.  Using default."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  *person-&gt;mutable_last_updated() = TimeUtil::SecondsToTimestamp(time(<span class="literal">nullptr</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Main function:  Reads the entire address book from a file,</span></span><br><span class="line"><span class="comment">//   adds one person based on user input, then writes it back out to the same</span></span><br><span class="line"><span class="comment">//   file.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Verify that the version of the library that we linked against is</span></span><br><span class="line">  <span class="comment">// compatible with the version of the headers we compiled against.</span></span><br><span class="line">  GOOGLE_PROTOBUF_VERIFY_VERSION;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Usage:  "</span> &lt;&lt; argv[<span class="number">0</span>] &lt;&lt; <span class="string">" ADDRESS_BOOK_FILE"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  tutorial::AddressBook address_book;</span><br><span class="line"></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// Read the existing address book.</span></span><br><span class="line">    <span class="function">fstream <span class="title">input</span><span class="params">(argv[<span class="number">1</span>], ios::in | ios::binary)</span></span>;</span><br><span class="line">    <span class="keyword">if</span> (!input) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; argv[<span class="number">1</span>] &lt;&lt; <span class="string">": File not found.  Creating a new file."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!address_book.ParseFromIstream(&amp;input)) &#123;</span><br><span class="line">      <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Failed to parse address book."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 列出文件 读取的人员</span></span><br><span class="line">  ListPeople(address_book);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 重新添加一个人员</span></span><br><span class="line">  PromptForAddress(address_book.add_people());</span><br><span class="line"></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// Write the new address book back to disk.</span></span><br><span class="line">    <span class="function">fstream <span class="title">output</span><span class="params">(argv[<span class="number">1</span>], ios::out | ios::trunc | ios::binary)</span></span>;</span><br><span class="line">    <span class="keyword">if</span> (!address_book.SerializeToOstream(&amp;output)) &#123;</span><br><span class="line">      <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Failed to write address book."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Optional:  Delete all global objects allocated by libprotobuf.</span></span><br><span class="line">  google::protobuf::ShutdownProtobufLibrary();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br></details>
+
+<ol start="5">
+<li><p>配置 main 函数的输入参数<br>项目–右键–属性–调试–命令参数—-加入  ./test.bin  </p>
+</li>
+<li><p>配置 C++ 项目 include 文件夹和附加库<br>项目–右键–属性–VC++目录–包含目录–编辑—–加入 $(INSTALL)/include<br>项目–右键–属性–链接器–输入–附加依赖项– 编辑——-加入 $(INSTALL)/lib/libprotobuf.lib 和 $(INSTALL)/lib/libprotobufd.lib</p>
+</li>
+<li><p>如果编译了 共享dll 文件<br>项目–右键–属性–C/C++–预处理器–预处理器定义–编辑—-加入  PROTOBUF_USE_DLLS</p>
+</li>
+</ol>
+<p>最终编译成功, 可以列出来 文件中的参数, 最终生成的二进制文件hex 文件内容</p>
+<p><img src="/2019/11-27/Window-Protobuf%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/example.png" alt="测试成功"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  Offset: 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 	</span><br><span class="line">00000000: 0A 15 0A 01 32 10 01 1A 01 33 22 03 0A 01 34 2A    ....2....3&quot;...4*</span><br><span class="line">00000010: 06 08 B2 AD F9 EE 05 0A 15 0A 01 32 10 01 1A 01    ..2-yn.....2....</span><br><span class="line">00000020: 33 22 03 0A 01 34 2A 06 08 D2 AD F9 EE 05          3&quot;...4*..R-yn.</span><br></pre></td></tr></table></figure>
+<h2 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h2><p>由于我们需要才自定义文件的后续添加大量的数据文件, 所以无法使用这种方式, 可能还是要使用更多的文件版本的方式来处理文件兼容性问题吧, 后续会将自己的参数设计思路以及参数实现方法</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
+<li><a href="https://linux.cn/article-7931-1.html" target="_blank" rel="noopener">C++ 程序员 Protocol Buffers 基础指南</a></li>
+<li><a href="https://developers.google.com/protocol-buffers/docs/cpptutorial" target="_blank" rel="noopener">Protocol Buffer Basics: C++</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-gpb/index.html" target="_blank" rel="noopener">Google Protocol Buffer 的使用和原理</a></li>
+<li><a href="https://halfrost.com/protobuf_encode/" target="_blank" rel="noopener">高效的数据压缩编码方式 Protobuf</a></li>
+<li><a href="https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/" target="_blank" rel="noopener">Protobuf 终极教程</a></li>
+<li><a href="https://blog.csdn.net/PROGRAM_anywhere/article/details/77365876" target="_blank" rel="noopener">protobuf【1】详细的安装和使用（windows cpp）</a></li>
+</ol>
+
+          
+            <br>
+            
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+          
+            <p>本文永久链接是：<a href=https://schen1024.github.io/2019/11-27/Window-Protobuf%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html>https://schen1024.github.io/2019/11-27/Window-Protobuf%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+  </div>
+</section>
+
+  
+
+
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-12-24T05:36:12+00:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2020年12月24日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/C/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>C++</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Window/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Window</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Cmake/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Cmake</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Protocbuf/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>Protocbuf</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2019/11-27/Window-Protobuf%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html&title=Window+Protobuf使用说明 - 東木 - 随笔&summary=介绍起因由于项目中要用到二进制存储数据,之前使用的方式是按照字节数依次将数据写入字节流中, 但是这样做起来做文件的协议兼容比较难做,所以我们考虑使用 protobuf 来做格式定义, 便于不同版本的文件兼容, 这边使用用起来十分方便且后续添加参数之后, 版本之间的改动很好处理,多出来的参数或者未找到的参数可以使用默认处理即可,十分方便
+常用配置文件介绍程序的配置文件是一个很常用的手段, 每次读取配置文件的信息, 容纳后根据参数决定我们的执行顺序, 是程序的一个很好的设计方式, 常用的配置文件我们会选择使用自己可读的文件格式,进行一定的程序注释之类的,然后在通过配置接口,将我们需要的参数依次读取到内存中,进行读写. 
+常用的配置文件格式有:
+
+xml
+yaml
+json
+ini
+properties
+……
+
+具体的参数区别与优劣比较自己可以查阅 常用配置文件格式 "
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://schen1024.github.io/2019/11-27/Window-Protobuf%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html&title=Window+Protobuf使用说明 - 東木 - 随笔&summary=介绍起因由于项目中要用到二进制存储数据,之前使用的方式是按照字节数依次将数据写入字节流中, 但是这样做起来做文件的协议兼容比较难做,所以我们考虑使用 protobuf 来做格式定义, 便于不同版本的文件兼容, 这边使用用起来十分方便且后续添加参数之后, 版本之间的改动很好处理,多出来的参数或者未找到的参数可以使用默认处理即可,十分方便
+常用配置文件介绍程序的配置文件是一个很常用的手段, 每次读取配置文件的信息, 容纳后根据参数决定我们的执行顺序, 是程序的一个很好的设计方式, 常用的配置文件我们会选择使用自己可读的文件格式,进行一定的程序注释之类的,然后在通过配置接口,将我们需要的参数依次读取到内存中,进行读写. 
+常用的配置文件格式有:
+
+xml
+yaml
+json
+ini
+properties
+……
+
+具体的参数区别与优劣比较自己可以查阅 常用配置文件格式 "
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2019/11-27/Window-Protobuf%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.html&title=Window+Protobuf使用说明 - 東木 - 随笔&summary=介绍起因由于项目中要用到二进制存储数据,之前使用的方式是按照字节数依次将数据写入字节流中, 但是这样做起来做文件的协议兼容比较难做,所以我们考虑使用 protobuf 来做格式定义, 便于不同版本的文件兼容, 这边使用用起来十分方便且后续添加参数之后, 版本之间的改动很好处理,多出来的参数或者未找到的参数可以使用默认处理即可,十分方便
+常用配置文件介绍程序的配置文件是一个很常用的手段, 每次读取配置文件的信息, 容纳后根据参数决定我们的执行顺序, 是程序的一个很好的设计方式, 常用的配置文件我们会选择使用自己可读的文件格式,进行一定的程序注释之类的,然后在通过配置接口,将我们需要的参数依次读取到内存中,进行读写. 
+常用的配置文件格式有:
+
+xml
+yaml
+json
+ini
+properties
+……
+
+具体的参数区别与优劣比较自己可以查阅 常用配置文件格式 "
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+              <a class='prev' href='/2019/12-02/%E5%BF%83%E5%8A%A8%E7%9A%84%E4%BF%A1%E5%8F%B7.html'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>心动的信号</p>
+                <p class='content'>输入密码, 查看文章1b96604982475f960c2596f9910493c15af00763ee34064ed9cf0809fbcee377922533facf20a49df7a106f...</p>
+              </a>
+            
+            
+              <a class='next' href='/2019/11-20/%E4%B8%AA%E4%BA%BA%E7%A8%8B%E5%BA%8F%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83.html'>
+                <p class='title'>个人程序命名规范<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>程序命名规则函数命名参考 google 命名规范, 但是由于自己的项目实际存在其他的库以及其他的程序,所以不能完全依赖,以及存在一些个人的命名习惯,所以仅供参考
+文件名文件名一般是类名,部分是 ...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-spinner fa-spin fa-fw"></i>
+          </div>
+        </section>
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'Window+Protobuf使用说明',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#起因"><span class="toc-text">起因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常用配置文件介绍"><span class="toc-text">常用配置文件介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#protocbuf-介绍"><span class="toc-text">protocbuf 介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用说明"><span class="toc-text">使用说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#环境列表"><span class="toc-text">环境列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本机配置开源库编译"><span class="toc-text">本机配置开源库编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-VS2015-编译库"><span class="toc-text">使用 VS2015 编译库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用编译好的库-lib"><span class="toc-text">使用编译好的库 lib</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更多"><span class="toc-text">更多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考链接"><span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget category shadow desktop">
+    
+  <header>
+    
+      <a href='categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <ul class="entry navigation">
+        
+          <li><a class="flat-box"
+            title="/categories/Alg/" href="/categories/Alg/"
+            id="categoriesAlg"
+            ><div class='name'>Alg</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/C/" href="/categories/C/"
+            id="categoriesC"
+            ><div class='name'>C++</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Config/" href="/categories/Config/"
+            id="categoriesConfig"
+            ><div class='name'>Config</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Essay/" href="/categories/Essay/"
+            id="categoriesEssay"
+            ><div class='name'>Essay</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Game/" href="/categories/Game/"
+            id="categoriesGame"
+            ><div class='name'>Game</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Hexo/" href="/categories/Hexo/"
+            id="categoriesHexo"
+            ><div class='name'>Hexo</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/IOT/" href="/categories/IOT/"
+            id="categoriesIOT"
+            ><div class='name'>IOT</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Interview/" href="/categories/Interview/"
+            id="categoriesInterview"
+            ><div class='name'>Interview</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LaTex/" href="/categories/LaTex/"
+            id="categoriesLaTex"
+            ><div class='name'>LaTex</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode-Contest/" href="/categories/LeetCode-Contest/"
+            id="categoriesLeetCode-Contest"
+            ><div class='name'>LeetCode-Contest</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode/" href="/categories/LeetCode/"
+            id="categoriesLeetCode"
+            ><div class='name'>LeetCode</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Offer/" href="/categories/Offer/"
+            id="categoriesOffer"
+            ><div class='name'>Offer</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/OpenCV/" href="/categories/OpenCV/"
+            id="categoriesOpenCV"
+            ><div class='name'>OpenCV</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Person/" href="/categories/Person/"
+            id="categoriesPerson"
+            ><div class='name'>Person</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/QT/" href="/categories/QT/"
+            id="categoriesQT"
+            ><div class='name'>QT</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SSR/" href="/categories/SSR/"
+            id="categoriesSSR"
+            ><div class='name'>SSR</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Script/" href="/categories/Script/"
+            id="categoriesScript"
+            ><div class='name'>Script</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SerialPort/" href="/categories/SerialPort/"
+            id="categoriesSerialPort"
+            ><div class='name'>SerialPort</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Sword/" href="/categories/Sword/"
+            id="categoriesSword"
+            ><div class='name'>Sword</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/TODO/" href="/categories/TODO/"
+            id="categoriesTODO"
+            ><div class='name'>TODO</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Tools/" href="/categories/Tools/"
+            id="categoriesTools"
+            ><div class='name'>Tools</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Web/" href="/categories/Web/"
+            id="categoriesWeb"
+            ><div class='name'>Web</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Windows/" href="/categories/Windows/"
+            id="categoriesWindows"
+            ><div class='name'>Windows</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/bug/" href="/categories/bug/"
+            id="categoriesbug"
+            ><div class='name'>bug</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/data/" href="/categories/data/"
+            id="categoriesdata"
+            ><div class='name'>data</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/hexo/" href="/categories/hexo/"
+            id="categorieshexo"
+            ><div class='name'>hexo</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/latex/" href="/categories/latex/"
+            id="categorieslatex"
+            ><div class='name'>latex</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/opencv/" href="/categories/opencv/"
+            id="categoriesopencv"
+            ><div class='name'>opencv</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imagelab/" href="/categories/opencv/imagelab/"
+            id="categoriesopencvimagelab"
+            ><div class='name'>imagelab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imaglab/" href="/categories/opencv/imaglab/"
+            id="categoriesopencvimaglab"
+            ><div class='name'>imaglab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/person/" href="/categories/person/"
+            id="categoriesperson"
+            ><div class='name'>person</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/python/" href="/categories/python/"
+            id="categoriespython"
+            ><div class='name'>python</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/uncategorized/" href="/categories/uncategorized/"
+            id="categoriesuncategorized"
+            ><div class='name'>uncategorized</div><div class='badge'>(5)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/xxx/" href="/categories/xxx/"
+            id="categoriesxxx"
+            ><div class='name'>xxx</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E7%AE%97%E6%B3%95/" href="/categories/%E7%AE%97%E6%B3%95/"
+            id="categoriesE7AE97E6B395"
+            ><div class='name'>算法</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget tagcloud shadow desktop mobile">
+    
+  <header>
+    
+      <a href='tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/2019/" style="font-size: 14px; color: #999">2019</a> <a href="/tags/2020/" style="font-size: 14px; color: #999">2020</a> <a href="/tags/51/" style="font-size: 14px; color: #999">51</a> <a href="/tags/996/" style="font-size: 14px; color: #999">996</a> <a href="/tags/Android/" style="font-size: 14px; color: #999">Android</a> <a href="/tags/Array/" style="font-size: 17px; color: #858585">Array</a> <a href="/tags/Atomineer/" style="font-size: 14px; color: #999">Atomineer</a> <a href="/tags/BinarySearch/" style="font-size: 15px; color: #929292">BinarySearch</a> <a href="/tags/Bugs/" style="font-size: 15px; color: #929292">Bugs</a> <a href="/tags/C/" style="font-size: 14px; color: #999">C</a> <a href="/tags/C/" style="font-size: 24px; color: #555">C++</a> <a href="/tags/Cmake/" style="font-size: 14px; color: #999">Cmake</a> <a href="/tags/Code/" style="font-size: 14px; color: #999">Code</a> <a href="/tags/Compass/" style="font-size: 14px; color: #999">Compass</a> <a href="/tags/Contest/" style="font-size: 14px; color: #999">Contest</a> <a href="/tags/Crack/" style="font-size: 14px; color: #999">Crack</a> <a href="/tags/Doctest/" style="font-size: 14px; color: #999">Doctest</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14px; color: #999">Dynamic Programming</a> <a href="/tags/Emotion/" style="font-size: 14px; color: #999">Emotion</a> <a href="/tags/HEX/" style="font-size: 14px; color: #999">HEX</a> <a href="/tags/ICU/" style="font-size: 14px; color: #999">ICU</a> <a href="/tags/Interview/" style="font-size: 16px; color: #8b8b8b">Interview</a> <a href="/tags/Job/" style="font-size: 15px; color: #929292">Job</a> <a href="/tags/Jobs/" style="font-size: 14px; color: #999">Jobs</a> <a href="/tags/Latex/" style="font-size: 14px; color: #999">Latex</a> <a href="/tags/LeetCode/" style="font-size: 20px; color: #707070">LeetCode</a> <a href="/tags/LeetCode-easy-Overflow/" style="font-size: 14px; color: #999">LeetCode,easy,Overflow</a> <a href="/tags/Live/" style="font-size: 14px; color: #999">Live</a> <a href="/tags/Logger/" style="font-size: 14px; color: #999">Logger</a> <a href="/tags/Math/" style="font-size: 14px; color: #999">Math</a> <a href="/tags/Medium/" style="font-size: 15px; color: #929292">Medium</a> <a href="/tags/NameStyle/" style="font-size: 14px; color: #999">NameStyle</a> <a href="/tags/OpenCV/" style="font-size: 14px; color: #999">OpenCV</a> <a href="/tags/PBootCMS/" style="font-size: 15px; color: #929292">PBootCMS</a> <a href="/tags/PID/" style="font-size: 14px; color: #999">PID</a> <a href="/tags/PSO/" style="font-size: 14px; color: #999">PSO</a> <a href="/tags/Person/" style="font-size: 14px; color: #999">Person</a> <a href="/tags/Plugin/" style="font-size: 14px; color: #999">Plugin</a> <a href="/tags/PrimeNum/" style="font-size: 14px; color: #999">PrimeNum</a> <a href="/tags/Protocbuf/" style="font-size: 14px; color: #999">Protocbuf</a> <a href="/tags/QT/" style="font-size: 17px; color: #858585">QT</a> <a href="/tags/QT%E8%87%AA%E5%AE%9A%E4%B9%89/" style="font-size: 14px; color: #999">QT自定义</a> <a href="/tags/SSR/" style="font-size: 14px; color: #999">SSR</a> <a href="/tags/Serial/" style="font-size: 16px; color: #8b8b8b">Serial</a> <a href="/tags/SerialPort/" style="font-size: 14px; color: #999">SerialPort</a> <a href="/tags/She/" style="font-size: 14px; color: #999">She</a> <a href="/tags/String/" style="font-size: 14px; color: #999">String</a> <a href="/tags/TODO/" style="font-size: 14px; color: #999">TODO</a> <a href="/tags/TwoPointers/" style="font-size: 14px; color: #999">TwoPointers</a> <a href="/tags/UART/" style="font-size: 14px; color: #999">UART</a> <a href="/tags/UnitTest/" style="font-size: 14px; color: #999">UnitTest</a> <a href="/tags/Utils/" style="font-size: 14px; color: #999">Utils</a> <a href="/tags/VS/" style="font-size: 15px; color: #929292">VS</a> <a href="/tags/VS2015/" style="font-size: 16px; color: #8b8b8b">VS2015</a> <a href="/tags/Window/" style="font-size: 14px; color: #999">Window</a> <a href="/tags/Work/" style="font-size: 15px; color: #929292">Work</a> <a href="/tags/Wuhan/" style="font-size: 14px; color: #999">Wuhan</a> <a href="/tags/XeLaTex/" style="font-size: 14px; color: #999">XeLaTex</a> <a href="/tags/action/" style="font-size: 14px; color: #999">action</a> <a href="/tags/algorithm/" style="font-size: 14px; color: #999">algorithm</a> <a href="/tags/aliyun/" style="font-size: 14px; color: #999">aliyun</a> <a href="/tags/asp/" style="font-size: 14px; color: #999">asp</a> <a href="/tags/batch/" style="font-size: 14px; color: #999">batch</a> <a href="/tags/blog/" style="font-size: 21px; color: #696969">blog</a> <a href="/tags/blog%EF%BC%8Chexo/" style="font-size: 14px; color: #999">blog，hexo</a> <a href="/tags/bug/" style="font-size: 14px; color: #999">bug</a> <a href="/tags/c/" style="font-size: 22px; color: #636363">c++</a> <a href="/tags/changelog/" style="font-size: 14px; color: #999">changelog</a> <a href="/tags/cnblogs/" style="font-size: 15px; color: #929292">cnblogs</a> <a href="/tags/cov/" style="font-size: 14px; color: #999">cov</a> <a href="/tags/csdn/" style="font-size: 15px; color: #929292">csdn</a> <a href="/tags/data/" style="font-size: 14px; color: #999">data</a> <a href="/tags/depurple/" style="font-size: 14px; color: #999">depurple</a> <a href="/tags/dream/" style="font-size: 14px; color: #999">dream</a> <a href="/tags/easy/" style="font-size: 16px; color: #8b8b8b">easy</a> <a href="/tags/encrypt/" style="font-size: 23px; color: #5c5c5c">encrypt</a> <a href="/tags/file/" style="font-size: 14px; color: #999">file</a> <a href="/tags/fraud/" style="font-size: 14px; color: #999">fraud</a> <a href="/tags/game/" style="font-size: 15px; color: #929292">game</a> <a href="/tags/github/" style="font-size: 15px; color: #929292">github</a> <a href="/tags/hard/" style="font-size: 15px; color: #929292">hard</a> <a href="/tags/hexo/" style="font-size: 19px; color: #777">hexo</a> <a href="/tags/hide/" style="font-size: 21px; color: #696969">hide</a> <a href="/tags/histograms/" style="font-size: 14px; color: #999">histograms</a> <a href="/tags/history/" style="font-size: 14px; color: #999">history</a> <a href="/tags/home/" style="font-size: 15px; color: #929292">home</a> <a href="/tags/html/" style="font-size: 14px; color: #999">html</a> <a href="/tags/imagelab/" style="font-size: 15px; color: #929292">imagelab</a> <a href="/tags/intel/" style="font-size: 14px; color: #999">intel</a> <a href="/tags/js/" style="font-size: 14px; color: #999">js</a> <a href="/tags/latex/" style="font-size: 15px; color: #929292">latex</a> <a href="/tags/learn/" style="font-size: 14px; color: #999">learn</a> <a href="/tags/list/" style="font-size: 14px; color: #999">list</a> <a href="/tags/master/" style="font-size: 15px; color: #929292">master</a> <a href="/tags/mat/" style="font-size: 14px; color: #999">mat</a> <a href="/tags/matlab/" style="font-size: 14px; color: #999">matlab</a> <a href="/tags/offer/" style="font-size: 14px; color: #999">offer</a> <a href="/tags/opencv/" style="font-size: 24px; color: #555">opencv</a> <a href="/tags/outline/" style="font-size: 14px; color: #999">outline</a> <a href="/tags/overleaf/" style="font-size: 14px; color: #999">overleaf</a> <a href="/tags/pac/" style="font-size: 14px; color: #999">pac</a> <a href="/tags/person/" style="font-size: 18px; color: #7e7e7e">person</a> <a href="/tags/php/" style="font-size: 14px; color: #999">php</a> <a href="/tags/ppt/" style="font-size: 14px; color: #999">ppt</a> <a href="/tags/project/" style="font-size: 14px; color: #999">project</a> <a href="/tags/proxy/" style="font-size: 14px; color: #999">proxy</a> <a href="/tags/python/" style="font-size: 14px; color: #999">python</a> <a href="/tags/qt/" style="font-size: 22px; color: #636363">qt</a> <a href="/tags/robot/" style="font-size: 14px; color: #999">robot</a> <a href="/tags/script/" style="font-size: 14px; color: #999">script</a> <a href="/tags/server/" style="font-size: 15px; color: #929292">server</a> <a href="/tags/shopping/" style="font-size: 14px; color: #999">shopping</a> <a href="/tags/sketchup/" style="font-size: 14px; color: #999">sketchup</a> <a href="/tags/soft/" style="font-size: 15px; color: #929292">soft</a> <a href="/tags/sword/" style="font-size: 14px; color: #999">sword</a> <a href="/tags/swordoffer/" style="font-size: 14px; color: #999">swordoffer</a> <a href="/tags/template/" style="font-size: 14px; color: #999">template</a> <a href="/tags/test/" style="font-size: 16px; color: #8b8b8b">test</a> <a href="/tags/theme/" style="font-size: 14px; color: #999">theme</a> <a href="/tags/todo/" style="font-size: 14px; color: #999">todo</a> <a href="/tags/tools/" style="font-size: 14px; color: #999">tools</a> <a href="/tags/washing-machine/" style="font-size: 14px; color: #999">washing machine</a> <a href="/tags/web/" style="font-size: 15px; color: #929292">web</a> <a href="/tags/whu/" style="font-size: 14px; color: #999">whu</a> <a href="/tags/years/" style="font-size: 14px; color: #999">years</a> <a href="/tags/%E4%B8%B2%E5%8F%A3/" style="font-size: 14px; color: #999">串口</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 14px; color: #999">分治</a> <a href="/tags/%E5%9B%BE%E7%89%87/" style="font-size: 14px; color: #999">图片</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 14px; color: #999">多线程</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 14px; color: #999">学习</a> <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" style="font-size: 14px; color: #999">嵌入式</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 14px; color: #999">数学</a> <a href="/tags/%E6%B0%B4%E6%B8%A9%E6%8E%A7%E5%88%B6/" style="font-size: 14px; color: #999">水温控制</a> <a href="/tags/%E9%98%9F%E5%88%97/" style="font-size: 14px; color: #999">队列</a>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='false'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='netease'
+      type='playlist'
+      id='3175833810'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="/atom.xml"
+                class="social fas fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="mailto:me@xaoxuu.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://github.com/xaoxuu"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=63035382"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+      
+    
+      
+        本站使用
+        <a href="https://volantis.js.org/" target="_blank" class="codename">Schen00</a>
+        作为主题
+        
+          ，
+          总访问量为
+          <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+          次
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://xaoxuu.com" target="_blank" rel="noopener">Copyright © 2017-2020 Mr. X</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js" async></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js" async></script>
+
+  
+
+
+
+
+
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.2.0/js/valine.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var notify = 'false' == true;
+  var verify = 'false' == true;
+  var valine = new Valine();
+  valine.init({
+    el: '#valine_container',
+    notify: notify,
+    verify: verify,
+    guest_info: guest_info,
+    
+    appId: "aB4XKwq00t6BFhV80u7mCg6z-gzGzoHsz",
+    appKey: "RndTSESgwxQgJtumDIvUeWvk",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'mp',
+    lang:'zh-cn',
+    visitor: 'false',
+    highlight:'true'
+  })
+  </script>
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.1/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copyed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-clipboard-check');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPYED';
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-exclamation-triangle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("div.fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

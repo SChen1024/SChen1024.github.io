@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#2.2.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>opencv-1-QT_OPENCV 安装 - 東木 - 随笔</title>
+  
+    <meta name="keywords" content="opencv,c++,qt">
+  
+  
+    <meta name="description" content="既然我们是从头开始的, 那我们就从 opencv 的安装开始吧,  主要环境为: 
+
+win10 1909 - 18363.720 版本
+VS2017 15.9.22
+QT 5.14.2
+opencv 4.3.0安装由于 QT 默认的 C++ 编译器是 minGW, 而 opencv 编译好的 dll 文件和 l...">
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="東木 - 随笔">
+  
+
+  <!-- import meta -->
+  
+    
+      <meta name='theme-color' content='#FFFFFF'>
+    
+      <meta name='msapplication-TileColor' content='#cccccc'>
+    
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+  <link rel="shortcut icon" type='image/x-icon' href="https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  <!-- import link -->
+  
+  
+  <link rel='shortcut icon' type='image/x-icon' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  <link rel='icon' type='image/x-icon' sizes='32x32' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  
+
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <a class="logo flat-box"></a>
+      <ul class='switcher h-list'>
+        <li><a class="s-comment flat-btn fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc flat-btn fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="logo flat-box" target="_self" href='/'>
+          
+            <img class='logo' src='https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png'/>
+          
+          
+          
+          
+        </a>
+      
+
+      
+
+			<div class='menu navigation'>
+				<ul class='h-list'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  
+                    <i class='fas fa-rss fa-fw'></i>
+                  
+                  博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  
+                    <i class='fas fa-folder-open fa-fw'></i>
+                  
+                  分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  
+                    <i class='fas fa-tags fa-fw'></i>
+                  
+                  标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  
+                    <i class='fas fa-archive fa-fw'></i>
+                  
+                  归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  
+                    <i class='fas fa-link fa-fw'></i>
+                  
+                  友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  
+                    <i class='fas fa-info-circle fa-fw'></i>
+                  
+                  关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      
+        <div class="m_search">
+          <form name="searchform" class="form u-search-form">
+            <i class="icon fas fa-search fa-fw"></i>
+            <input type="text" class="input u-search-input" placeholder="搜索" />
+          </form>
+        </div>
+      
+
+			<ul class='switcher h-list'>
+				
+					<li><a class="s-search flat-btn fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li><a class="s-menu flat-btn fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<ul class="menu-phone navigation white-box">
+  
+  
+    <li>
+      <a class="flat-box" href=/
+        
+        
+        
+          id="home"
+        >
+        
+          <i class='fas fa-rss fa-fw'></i>
+        
+        博客
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/categories/
+        
+        
+        
+          id="categories"
+        >
+        
+          <i class='fas fa-folder-open fa-fw'></i>
+        
+        分类
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/tags/
+        
+        
+        
+          id="tags"
+        >
+        
+          <i class='fas fa-tags fa-fw'></i>
+        
+        标签
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/archives/
+        
+        
+        
+          id="archives"
+        >
+        
+          <i class='fas fa-archive fa-fw'></i>
+        
+        归档
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/friends/
+        
+        
+        
+          id="friends"
+        >
+        
+          <i class='fas fa-link fa-fw'></i>
+        
+        友链
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/about/
+        
+        
+        
+          id="about"
+        >
+        
+          <i class='fas fa-info-circle fa-fw'></i>
+        
+        关于
+      </a>
+    </li>
+  
+</ul>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box shadow article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2020/04-20/opencv-1-QT_OPENCV.html">
+        opencv-1-QT_OPENCV 安装
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+<div class='new-meta-item author'>
+  <a href="https://schen1024.github.io" rel="nofollow">
+    <img src="https://avatars3.githubusercontent.com/u/12789460">
+    <p>SChen1024</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/opencv/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>opencv</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2020年4月20日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <p>既然我们是从头开始的, 那我们就从 opencv 的安装开始吧,  主要环境为: </p>
+<ul>
+<li>win10 1909 - 18363.720 版本</li>
+<li><a href="https://my.visualstudio.com/Downloads?q=visual%20studio%202017" target="_blank" rel="noopener">VS2017 15.9.22</a></li>
+<li><a href="http://download.qt.io/official_releases/qt/5.14/5.14.2/" target="_blank" rel="noopener">QT 5.14.2</a></li>
+<li><a href="https://opencv.org/releases/" target="_blank" rel="noopener">opencv 4.3.0</a><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2>由于 QT 默认的 C++ 编译器是 minGW, 而 opencv 编译好的 dll 文件和 lib 文件都是 只有 vc14版本与vc15版本^[《VS(Visual Studio)与VC(Visual C++)版本对应关系_C/C++_aoanng的博客-CSDN博客》. 见于 2020年4月20日. <a href="https://blog.csdn.net/colourful_sky/article/details/79495536" target="_blank" rel="noopener">https://blog.csdn.net/colourful_sky/article/details/79495536</a>.<br>]. </li>
+</ul>
+<p>PS: 如果你使用 minGW  编译 opencv 的程序会 会提示很多错误, 主要是编译得到的库 不支持的原因, 这里要做对照,  VS的版本可以 是 VS2015或者 VS2017 对应 opencv 的 vc14和vc15目录,  VS2019 暂时无法对应QT的版本, 所以一定要注意这里</p>
+<p>个人喜欢的安装顺序是, </p>
+<ol>
+<li>VS2017</li>
+<li>QT</li>
+<li>opencv</li>
+</ol>
+<h3 id="1-VS2017-安装"><a href="#1-VS2017-安装" class="headerlink" title="1. VS2017 安装"></a>1. VS2017 安装</h3><p>自从 VS 2017版本之后, 都是线上安装了, 对于以前的版本如VS2015,需要先下载一个 7G的 iso 文件, 再虚拟光驱的方式安装了, 省事不少.<br><a href="https://my.visualstudio.com/Downloads?q=visual%20studio%202017" target="_blank" rel="noopener">微软官方-VS2017下载</a></p>
+<p>在线安装 安装文件只有几兆, 点击运行之后能够在线下载, 很快很快. 推荐这个方法来, 安装的时候 建议勾选 全部下载后安装. </p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1587355315311.png" alt="VS installer"></p>
+<p>我已经安装了 VS2017, 所以可以直接启动, 点击可用选择 VS2017 专业版本(VS2017 Professional) 或者 社区(Community) 版本, 后者是免费的, 前者自己选择试用或者 自己搜索方法,<br>具体的版本区别可以看<a href="https://blog.csdn.net/xiang0731/article/details/78718032." target="_blank" rel="noopener">《VS2017各版本区别<em>开发工具</em>大白的求知路-CSDN博客》</a></p>
+<p>VS 系列都比较大, 会安装很多依赖库, 如果C盘比较小的话, 建议安装在其他硬盘, 能够节省一点空间</p>
+<p>其实在安装 VS之后, 我们就能进行opencv 的代码编写了,  具体的可以参考<a href="https://www.cnblogs.com/jisongxie/p/9316283.html" target="_blank" rel="noopener">Win10, VS2017环境下OpenCV3.4.2的配置</a>, 其实大部分的教程都是这么做的, 但是我们是做 的更深入, 所以这里如果只是想使用 opencv 的可以参考链接进行<br>^[《Win10, VS2017环境下OpenCV3.4.2的配置 - Jisongxie - 博客园》. 见于 2020年4月20日. <a href="https://www.cnblogs.com/jisongxie/p/9316283.html.]" target="_blank" rel="noopener">https://www.cnblogs.com/jisongxie/p/9316283.html.]</a>, 我们要做的是一个图像处理的平台, 所以要做的比较深入, </p>
+<p>为了能够在QT 上调试程序, 可以参考这篇文章<a href="https://blog.csdn.net/qq_15647227/article/details/83956160" target="_blank" rel="noopener">QT使用CDB调试程序</a>, 介绍了</p>
+<blockquote>
+<p>windows CDB <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/?redirectedfrom=MSDN" target="_blank" rel="noopener">下载链接</a></p>
+</blockquote>
+<p>先安装, 后面会介绍.</p>
+<h3 id="2-QT-安装"><a href="#2-QT-安装" class="headerlink" title="2. QT 安装"></a>2. QT 安装</h3><p>使用 <a href="http://download.qt.io/official_releases/" target="_blank" rel="noopener">QT官方 release</a>下载相应版本的QT, 我们这里使用的是 <a href="http://download.qt.io/official_releases/qt/5.14/5.14.2/" target="_blank" rel="noopener">QT5.14.2</a></p>
+<p>一路 next , 如果需要必须登录的话, 就去注册一个, 以前好像能跳过的, 现在不能跳过了</p>
+<p>如果出现 必须启用一个资源库之类的提示, 就直接配置就好</p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1587355315314.png" alt="临时资源组"></p>
+<p>QT的组件不需要全部选择,<br>选择你需要的部分就行了, 其实 MinGW 可以全部取消的 ,暂时先留着, , UWP是 win10 商店的, 其实没人用 , 自己考虑就好, 源代码不需要,  QT的一堆组件其实只有 不到20M, 都很小, 就都装上了, 如果感觉, 红框标出来的最好都勾选, 黄色标记的建议勾选, 其他的随意吧, 个人习惯, </p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1587355315348.png" alt="QT 组件选择"></p>
+<p>安装可以选择文件夹, 建议选择大点的空间, 我这样选择也是占有 3.6G 的空间,  全选可能有 10G,<br>其实安装完成之后可以去安装文件夹找到 <code>MaintenanceTool.exe</code> 的程序, 能够对QT 程序进行卸载, 自己可以查阅相关博客看到, 不做介绍.</p>
+<p>完成安装之后, 我们打开 <code>QTCreator</code> ^[QT自带的代码 UI IDE]</p>
+<p>依次点击菜单栏上的 <code>工具--选项--Kits--套件</code>, 由于我们先安装VS, QT安装之后会自动检测到相应的版本,  如果失败, 前面会有红色感叹号或者黄色警告, 我们选择 <code>Desktop Qt5.14.2 MSVC2017 64bit</code> , 会列出来具体的参数信息, 我们尽量将 Compiler (编译器这里) 都选择 amd64 的 编译器,  </p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1587355315371.png" alt="QT套件设置"></p>
+<p>在上面我们让 安装了 CDB, 这里 就是第二个箭头指出来的     <code>cdb.exe</code>, 不然此处无法选择, 就会是 黄色的感叹号了, 也不能使用 QT 调试  程序了, </p>
+<p>PS: 只是不能在 MSVC2017 下调试程序 , cdb 配套 MSVC 编译器,  GDB 配套 MinGW 里面的 gcc 和 g++ 编译器 也能进行程序的调试, 只是如果配置这套工具链, 我们需要参考<a href="https://blog.csdn.net/u010189457/article/details/66478574" target="_blank" rel="noopener">OpenCV+Qt+Win10开发环境配置</a> 这篇文章里面 的步骤去编译 mingw 的opencv ,<br>我的设备需要编译将近一天时间才能完成, 太浪费时间了.</p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1587355315364.png" alt="MinGW QT 调试"></p>
+<h3 id="3-OpenCV-安装"><a href="#3-OpenCV-安装" class="headerlink" title="3. OpenCV 安装"></a>3. OpenCV 安装</h3><p>opencv 可以在<a href="https://opencv.org/releases/" target="_blank" rel="noopener">官方 release页面</a>直接下载, 我们这里选择下载<a href="https://sourceforge.net/projects/opencvlibrary/files/4.3.0/opencv-4.3.0-vc14_vc15.exe/download" target="_blank" rel="noopener">opencv4.3.0 windows</a> 版本,  下载包有 202M</p>
+<blockquote>
+<p>opencv 真的是越来越大了</p>
+</blockquote>
+<p>opencv 的安装包其实就是一个自解压文件, 点击运行选择目的路径即可.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">opencv430</span><br><span class="line">+---build</span><br><span class="line">|   +---bin</span><br><span class="line">|   +---etc</span><br><span class="line">|   |   +---haarcascades</span><br><span class="line">|   |   +---lbpcascades</span><br><span class="line">|   |   \---licenses</span><br><span class="line">|   +---include</span><br><span class="line">|   |   \---opencv2</span><br><span class="line">|   |       +---calib3d</span><br><span class="line">|   |       +---core</span><br><span class="line">|   |       +---dnn</span><br><span class="line">|   |       +---features2d</span><br><span class="line">|   |       +---flann</span><br><span class="line">|   |       +---gapi</span><br><span class="line">|   |       +---highgui</span><br><span class="line">|   |       +---imgcodecs</span><br><span class="line">|   |       +---imgproc</span><br><span class="line">|   |       +---ml</span><br><span class="line">|   |       +---objdetect</span><br><span class="line">|   |       +---photo</span><br><span class="line">|   |       +---stitching</span><br><span class="line">|   |       +---video</span><br><span class="line">|   |       \---videoio</span><br><span class="line">|   +---java</span><br><span class="line">|   |   +---x64</span><br><span class="line">|   |   \---x86</span><br><span class="line">|   +---python</span><br><span class="line">|   |   \---cv2</span><br><span class="line">|   \---x64</span><br><span class="line">|       +---vc14</span><br><span class="line">|       |   +---bin</span><br><span class="line">|       |   \---lib</span><br><span class="line">|       \---vc15</span><br><span class="line">|           +---bin</span><br><span class="line">|           \---lib</span><br><span class="line">\---sources</span><br><span class="line">    +--<span class="number">-3</span>rdparty</span><br><span class="line">    |   +---carotene</span><br><span class="line">    |   +---cpufeatures</span><br><span class="line">    |   +---ffmpeg</span><br><span class="line">    |   +---include</span><br><span class="line">    |   +---ippicv</span><br><span class="line">    |   +---ittnotify</span><br><span class="line">    |   +---libjasper</span><br><span class="line">    |   +---libjpeg</span><br><span class="line">    |   +---libjpeg-turbo</span><br><span class="line">    |   +---libpng</span><br><span class="line">    |   +---libtengine</span><br><span class="line">    |   +---libtiff</span><br><span class="line">    |   +---libwebp</span><br><span class="line">    |   +---openexr</span><br><span class="line">    |   +---openvx</span><br><span class="line">    |   +---protobuf</span><br><span class="line">    |   +---quirc</span><br><span class="line">    |   +---tbb</span><br><span class="line">    |   \---zlib</span><br><span class="line">    |       \---patches</span><br><span class="line">    +---apps</span><br><span class="line">    |   +---annotation</span><br><span class="line">    |   +---createsamples</span><br><span class="line">    |   +---interactive-calibration</span><br><span class="line">    |   +---traincascade</span><br><span class="line">    |   +---version</span><br><span class="line">    |   \---visualisation</span><br><span class="line">    +---cmake</span><br><span class="line">    |   +---android</span><br><span class="line">    |   +---checks</span><br><span class="line">    |   +---FindCUDA</span><br><span class="line">    |   +---platforms</span><br><span class="line">    |   \---templates</span><br><span class="line">    +---data</span><br><span class="line">    |   +---haarcascades</span><br><span class="line">    |   +---haarcascades_cuda</span><br><span class="line">    |   +---hogcascades</span><br><span class="line">    |   +---lbpcascades</span><br><span class="line">    |   \---vec_files</span><br><span class="line">    +---doc</span><br><span class="line">    |   +---images</span><br><span class="line">    |   +---js_tutorials</span><br><span class="line">    |   +---pattern_tools</span><br><span class="line">    |   +---py_tutorials</span><br><span class="line">    |   +---tools</span><br><span class="line">    |   \---tutorials</span><br><span class="line">    +---include</span><br><span class="line">    |   \---opencv2</span><br><span class="line">    +---modules</span><br><span class="line">    |   +---calib3d</span><br><span class="line">    |   +---core</span><br><span class="line">    |   +---dnn</span><br><span class="line">    |   +---features2d</span><br><span class="line">    |   +---flann</span><br><span class="line">    |   +---gapi</span><br><span class="line">    |   +---highgui</span><br><span class="line">    |   +---imgcodecs</span><br><span class="line">    |   +---imgproc</span><br><span class="line">    |   +---java</span><br><span class="line">    |   +---js</span><br><span class="line">    |   +---ml</span><br><span class="line">    |   +---objdetect</span><br><span class="line">    |   +---photo</span><br><span class="line">    |   +---python</span><br><span class="line">    |   +---stitching</span><br><span class="line">    |   +---ts</span><br><span class="line">    |   +---video</span><br><span class="line">    |   +---videoio</span><br><span class="line">    |   \---world</span><br><span class="line">    +---platforms</span><br><span class="line">    |   +---android</span><br><span class="line">    |   +---ios</span><br><span class="line">    |   +---js</span><br><span class="line">    |   +---linux</span><br><span class="line">    |   +---maven</span><br><span class="line">    |   +---osx</span><br><span class="line">    |   +---scripts</span><br><span class="line">    |   +---wince</span><br><span class="line">    |   +---winpack_dldt</span><br><span class="line">    |   \---winrt</span><br><span class="line">    \---samples</span><br></pre></td></tr></table></figure>
+<p>我们放置在了  <code>F:\Vision\opencv430</code>文件夹下面, 得到了上面的 文件列表, 主要用到的库文件都是在 build 文件夹内, source 文件夹下面是 源代码, </p>
+<p>实际上 我们在程序中需要用的 只有 这里需要的程序, 动态链接库 dll 文件, 静态库 lib 文件, 以及 包含目录 include 文件夹,<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">opencv430</span><br><span class="line">+---dll</span><br><span class="line">|       opencv_videoio_ffmpeg430_64.dll</span><br><span class="line">|       opencv_world430.dll</span><br><span class="line">|       opencv_world430.pdb</span><br><span class="line">|       opencv_world430d.dll</span><br><span class="line">|       opencv_world430d.pdb</span><br><span class="line">|       </span><br><span class="line">+---include</span><br><span class="line">|   \---opencv2</span><br><span class="line">|       +---calib3d</span><br><span class="line">|       +---core</span><br><span class="line">|       +---dnn</span><br><span class="line">|       +---features2d</span><br><span class="line">|       +---flann</span><br><span class="line">|       +---gapi</span><br><span class="line">|       +---highgui</span><br><span class="line">|       +---imgcodecs</span><br><span class="line">|       +---imgproc</span><br><span class="line">|       +---ml</span><br><span class="line">|       +---objdetect</span><br><span class="line">|       +---photo</span><br><span class="line">|       +---stitching</span><br><span class="line">|       +---video</span><br><span class="line">|       \---videoio</span><br><span class="line">\---lib</span><br><span class="line">        opencv_world430.lib</span><br><span class="line">        opencv_world430d.lib</span><br></pre></td></tr></table></figure></p>
+<p>如果不是需要调试信息的话,  dll 文件夹下面的 pdb 文件可以全部删除,<br>在忽略 dll 文件之后, 我将自己常用的 C++ 的依赖库 都放在了 github上<br><a href="https://github.com/SChen1024/CVDepend" target="_blank" rel="noopener">SChen1024/CVDepend</a><br>有需要的可以去查看下载, </p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>到这里, 我们才算是完成了第一步的安装程序, 后面 开始上手进行使用 opencv 了</p>
+<a id="more"></a>
+          
+            <br>
+            
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+          
+            <p>本文永久链接是：<a href=https://schen1024.github.io/2020/04-20/opencv-1-QT_OPENCV.html>https://schen1024.github.io/2020/04-20/opencv-1-QT_OPENCV.html</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+  </div>
+</section>
+
+  
+
+
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-12-24T05:36:13+00:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2020年12月24日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/opencv/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>opencv</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/c/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>c++</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/qt/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>qt</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2020/04-20/opencv-1-QT_OPENCV.html&title=opencv-1-QT_OPENCV 安装 - 東木 - 随笔&summary=既然我们是从头开始的, 那我们就从 opencv 的安装开始吧,  主要环境为: 
+
+win10 1909 - 18363.720 版本
+VS2017 15.9.22
+QT 5.14.2
+opencv 4.3.0安装由于 QT 默认的 C++ 编译器是 minGW, 而 opencv 编译好的 dll 文件和 lib 文件都是 只有 vc14版本与vc15版本^[《VS(Visual Studio)与VC(Visual C++)版本对应关系_C/C++_aoanng的博客-CSDN博客》. 见于 2020年4月20日. https://blog.csdn.net/colourful_sky/article/details/79495536.]. 
+
+PS: 如果你使用 minGW  编译 opencv 的程序会 会提示很多错误, 主要是编译得到的库 不支持的原因, 这里要做对照,  VS的版本可以 是 VS2015或者 VS2017 对应 opencv 的 vc14和vc15目录,  VS2019 暂时无法对应QT的版本, 所以一定要注意这里
+个人喜欢的安装顺序是, 
+
+VS2017
+QT
+opencv
+
+1. VS2017 安装自从 VS 2017版本之后, 都是线上安装了, 对于以前的版本如VS2015,需要先下载一个 7G的 iso 文件, 再虚拟光驱的方式安装了, 省事不少.微软官方-VS2017下载
+在线安装 安装文件只有几兆, 点击运行之后能够在线下载, 很快很快. 推荐这个方法来, 安装的时候 建议勾选 全部下载后安装. 
+
+我已经安装了 VS2017, 所以可以直接启动, 点击可用选择 VS2017 专业版本(VS2017 Professional) 或者 社区(Community) 版本, 后者是免费的, 前者自己选择试用或者 自己搜索方法,具体的版本区别可以看《VS2017各版本区别开发工具大白的求知路-CSDN博客》
+VS 系列都比较大, 会安装很多依赖库, 如果C盘比较小的话, 建议安装在其他硬盘, 能够节省一点空间
+其实在安装 VS之后, 我们就能进行opencv 的代码编写了,  具体的可以参考Win10, VS2017环境下OpenCV3.4.2的配置, 其实大部分的教程都是这么做的, 但是我们是做 的更深入, 所以这里如果只是想使用 opencv 的可以参考链接进行^[《Win10, VS2017环境下OpenCV3.4.2的配置 - Jisongxie - 博客园》. 见于 2020年4月20日. https://www.cnblogs.com/jisongxie/p/9316283.html.], 我们要做的是一个图像处理的平台, 所以要做的比较深入, 
+为了能够在QT 上调试程序, 可以参考这篇文章QT使用CDB调试程序, 介绍了
+
+windows CDB 下载链接
+
+先安装, 后面会介绍.
+2. QT 安装使用 QT官方 release下载相应版本的QT, 我们这里使用的是 QT5.14.2
+一路 next , 如果需要必须登录的话, 就去注册一个, 以前好像能跳过的, 现在不能跳过了
+如果出现 必须启用一个资源库之类的提示, 就直接配置就好
+
+QT的组件不需要全部选择,选择你需要的部分就行了, 其实 MinGW 可以全部取消的 ,暂时先留着, , UWP是 win10 商店的, 其实没人用 , 自己考虑就好, 源代码不需要,  QT的一堆组件其实只有 不到20M, 都很小, 就都装上了, 如果感觉, 红框标出来的最好都勾选, 黄色标记的建议勾选, 其他的随意吧, 个人习惯, 
+
+安装可以选择文件夹, 建议选择大点的空间, 我这样选择也是占有 3.6G 的空间,  全选可能有 10G,其实安装完成之后可以去安装文件夹找到 MaintenanceTool.exe 的程序, 能够对QT 程序进行卸载, 自己可以查阅相关博客看到, 不做介绍.
+完成安装之后, 我们打开 QTCreator ^[QT自带的代码 UI IDE]
+依次点击菜单栏上的 工具--选项--Kits--套件, 由于我们先安装VS, QT安装之后会自动检测到相应的版本,  如果失败, 前面会有红色感叹号或者黄色警告, 我们选择 Desktop Qt5.14.2 MSVC2017 64bit , 会列出来具体的参数信息, 我们尽量将 Compiler (编译器这里) 都选择 amd64 的 编译器,  
+
+在上面我们让 安装了 CDB, 这里 就是第二个箭头指出来的     cdb.exe, 不然此处无法选择, 就会是 黄色的感叹号了, 也不能使用 QT 调试  程序了, 
+PS: 只是不能在 MSVC2017 下调试程序 , cdb 配套 MSVC 编译器,  GDB 配套 MinGW 里面的 gcc 和 g++ 编译器 也能进行程序的调试, 只是如果配置这套工具链, 我们需要参考OpenCV+Qt+Win10开发环境配置 这篇文章里面 的步骤去编译 mingw 的opencv ,我的设备需要编译将近一天时间才能完成, 太浪费时间了.
+
+3. OpenCV 安装opencv 可以在官方 release页面直接下载, 我们这里选择下载opencv4.3.0 windows 版本,  下载包有 202M
+
+opencv 真的是越来越大了
+
+opencv 的安装包其实就是一个自解压文件, 点击运行选择目的路径即可.
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119opencv430+---build|   +---bin|   +---etc|   |   +---haarcascades|   |   +---lbpcascades|   |   \---licenses|   +---include|   |   \---opencv2|   |       +---calib3d|   |       +---core|   |       +---dnn|   |       +---features2d|   |       +---flann|   |       +---gapi|   |       +---highgui|   |       +---imgcodecs|   |       +---imgproc|   |       +---ml|   |       +---objdetect|   |       +---photo|   |       +---stitching|   |       +---video|   |       \---videoio|   +---java|   |   +---x64|   |   \---x86|   +---python|   |   \---cv2|   \---x64|       +---vc14|       |   +---bin|       |   \---lib|       \---vc15|           +---bin|           \---lib\---sources    +---3rdparty    |   +---carotene    |   +---cpufeatures    |   +---ffmpeg    |   +---include    |   +---ippicv    |   +---ittnotify    |   +---libjasper    |   +---libjpeg    |   +---libjpeg-turbo    |   +---libpng    |   +---libtengine    |   +---libtiff    |   +---libwebp    |   +---openexr    |   +---openvx    |   +---protobuf    |   +---quirc    |   +---tbb    |   \---zlib    |       \---patches    +---apps    |   +---annotation    |   +---createsamples    |   +---interactive-calibration    |   +---traincascade    |   +---version    |   \---visualisation    +---cmake    |   +---android    |   +---checks    |   +---FindCUDA    |   +---platforms    |   \---templates    +---data    |   +---haarcascades    |   +---haarcascades_cuda    |   +---hogcascades    |   +---lbpcascades    |   \---vec_files    +---doc    |   +---images    |   +---js_tutorials    |   +---pattern_tools    |   +---py_tutorials    |   +---tools    |   \---tutorials    +---include    |   \---opencv2    +---modules    |   +---calib3d    |   +---core    |   +---dnn    |   +---features2d    |   +---flann    |   +---gapi    |   +---highgui    |   +---imgcodecs    |   +---imgproc    |   +---java    |   +---js    |   +---ml    |   +---objdetect    |   +---photo    |   +---python    |   +---stitching    |   +---ts    |   +---video    |   +---videoio    |   \---world    +---platforms    |   +---android    |   +---ios    |   +---js    |   +---linux    |   +---maven    |   +---osx    |   +---scripts    |   +---wince    |   +---winpack_dldt    |   \---winrt    \---samples
+我们放置在了  F:\Vision\opencv430文件夹下面, 得到了上面的 文件列表, 主要用到的库文件都是在 build 文件夹内, source 文件夹下面是 源代码, 
+实际上 我们在程序中需要用的 只有 这里需要的程序, 动态链接库 dll 文件, 静态库 lib 文件, 以及 包含目录 include 文件夹,12345678910111213141516171819202122232425262728opencv430+---dll|       opencv_videoio_ffmpeg430_64.dll|       opencv_world430.dll|       opencv_world430.pdb|       opencv_world430d.dll|       opencv_world430d.pdb|       +---include|   \---opencv2|       +---calib3d|       +---core|       +---dnn|       +---features2d|       +---flann|       +---gapi|       +---highgui|       +---imgcodecs|       +---imgproc|       +---ml|       +---objdetect|       +---photo|       +---stitching|       +---video|       \---videoio\---lib        opencv_world430.lib        opencv_world430d.lib
+如果不是需要调试信息的话,  dll 文件夹下面的 pdb 文件可以全部删除,在忽略 dll 文件之后, 我将自己常用的 C++ 的依赖库 都放在了 github上SChen1024/CVDepend有需要的可以去查看下载, 
+后续到这里, 我们才算是完成了第一步的安装程序, 后面 开始上手进行使用 opencv 了"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://schen1024.github.io/2020/04-20/opencv-1-QT_OPENCV.html&title=opencv-1-QT_OPENCV 安装 - 東木 - 随笔&summary=既然我们是从头开始的, 那我们就从 opencv 的安装开始吧,  主要环境为: 
+
+win10 1909 - 18363.720 版本
+VS2017 15.9.22
+QT 5.14.2
+opencv 4.3.0安装由于 QT 默认的 C++ 编译器是 minGW, 而 opencv 编译好的 dll 文件和 lib 文件都是 只有 vc14版本与vc15版本^[《VS(Visual Studio)与VC(Visual C++)版本对应关系_C/C++_aoanng的博客-CSDN博客》. 见于 2020年4月20日. https://blog.csdn.net/colourful_sky/article/details/79495536.]. 
+
+PS: 如果你使用 minGW  编译 opencv 的程序会 会提示很多错误, 主要是编译得到的库 不支持的原因, 这里要做对照,  VS的版本可以 是 VS2015或者 VS2017 对应 opencv 的 vc14和vc15目录,  VS2019 暂时无法对应QT的版本, 所以一定要注意这里
+个人喜欢的安装顺序是, 
+
+VS2017
+QT
+opencv
+
+1. VS2017 安装自从 VS 2017版本之后, 都是线上安装了, 对于以前的版本如VS2015,需要先下载一个 7G的 iso 文件, 再虚拟光驱的方式安装了, 省事不少.微软官方-VS2017下载
+在线安装 安装文件只有几兆, 点击运行之后能够在线下载, 很快很快. 推荐这个方法来, 安装的时候 建议勾选 全部下载后安装. 
+
+我已经安装了 VS2017, 所以可以直接启动, 点击可用选择 VS2017 专业版本(VS2017 Professional) 或者 社区(Community) 版本, 后者是免费的, 前者自己选择试用或者 自己搜索方法,具体的版本区别可以看《VS2017各版本区别开发工具大白的求知路-CSDN博客》
+VS 系列都比较大, 会安装很多依赖库, 如果C盘比较小的话, 建议安装在其他硬盘, 能够节省一点空间
+其实在安装 VS之后, 我们就能进行opencv 的代码编写了,  具体的可以参考Win10, VS2017环境下OpenCV3.4.2的配置, 其实大部分的教程都是这么做的, 但是我们是做 的更深入, 所以这里如果只是想使用 opencv 的可以参考链接进行^[《Win10, VS2017环境下OpenCV3.4.2的配置 - Jisongxie - 博客园》. 见于 2020年4月20日. https://www.cnblogs.com/jisongxie/p/9316283.html.], 我们要做的是一个图像处理的平台, 所以要做的比较深入, 
+为了能够在QT 上调试程序, 可以参考这篇文章QT使用CDB调试程序, 介绍了
+
+windows CDB 下载链接
+
+先安装, 后面会介绍.
+2. QT 安装使用 QT官方 release下载相应版本的QT, 我们这里使用的是 QT5.14.2
+一路 next , 如果需要必须登录的话, 就去注册一个, 以前好像能跳过的, 现在不能跳过了
+如果出现 必须启用一个资源库之类的提示, 就直接配置就好
+
+QT的组件不需要全部选择,选择你需要的部分就行了, 其实 MinGW 可以全部取消的 ,暂时先留着, , UWP是 win10 商店的, 其实没人用 , 自己考虑就好, 源代码不需要,  QT的一堆组件其实只有 不到20M, 都很小, 就都装上了, 如果感觉, 红框标出来的最好都勾选, 黄色标记的建议勾选, 其他的随意吧, 个人习惯, 
+
+安装可以选择文件夹, 建议选择大点的空间, 我这样选择也是占有 3.6G 的空间,  全选可能有 10G,其实安装完成之后可以去安装文件夹找到 MaintenanceTool.exe 的程序, 能够对QT 程序进行卸载, 自己可以查阅相关博客看到, 不做介绍.
+完成安装之后, 我们打开 QTCreator ^[QT自带的代码 UI IDE]
+依次点击菜单栏上的 工具--选项--Kits--套件, 由于我们先安装VS, QT安装之后会自动检测到相应的版本,  如果失败, 前面会有红色感叹号或者黄色警告, 我们选择 Desktop Qt5.14.2 MSVC2017 64bit , 会列出来具体的参数信息, 我们尽量将 Compiler (编译器这里) 都选择 amd64 的 编译器,  
+
+在上面我们让 安装了 CDB, 这里 就是第二个箭头指出来的     cdb.exe, 不然此处无法选择, 就会是 黄色的感叹号了, 也不能使用 QT 调试  程序了, 
+PS: 只是不能在 MSVC2017 下调试程序 , cdb 配套 MSVC 编译器,  GDB 配套 MinGW 里面的 gcc 和 g++ 编译器 也能进行程序的调试, 只是如果配置这套工具链, 我们需要参考OpenCV+Qt+Win10开发环境配置 这篇文章里面 的步骤去编译 mingw 的opencv ,我的设备需要编译将近一天时间才能完成, 太浪费时间了.
+
+3. OpenCV 安装opencv 可以在官方 release页面直接下载, 我们这里选择下载opencv4.3.0 windows 版本,  下载包有 202M
+
+opencv 真的是越来越大了
+
+opencv 的安装包其实就是一个自解压文件, 点击运行选择目的路径即可.
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119opencv430+---build|   +---bin|   +---etc|   |   +---haarcascades|   |   +---lbpcascades|   |   \---licenses|   +---include|   |   \---opencv2|   |       +---calib3d|   |       +---core|   |       +---dnn|   |       +---features2d|   |       +---flann|   |       +---gapi|   |       +---highgui|   |       +---imgcodecs|   |       +---imgproc|   |       +---ml|   |       +---objdetect|   |       +---photo|   |       +---stitching|   |       +---video|   |       \---videoio|   +---java|   |   +---x64|   |   \---x86|   +---python|   |   \---cv2|   \---x64|       +---vc14|       |   +---bin|       |   \---lib|       \---vc15|           +---bin|           \---lib\---sources    +---3rdparty    |   +---carotene    |   +---cpufeatures    |   +---ffmpeg    |   +---include    |   +---ippicv    |   +---ittnotify    |   +---libjasper    |   +---libjpeg    |   +---libjpeg-turbo    |   +---libpng    |   +---libtengine    |   +---libtiff    |   +---libwebp    |   +---openexr    |   +---openvx    |   +---protobuf    |   +---quirc    |   +---tbb    |   \---zlib    |       \---patches    +---apps    |   +---annotation    |   +---createsamples    |   +---interactive-calibration    |   +---traincascade    |   +---version    |   \---visualisation    +---cmake    |   +---android    |   +---checks    |   +---FindCUDA    |   +---platforms    |   \---templates    +---data    |   +---haarcascades    |   +---haarcascades_cuda    |   +---hogcascades    |   +---lbpcascades    |   \---vec_files    +---doc    |   +---images    |   +---js_tutorials    |   +---pattern_tools    |   +---py_tutorials    |   +---tools    |   \---tutorials    +---include    |   \---opencv2    +---modules    |   +---calib3d    |   +---core    |   +---dnn    |   +---features2d    |   +---flann    |   +---gapi    |   +---highgui    |   +---imgcodecs    |   +---imgproc    |   +---java    |   +---js    |   +---ml    |   +---objdetect    |   +---photo    |   +---python    |   +---stitching    |   +---ts    |   +---video    |   +---videoio    |   \---world    +---platforms    |   +---android    |   +---ios    |   +---js    |   +---linux    |   +---maven    |   +---osx    |   +---scripts    |   +---wince    |   +---winpack_dldt    |   \---winrt    \---samples
+我们放置在了  F:\Vision\opencv430文件夹下面, 得到了上面的 文件列表, 主要用到的库文件都是在 build 文件夹内, source 文件夹下面是 源代码, 
+实际上 我们在程序中需要用的 只有 这里需要的程序, 动态链接库 dll 文件, 静态库 lib 文件, 以及 包含目录 include 文件夹,12345678910111213141516171819202122232425262728opencv430+---dll|       opencv_videoio_ffmpeg430_64.dll|       opencv_world430.dll|       opencv_world430.pdb|       opencv_world430d.dll|       opencv_world430d.pdb|       +---include|   \---opencv2|       +---calib3d|       +---core|       +---dnn|       +---features2d|       +---flann|       +---gapi|       +---highgui|       +---imgcodecs|       +---imgproc|       +---ml|       +---objdetect|       +---photo|       +---stitching|       +---video|       \---videoio\---lib        opencv_world430.lib        opencv_world430d.lib
+如果不是需要调试信息的话,  dll 文件夹下面的 pdb 文件可以全部删除,在忽略 dll 文件之后, 我将自己常用的 C++ 的依赖库 都放在了 github上SChen1024/CVDepend有需要的可以去查看下载, 
+后续到这里, 我们才算是完成了第一步的安装程序, 后面 开始上手进行使用 opencv 了"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2020/04-20/opencv-1-QT_OPENCV.html&title=opencv-1-QT_OPENCV 安装 - 東木 - 随笔&summary=既然我们是从头开始的, 那我们就从 opencv 的安装开始吧,  主要环境为: 
+
+win10 1909 - 18363.720 版本
+VS2017 15.9.22
+QT 5.14.2
+opencv 4.3.0安装由于 QT 默认的 C++ 编译器是 minGW, 而 opencv 编译好的 dll 文件和 lib 文件都是 只有 vc14版本与vc15版本^[《VS(Visual Studio)与VC(Visual C++)版本对应关系_C/C++_aoanng的博客-CSDN博客》. 见于 2020年4月20日. https://blog.csdn.net/colourful_sky/article/details/79495536.]. 
+
+PS: 如果你使用 minGW  编译 opencv 的程序会 会提示很多错误, 主要是编译得到的库 不支持的原因, 这里要做对照,  VS的版本可以 是 VS2015或者 VS2017 对应 opencv 的 vc14和vc15目录,  VS2019 暂时无法对应QT的版本, 所以一定要注意这里
+个人喜欢的安装顺序是, 
+
+VS2017
+QT
+opencv
+
+1. VS2017 安装自从 VS 2017版本之后, 都是线上安装了, 对于以前的版本如VS2015,需要先下载一个 7G的 iso 文件, 再虚拟光驱的方式安装了, 省事不少.微软官方-VS2017下载
+在线安装 安装文件只有几兆, 点击运行之后能够在线下载, 很快很快. 推荐这个方法来, 安装的时候 建议勾选 全部下载后安装. 
+
+我已经安装了 VS2017, 所以可以直接启动, 点击可用选择 VS2017 专业版本(VS2017 Professional) 或者 社区(Community) 版本, 后者是免费的, 前者自己选择试用或者 自己搜索方法,具体的版本区别可以看《VS2017各版本区别开发工具大白的求知路-CSDN博客》
+VS 系列都比较大, 会安装很多依赖库, 如果C盘比较小的话, 建议安装在其他硬盘, 能够节省一点空间
+其实在安装 VS之后, 我们就能进行opencv 的代码编写了,  具体的可以参考Win10, VS2017环境下OpenCV3.4.2的配置, 其实大部分的教程都是这么做的, 但是我们是做 的更深入, 所以这里如果只是想使用 opencv 的可以参考链接进行^[《Win10, VS2017环境下OpenCV3.4.2的配置 - Jisongxie - 博客园》. 见于 2020年4月20日. https://www.cnblogs.com/jisongxie/p/9316283.html.], 我们要做的是一个图像处理的平台, 所以要做的比较深入, 
+为了能够在QT 上调试程序, 可以参考这篇文章QT使用CDB调试程序, 介绍了
+
+windows CDB 下载链接
+
+先安装, 后面会介绍.
+2. QT 安装使用 QT官方 release下载相应版本的QT, 我们这里使用的是 QT5.14.2
+一路 next , 如果需要必须登录的话, 就去注册一个, 以前好像能跳过的, 现在不能跳过了
+如果出现 必须启用一个资源库之类的提示, 就直接配置就好
+
+QT的组件不需要全部选择,选择你需要的部分就行了, 其实 MinGW 可以全部取消的 ,暂时先留着, , UWP是 win10 商店的, 其实没人用 , 自己考虑就好, 源代码不需要,  QT的一堆组件其实只有 不到20M, 都很小, 就都装上了, 如果感觉, 红框标出来的最好都勾选, 黄色标记的建议勾选, 其他的随意吧, 个人习惯, 
+
+安装可以选择文件夹, 建议选择大点的空间, 我这样选择也是占有 3.6G 的空间,  全选可能有 10G,其实安装完成之后可以去安装文件夹找到 MaintenanceTool.exe 的程序, 能够对QT 程序进行卸载, 自己可以查阅相关博客看到, 不做介绍.
+完成安装之后, 我们打开 QTCreator ^[QT自带的代码 UI IDE]
+依次点击菜单栏上的 工具--选项--Kits--套件, 由于我们先安装VS, QT安装之后会自动检测到相应的版本,  如果失败, 前面会有红色感叹号或者黄色警告, 我们选择 Desktop Qt5.14.2 MSVC2017 64bit , 会列出来具体的参数信息, 我们尽量将 Compiler (编译器这里) 都选择 amd64 的 编译器,  
+
+在上面我们让 安装了 CDB, 这里 就是第二个箭头指出来的     cdb.exe, 不然此处无法选择, 就会是 黄色的感叹号了, 也不能使用 QT 调试  程序了, 
+PS: 只是不能在 MSVC2017 下调试程序 , cdb 配套 MSVC 编译器,  GDB 配套 MinGW 里面的 gcc 和 g++ 编译器 也能进行程序的调试, 只是如果配置这套工具链, 我们需要参考OpenCV+Qt+Win10开发环境配置 这篇文章里面 的步骤去编译 mingw 的opencv ,我的设备需要编译将近一天时间才能完成, 太浪费时间了.
+
+3. OpenCV 安装opencv 可以在官方 release页面直接下载, 我们这里选择下载opencv4.3.0 windows 版本,  下载包有 202M
+
+opencv 真的是越来越大了
+
+opencv 的安装包其实就是一个自解压文件, 点击运行选择目的路径即可.
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119opencv430+---build|   +---bin|   +---etc|   |   +---haarcascades|   |   +---lbpcascades|   |   \---licenses|   +---include|   |   \---opencv2|   |       +---calib3d|   |       +---core|   |       +---dnn|   |       +---features2d|   |       +---flann|   |       +---gapi|   |       +---highgui|   |       +---imgcodecs|   |       +---imgproc|   |       +---ml|   |       +---objdetect|   |       +---photo|   |       +---stitching|   |       +---video|   |       \---videoio|   +---java|   |   +---x64|   |   \---x86|   +---python|   |   \---cv2|   \---x64|       +---vc14|       |   +---bin|       |   \---lib|       \---vc15|           +---bin|           \---lib\---sources    +---3rdparty    |   +---carotene    |   +---cpufeatures    |   +---ffmpeg    |   +---include    |   +---ippicv    |   +---ittnotify    |   +---libjasper    |   +---libjpeg    |   +---libjpeg-turbo    |   +---libpng    |   +---libtengine    |   +---libtiff    |   +---libwebp    |   +---openexr    |   +---openvx    |   +---protobuf    |   +---quirc    |   +---tbb    |   \---zlib    |       \---patches    +---apps    |   +---annotation    |   +---createsamples    |   +---interactive-calibration    |   +---traincascade    |   +---version    |   \---visualisation    +---cmake    |   +---android    |   +---checks    |   +---FindCUDA    |   +---platforms    |   \---templates    +---data    |   +---haarcascades    |   +---haarcascades_cuda    |   +---hogcascades    |   +---lbpcascades    |   \---vec_files    +---doc    |   +---images    |   +---js_tutorials    |   +---pattern_tools    |   +---py_tutorials    |   +---tools    |   \---tutorials    +---include    |   \---opencv2    +---modules    |   +---calib3d    |   +---core    |   +---dnn    |   +---features2d    |   +---flann    |   +---gapi    |   +---highgui    |   +---imgcodecs    |   +---imgproc    |   +---java    |   +---js    |   +---ml    |   +---objdetect    |   +---photo    |   +---python    |   +---stitching    |   +---ts    |   +---video    |   +---videoio    |   \---world    +---platforms    |   +---android    |   +---ios    |   +---js    |   +---linux    |   +---maven    |   +---osx    |   +---scripts    |   +---wince    |   +---winpack_dldt    |   \---winrt    \---samples
+我们放置在了  F:\Vision\opencv430文件夹下面, 得到了上面的 文件列表, 主要用到的库文件都是在 build 文件夹内, source 文件夹下面是 源代码, 
+实际上 我们在程序中需要用的 只有 这里需要的程序, 动态链接库 dll 文件, 静态库 lib 文件, 以及 包含目录 include 文件夹,12345678910111213141516171819202122232425262728opencv430+---dll|       opencv_videoio_ffmpeg430_64.dll|       opencv_world430.dll|       opencv_world430.pdb|       opencv_world430d.dll|       opencv_world430d.pdb|       +---include|   \---opencv2|       +---calib3d|       +---core|       +---dnn|       +---features2d|       +---flann|       +---gapi|       +---highgui|       +---imgcodecs|       +---imgproc|       +---ml|       +---objdetect|       +---photo|       +---stitching|       +---video|       \---videoio\---lib        opencv_world430.lib        opencv_world430d.lib
+如果不是需要调试信息的话,  dll 文件夹下面的 pdb 文件可以全部删除,在忽略 dll 文件之后, 我将自己常用的 C++ 的依赖库 都放在了 github上SChen1024/CVDepend有需要的可以去查看下载, 
+后续到这里, 我们才算是完成了第一步的安装程序, 后面 开始上手进行使用 opencv 了"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+              <a class='prev' href='/2020/04-20/opencv-2-vsqt.html'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>opencv-2-VS2017与QT显示图像</p>
+                <p class='content'>目的
+使用 VS 构建第一个 opencv 程序
+使用 QT 构建 第一个 opencv 程序
+VS 导入 QT 程序
+
+开始我们需要设置 dll 文件的运行路径, 避免运行的时候找不到相应的库...</p>
+              </a>
+            
+            
+              <a class='next' href='/2020/04-20/opencv-bloglist.html'>
+                <p class='title'>opencv-文章列表<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>开始由于害怕自己忘记或者拖延, 这篇文章就作为 opencv 系列的一个目录以及 todo 吧, 我会依次添加相应的内容并整理好的.
+大概率还是按照opencv 的文档结构进行 一一的介绍, 尽...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-spinner fa-spin fa-fw"></i>
+          </div>
+        </section>
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'opencv-1-QT_OPENCV 安装',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-VS2017-安装"><span class="toc-text">1. VS2017 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-QT-安装"><span class="toc-text">2. QT 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-OpenCV-安装"><span class="toc-text">3. OpenCV 安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续"><span class="toc-text">后续</span></a></li></ol>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget category shadow desktop">
+    
+  <header>
+    
+      <a href='categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <ul class="entry navigation">
+        
+          <li><a class="flat-box"
+            title="/categories/Alg/" href="/categories/Alg/"
+            id="categoriesAlg"
+            ><div class='name'>Alg</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/C/" href="/categories/C/"
+            id="categoriesC"
+            ><div class='name'>C++</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Config/" href="/categories/Config/"
+            id="categoriesConfig"
+            ><div class='name'>Config</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Essay/" href="/categories/Essay/"
+            id="categoriesEssay"
+            ><div class='name'>Essay</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Game/" href="/categories/Game/"
+            id="categoriesGame"
+            ><div class='name'>Game</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Hexo/" href="/categories/Hexo/"
+            id="categoriesHexo"
+            ><div class='name'>Hexo</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/IOT/" href="/categories/IOT/"
+            id="categoriesIOT"
+            ><div class='name'>IOT</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Interview/" href="/categories/Interview/"
+            id="categoriesInterview"
+            ><div class='name'>Interview</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LaTex/" href="/categories/LaTex/"
+            id="categoriesLaTex"
+            ><div class='name'>LaTex</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode-Contest/" href="/categories/LeetCode-Contest/"
+            id="categoriesLeetCode-Contest"
+            ><div class='name'>LeetCode-Contest</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode/" href="/categories/LeetCode/"
+            id="categoriesLeetCode"
+            ><div class='name'>LeetCode</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Offer/" href="/categories/Offer/"
+            id="categoriesOffer"
+            ><div class='name'>Offer</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/OpenCV/" href="/categories/OpenCV/"
+            id="categoriesOpenCV"
+            ><div class='name'>OpenCV</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Person/" href="/categories/Person/"
+            id="categoriesPerson"
+            ><div class='name'>Person</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/QT/" href="/categories/QT/"
+            id="categoriesQT"
+            ><div class='name'>QT</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SSR/" href="/categories/SSR/"
+            id="categoriesSSR"
+            ><div class='name'>SSR</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Script/" href="/categories/Script/"
+            id="categoriesScript"
+            ><div class='name'>Script</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SerialPort/" href="/categories/SerialPort/"
+            id="categoriesSerialPort"
+            ><div class='name'>SerialPort</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Sword/" href="/categories/Sword/"
+            id="categoriesSword"
+            ><div class='name'>Sword</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/TODO/" href="/categories/TODO/"
+            id="categoriesTODO"
+            ><div class='name'>TODO</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Tools/" href="/categories/Tools/"
+            id="categoriesTools"
+            ><div class='name'>Tools</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Web/" href="/categories/Web/"
+            id="categoriesWeb"
+            ><div class='name'>Web</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Windows/" href="/categories/Windows/"
+            id="categoriesWindows"
+            ><div class='name'>Windows</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/bug/" href="/categories/bug/"
+            id="categoriesbug"
+            ><div class='name'>bug</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/data/" href="/categories/data/"
+            id="categoriesdata"
+            ><div class='name'>data</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/hexo/" href="/categories/hexo/"
+            id="categorieshexo"
+            ><div class='name'>hexo</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/latex/" href="/categories/latex/"
+            id="categorieslatex"
+            ><div class='name'>latex</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/opencv/" href="/categories/opencv/"
+            id="categoriesopencv"
+            ><div class='name'>opencv</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imagelab/" href="/categories/opencv/imagelab/"
+            id="categoriesopencvimagelab"
+            ><div class='name'>imagelab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imaglab/" href="/categories/opencv/imaglab/"
+            id="categoriesopencvimaglab"
+            ><div class='name'>imaglab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/person/" href="/categories/person/"
+            id="categoriesperson"
+            ><div class='name'>person</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/python/" href="/categories/python/"
+            id="categoriespython"
+            ><div class='name'>python</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/uncategorized/" href="/categories/uncategorized/"
+            id="categoriesuncategorized"
+            ><div class='name'>uncategorized</div><div class='badge'>(5)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/xxx/" href="/categories/xxx/"
+            id="categoriesxxx"
+            ><div class='name'>xxx</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E7%AE%97%E6%B3%95/" href="/categories/%E7%AE%97%E6%B3%95/"
+            id="categoriesE7AE97E6B395"
+            ><div class='name'>算法</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget tagcloud shadow desktop mobile">
+    
+  <header>
+    
+      <a href='tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/2019/" style="font-size: 14px; color: #999">2019</a> <a href="/tags/2020/" style="font-size: 14px; color: #999">2020</a> <a href="/tags/51/" style="font-size: 14px; color: #999">51</a> <a href="/tags/996/" style="font-size: 14px; color: #999">996</a> <a href="/tags/Android/" style="font-size: 14px; color: #999">Android</a> <a href="/tags/Array/" style="font-size: 17px; color: #858585">Array</a> <a href="/tags/Atomineer/" style="font-size: 14px; color: #999">Atomineer</a> <a href="/tags/BinarySearch/" style="font-size: 15px; color: #929292">BinarySearch</a> <a href="/tags/Bugs/" style="font-size: 15px; color: #929292">Bugs</a> <a href="/tags/C/" style="font-size: 14px; color: #999">C</a> <a href="/tags/C/" style="font-size: 24px; color: #555">C++</a> <a href="/tags/Cmake/" style="font-size: 14px; color: #999">Cmake</a> <a href="/tags/Code/" style="font-size: 14px; color: #999">Code</a> <a href="/tags/Compass/" style="font-size: 14px; color: #999">Compass</a> <a href="/tags/Contest/" style="font-size: 14px; color: #999">Contest</a> <a href="/tags/Crack/" style="font-size: 14px; color: #999">Crack</a> <a href="/tags/Doctest/" style="font-size: 14px; color: #999">Doctest</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14px; color: #999">Dynamic Programming</a> <a href="/tags/Emotion/" style="font-size: 14px; color: #999">Emotion</a> <a href="/tags/HEX/" style="font-size: 14px; color: #999">HEX</a> <a href="/tags/ICU/" style="font-size: 14px; color: #999">ICU</a> <a href="/tags/Interview/" style="font-size: 16px; color: #8b8b8b">Interview</a> <a href="/tags/Job/" style="font-size: 15px; color: #929292">Job</a> <a href="/tags/Jobs/" style="font-size: 14px; color: #999">Jobs</a> <a href="/tags/Latex/" style="font-size: 14px; color: #999">Latex</a> <a href="/tags/LeetCode/" style="font-size: 20px; color: #707070">LeetCode</a> <a href="/tags/LeetCode-easy-Overflow/" style="font-size: 14px; color: #999">LeetCode,easy,Overflow</a> <a href="/tags/Live/" style="font-size: 14px; color: #999">Live</a> <a href="/tags/Logger/" style="font-size: 14px; color: #999">Logger</a> <a href="/tags/Math/" style="font-size: 14px; color: #999">Math</a> <a href="/tags/Medium/" style="font-size: 15px; color: #929292">Medium</a> <a href="/tags/NameStyle/" style="font-size: 14px; color: #999">NameStyle</a> <a href="/tags/OpenCV/" style="font-size: 14px; color: #999">OpenCV</a> <a href="/tags/PBootCMS/" style="font-size: 15px; color: #929292">PBootCMS</a> <a href="/tags/PID/" style="font-size: 14px; color: #999">PID</a> <a href="/tags/PSO/" style="font-size: 14px; color: #999">PSO</a> <a href="/tags/Person/" style="font-size: 14px; color: #999">Person</a> <a href="/tags/Plugin/" style="font-size: 14px; color: #999">Plugin</a> <a href="/tags/PrimeNum/" style="font-size: 14px; color: #999">PrimeNum</a> <a href="/tags/Protocbuf/" style="font-size: 14px; color: #999">Protocbuf</a> <a href="/tags/QT/" style="font-size: 17px; color: #858585">QT</a> <a href="/tags/QT%E8%87%AA%E5%AE%9A%E4%B9%89/" style="font-size: 14px; color: #999">QT自定义</a> <a href="/tags/SSR/" style="font-size: 14px; color: #999">SSR</a> <a href="/tags/Serial/" style="font-size: 16px; color: #8b8b8b">Serial</a> <a href="/tags/SerialPort/" style="font-size: 14px; color: #999">SerialPort</a> <a href="/tags/She/" style="font-size: 14px; color: #999">She</a> <a href="/tags/String/" style="font-size: 14px; color: #999">String</a> <a href="/tags/TODO/" style="font-size: 14px; color: #999">TODO</a> <a href="/tags/TwoPointers/" style="font-size: 14px; color: #999">TwoPointers</a> <a href="/tags/UART/" style="font-size: 14px; color: #999">UART</a> <a href="/tags/UnitTest/" style="font-size: 14px; color: #999">UnitTest</a> <a href="/tags/Utils/" style="font-size: 14px; color: #999">Utils</a> <a href="/tags/VS/" style="font-size: 15px; color: #929292">VS</a> <a href="/tags/VS2015/" style="font-size: 16px; color: #8b8b8b">VS2015</a> <a href="/tags/Window/" style="font-size: 14px; color: #999">Window</a> <a href="/tags/Work/" style="font-size: 15px; color: #929292">Work</a> <a href="/tags/Wuhan/" style="font-size: 14px; color: #999">Wuhan</a> <a href="/tags/XeLaTex/" style="font-size: 14px; color: #999">XeLaTex</a> <a href="/tags/action/" style="font-size: 14px; color: #999">action</a> <a href="/tags/algorithm/" style="font-size: 14px; color: #999">algorithm</a> <a href="/tags/aliyun/" style="font-size: 14px; color: #999">aliyun</a> <a href="/tags/asp/" style="font-size: 14px; color: #999">asp</a> <a href="/tags/batch/" style="font-size: 14px; color: #999">batch</a> <a href="/tags/blog/" style="font-size: 21px; color: #696969">blog</a> <a href="/tags/blog%EF%BC%8Chexo/" style="font-size: 14px; color: #999">blog，hexo</a> <a href="/tags/bug/" style="font-size: 14px; color: #999">bug</a> <a href="/tags/c/" style="font-size: 22px; color: #636363">c++</a> <a href="/tags/changelog/" style="font-size: 14px; color: #999">changelog</a> <a href="/tags/cnblogs/" style="font-size: 15px; color: #929292">cnblogs</a> <a href="/tags/cov/" style="font-size: 14px; color: #999">cov</a> <a href="/tags/csdn/" style="font-size: 15px; color: #929292">csdn</a> <a href="/tags/data/" style="font-size: 14px; color: #999">data</a> <a href="/tags/depurple/" style="font-size: 14px; color: #999">depurple</a> <a href="/tags/dream/" style="font-size: 14px; color: #999">dream</a> <a href="/tags/easy/" style="font-size: 16px; color: #8b8b8b">easy</a> <a href="/tags/encrypt/" style="font-size: 23px; color: #5c5c5c">encrypt</a> <a href="/tags/file/" style="font-size: 14px; color: #999">file</a> <a href="/tags/fraud/" style="font-size: 14px; color: #999">fraud</a> <a href="/tags/game/" style="font-size: 15px; color: #929292">game</a> <a href="/tags/github/" style="font-size: 15px; color: #929292">github</a> <a href="/tags/hard/" style="font-size: 15px; color: #929292">hard</a> <a href="/tags/hexo/" style="font-size: 19px; color: #777">hexo</a> <a href="/tags/hide/" style="font-size: 21px; color: #696969">hide</a> <a href="/tags/histograms/" style="font-size: 14px; color: #999">histograms</a> <a href="/tags/history/" style="font-size: 14px; color: #999">history</a> <a href="/tags/home/" style="font-size: 15px; color: #929292">home</a> <a href="/tags/html/" style="font-size: 14px; color: #999">html</a> <a href="/tags/imagelab/" style="font-size: 15px; color: #929292">imagelab</a> <a href="/tags/intel/" style="font-size: 14px; color: #999">intel</a> <a href="/tags/js/" style="font-size: 14px; color: #999">js</a> <a href="/tags/latex/" style="font-size: 15px; color: #929292">latex</a> <a href="/tags/learn/" style="font-size: 14px; color: #999">learn</a> <a href="/tags/list/" style="font-size: 14px; color: #999">list</a> <a href="/tags/master/" style="font-size: 15px; color: #929292">master</a> <a href="/tags/mat/" style="font-size: 14px; color: #999">mat</a> <a href="/tags/matlab/" style="font-size: 14px; color: #999">matlab</a> <a href="/tags/offer/" style="font-size: 14px; color: #999">offer</a> <a href="/tags/opencv/" style="font-size: 24px; color: #555">opencv</a> <a href="/tags/outline/" style="font-size: 14px; color: #999">outline</a> <a href="/tags/overleaf/" style="font-size: 14px; color: #999">overleaf</a> <a href="/tags/pac/" style="font-size: 14px; color: #999">pac</a> <a href="/tags/person/" style="font-size: 18px; color: #7e7e7e">person</a> <a href="/tags/php/" style="font-size: 14px; color: #999">php</a> <a href="/tags/ppt/" style="font-size: 14px; color: #999">ppt</a> <a href="/tags/project/" style="font-size: 14px; color: #999">project</a> <a href="/tags/proxy/" style="font-size: 14px; color: #999">proxy</a> <a href="/tags/python/" style="font-size: 14px; color: #999">python</a> <a href="/tags/qt/" style="font-size: 22px; color: #636363">qt</a> <a href="/tags/robot/" style="font-size: 14px; color: #999">robot</a> <a href="/tags/script/" style="font-size: 14px; color: #999">script</a> <a href="/tags/server/" style="font-size: 15px; color: #929292">server</a> <a href="/tags/shopping/" style="font-size: 14px; color: #999">shopping</a> <a href="/tags/sketchup/" style="font-size: 14px; color: #999">sketchup</a> <a href="/tags/soft/" style="font-size: 15px; color: #929292">soft</a> <a href="/tags/sword/" style="font-size: 14px; color: #999">sword</a> <a href="/tags/swordoffer/" style="font-size: 14px; color: #999">swordoffer</a> <a href="/tags/template/" style="font-size: 14px; color: #999">template</a> <a href="/tags/test/" style="font-size: 16px; color: #8b8b8b">test</a> <a href="/tags/theme/" style="font-size: 14px; color: #999">theme</a> <a href="/tags/todo/" style="font-size: 14px; color: #999">todo</a> <a href="/tags/tools/" style="font-size: 14px; color: #999">tools</a> <a href="/tags/washing-machine/" style="font-size: 14px; color: #999">washing machine</a> <a href="/tags/web/" style="font-size: 15px; color: #929292">web</a> <a href="/tags/whu/" style="font-size: 14px; color: #999">whu</a> <a href="/tags/years/" style="font-size: 14px; color: #999">years</a> <a href="/tags/%E4%B8%B2%E5%8F%A3/" style="font-size: 14px; color: #999">串口</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 14px; color: #999">分治</a> <a href="/tags/%E5%9B%BE%E7%89%87/" style="font-size: 14px; color: #999">图片</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 14px; color: #999">多线程</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 14px; color: #999">学习</a> <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" style="font-size: 14px; color: #999">嵌入式</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 14px; color: #999">数学</a> <a href="/tags/%E6%B0%B4%E6%B8%A9%E6%8E%A7%E5%88%B6/" style="font-size: 14px; color: #999">水温控制</a> <a href="/tags/%E9%98%9F%E5%88%97/" style="font-size: 14px; color: #999">队列</a>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='false'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='netease'
+      type='playlist'
+      id='3175833810'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="/atom.xml"
+                class="social fas fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="mailto:me@xaoxuu.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://github.com/xaoxuu"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=63035382"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+      
+    
+      
+        本站使用
+        <a href="https://volantis.js.org/" target="_blank" class="codename">Schen00</a>
+        作为主题
+        
+          ，
+          总访问量为
+          <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+          次
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://xaoxuu.com" target="_blank" rel="noopener">Copyright © 2017-2020 Mr. X</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js" async></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js" async></script>
+
+  
+
+
+
+
+
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.2.0/js/valine.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var notify = 'false' == true;
+  var verify = 'false' == true;
+  var valine = new Valine();
+  valine.init({
+    el: '#valine_container',
+    notify: notify,
+    verify: verify,
+    guest_info: guest_info,
+    
+    appId: "aB4XKwq00t6BFhV80u7mCg6z-gzGzoHsz",
+    appKey: "RndTSESgwxQgJtumDIvUeWvk",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'mp',
+    lang:'zh-cn',
+    visitor: 'false',
+    highlight:'true'
+  })
+  </script>
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.1/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copyed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-clipboard-check');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPYED';
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-exclamation-triangle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("div.fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>

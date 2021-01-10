@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#2.2.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>opencv-10-图像滤波-噪声添加与均值滤波-含opencv C++ 代码实现 - 東木 - 随笔</title>
+  
+    <meta name="keywords" content="opencv,c++,qt">
+  
+  
+    <meta name="description" content="开始之前再说上一篇文章中, 我们想按照噪声产生, 然后将降噪的, 但是限于篇幅, 我就放在这一篇里面了,说起图像的噪声问题就又回到了我们上一章的内容, 把噪声当作信号处理, 实际上数字图像处理实际上也是在进行数字信号的处理过程, 我们这一章就是将滤除信号的过程,
+根据上一章的方式, 我们对图像添加噪声, 然后计算...">
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="東木 - 随笔">
+  
+
+  <!-- import meta -->
+  
+    
+      <meta name='theme-color' content='#FFFFFF'>
+    
+      <meta name='msapplication-TileColor' content='#cccccc'>
+    
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+  <link rel="shortcut icon" type='image/x-icon' href="https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  <!-- import link -->
+  
+  
+  <link rel='shortcut icon' type='image/x-icon' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  <link rel='icon' type='image/x-icon' sizes='32x32' href='https://i.loli.net/2019/03/27/5c9b4bede02be.png'>
+  
+
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <a class="logo flat-box"></a>
+      <ul class='switcher h-list'>
+        <li><a class="s-comment flat-btn fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc flat-btn fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="logo flat-box" target="_self" href='/'>
+          
+            <img class='logo' src='https://i.loli.net/2020/03/24/wd36McrRBPpSXlG.png'/>
+          
+          
+          
+          
+        </a>
+      
+
+      
+
+			<div class='menu navigation'>
+				<ul class='h-list'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  
+                    <i class='fas fa-rss fa-fw'></i>
+                  
+                  博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  
+                    <i class='fas fa-folder-open fa-fw'></i>
+                  
+                  分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  
+                    <i class='fas fa-tags fa-fw'></i>
+                  
+                  标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  
+                    <i class='fas fa-archive fa-fw'></i>
+                  
+                  归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  
+                    <i class='fas fa-link fa-fw'></i>
+                  
+                  友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  
+                    <i class='fas fa-info-circle fa-fw'></i>
+                  
+                  关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      
+        <div class="m_search">
+          <form name="searchform" class="form u-search-form">
+            <i class="icon fas fa-search fa-fw"></i>
+            <input type="text" class="input u-search-input" placeholder="搜索" />
+          </form>
+        </div>
+      
+
+			<ul class='switcher h-list'>
+				
+					<li><a class="s-search flat-btn fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li><a class="s-menu flat-btn fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<ul class="menu-phone navigation white-box">
+  
+  
+    <li>
+      <a class="flat-box" href=/
+        
+        
+        
+          id="home"
+        >
+        
+          <i class='fas fa-rss fa-fw'></i>
+        
+        博客
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/categories/
+        
+        
+        
+          id="categories"
+        >
+        
+          <i class='fas fa-folder-open fa-fw'></i>
+        
+        分类
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/tags/
+        
+        
+        
+          id="tags"
+        >
+        
+          <i class='fas fa-tags fa-fw'></i>
+        
+        标签
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/archives/
+        
+        
+        
+          id="archives"
+        >
+        
+          <i class='fas fa-archive fa-fw'></i>
+        
+        归档
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/friends/
+        
+        
+        
+          id="friends"
+        >
+        
+          <i class='fas fa-link fa-fw'></i>
+        
+        友链
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/about/
+        
+        
+        
+          id="about"
+        >
+        
+          <i class='fas fa-info-circle fa-fw'></i>
+        
+        关于
+      </a>
+    </li>
+  
+</ul>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box shadow article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2020/04-29/opencv-10-%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2.html">
+        opencv-10-图像滤波-噪声添加与均值滤波-含opencv C++ 代码实现
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+<div class='new-meta-item author'>
+  <a href="https://schen1024.github.io" rel="nofollow">
+    <img src="https://avatars3.githubusercontent.com/u/12789460">
+    <p>SChen1024</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/opencv/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>opencv</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2020年4月29日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>再说上一篇文章中, 我们想按照噪声产生, 然后将降噪的, 但是限于篇幅, 我就放在这一篇里面了,<br>说起图像的噪声问题就又回到了我们上一章的内容, 把噪声当作信号处理, 实际上数字图像处理实际上也是在进行数字信号的处理过程, 我们这一章就是将滤除信号的过程,</p>
+<p>根据上一章的方式, 我们对图像添加噪声, 然后计算 PSNR 与 SSIM 参数, 然后通过降噪, 再从新计算参数值, 比较我们算法的效果 对比我们的算法效果, 看正文吧</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[toc]</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>我们在上一章给出了两种噪声的添加方式, 可以根据我们的需求添加椒盐噪声和高斯噪声, 但是由于我们的噪声添加使用了随机数 , 导致我们在每次进行的结果可能不一致, 所以我们提前设计好噪声情况, 将图片存储起来, 后面我们进行滤波的时候, 都使用一样的照片, 这样我们能够保证每次的结果是一致的, 这样就能进行算法的对比了,  </p>
+<h3 id="生成噪声图像"><a href="#生成噪声图像" class="headerlink" title="生成噪声图像"></a>生成噪声图像</h3><p>我们在上一章给出了不同噪声情况下图像结果, 也给出了一个链接, 对比了更多情况下的图像噪声情况, 可以参考, 所以我们考虑五种情况吧 分别是低椒盐噪声, 高椒盐噪声,低高斯噪声, 高高斯噪声,低椒盐混合低高斯噪声, 高椒盐混合高高斯噪声. 我们分别将图片进行存储便能够得到结果</p>
+<p>说明一下: 之前的算法使用的 lena 图像 忘记从那搞来的了, 今天对比了一下, 发现图像不太对, 我现在找到opencv的一个标准图像<a href="https://raw.githubusercontent.com/opencv/opencv/master/samples/data/lena.jpg" target="_blank" rel="noopener">Lena.jpg</a>, 我下载下来了, 转换成了 lena.png 的图像, 可以见<a href="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588298950276.png" target="_blank" rel="noopener">lena.png</a> 这幅图, 可以直接访问链接 <a href="https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588298950276.png" target="_blank" rel="noopener">https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588298950276.png</a> 直接下载即可.. </p>
+<p>这里的处理算法比较简单, 我们来看代码<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MainWindow::testFunc1</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 用于生成 测试图像 一共6幅图像</span></span><br><span class="line">    <span class="function"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;cv::Mat&gt; <span class="title">noise_img</span><span class="params">(<span class="number">6</span>)</span></span>;</span><br><span class="line">    <span class="comment">// 初始化为原始图像</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;m: noise_img)</span><br><span class="line">        m = gSrcImg.clone();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分别添加 低, 高, 低混合, 高混合 共6幅图像</span></span><br><span class="line">    addSaltNoise(noise_img[<span class="number">0</span>],<span class="number">1000</span>);</span><br><span class="line">    addSaltNoise(noise_img[<span class="number">1</span>],<span class="number">10000</span>);</span><br><span class="line"></span><br><span class="line">    addGaussianNoise(noise_img[<span class="number">2</span>],<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line">    addGaussianNoise(noise_img[<span class="number">3</span>],<span class="number">100</span>,<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    addSaltNoise(noise_img[<span class="number">4</span>],<span class="number">1000</span>);</span><br><span class="line">    addGaussianNoise(noise_img[<span class="number">4</span>],<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    addSaltNoise(noise_img[<span class="number">5</span>],<span class="number">10000</span>);</span><br><span class="line">    addGaussianNoise(noise_img[<span class="number">5</span>],<span class="number">100</span>,<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算 6幅图像的  psnr 和 ssim 然后存储结果值</span></span><br><span class="line">    <span class="function"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; <span class="title">psnr</span><span class="params">(<span class="number">6</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;cv::Scalar&gt; <span class="title">mssim</span><span class="params">(<span class="number">6</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    QString res_temp = <span class="string">"image-%1: psnr:%2, mssim: B:%3 G:%4 R:%5 "</span>;</span><br><span class="line">    QString res_str;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算每个图像的 参数值, 然后存储起来</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">6</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        psnr[i] = getPSNR(gSrcImg, noise_img[i]);</span><br><span class="line">        mssim[i] = getMSSIM(gSrcImg, noise_img[i]);</span><br><span class="line">        res_str = res_temp.arg(i+<span class="number">1</span>)</span><br><span class="line">                            .arg(psnr[i])</span><br><span class="line">                            .arg(mssim[i].val[<span class="number">0</span>])</span><br><span class="line">                            .arg(mssim[i].val[<span class="number">1</span>])</span><br><span class="line">                            .arg(mssim[i].val[<span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line">        ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line">        cv::imwrite(<span class="string">"../testimages/noise/lena-"</span> + <span class="built_in">std</span>::to_string(i+<span class="number">1</span>) + <span class="string">".png"</span>, noise_img[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>我们将图片输出, 然后输出了每幅图的参数, 同时将结果图存储下来, 由于我们在实际进行图像处理的时候会有很多<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">image-1: psnr:29.4922, mssim: B:0.880587 G:0.888243 R:0.944992 </span><br><span class="line">image-2: psnr:19.4727, mssim: B:0.353134 G:0.383638 R:0.629353 </span><br><span class="line">image-3: psnr:46.8705, mssim: B:0.991138 G:0.991732 R:0.991185 </span><br><span class="line">image-4: psnr:9.15966, mssim: B:0.492354 G:0.482311 R:0.680167 </span><br><span class="line">image-5: psnr:29.2807, mssim: B:0.874794 G:0.881488 R:0.935624 </span><br><span class="line">image-6: psnr:8.92587, mssim: B:0.392531 G:0.393254 R:0.655795</span><br></pre></td></tr></table></figure><br>我这里使用之前提到的 图像”拼接” 的方式将图像拼接起来, 这样我们可以更为直观的比较, 图像尺寸都是 $512*512$, 如果需要可以裁剪出来,</p>
+<blockquote>
+<p>CSDN 上传会自己转存图片, 上传资源比较麻烦, 懒得搞, 我这边的图片都存在了 gitee 的图床上, 原图存储的 , 有需要的可以自己取用</p>
+</blockquote>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/image/1588391819059.png" alt="噪声图像&quot;拼接&quot;图"></p>
+<h3 id="传统图像降噪算法及其对比"><a href="#传统图像降噪算法及其对比" class="headerlink" title="传统图像降噪算法及其对比"></a>传统图像降噪算法及其对比</h3><p>之前提到过的<a href="https://zhuanlan.zhihu.com/p/51403693" target="_blank" rel="noopener">【技术综述】一文道尽传统图像降噪方法</a><br> 这篇文章讲的还比较详细, 大概的给我们讲了一下传统的降噪的方法,<br> 这里我想将各种滤波分开进行实现, 但是比较麻烦, 我就直接在一篇文章中写了吧.. </p>
+<p> 目前常用的降噪的方法主要可以分为空域降噪与频域降噪, 空域滤波也是我们常用的使用空间处理的方式,计算量小, 简单易用. 频域比较难理解,计算量也比较大, 但是在很多情况结果比较有效.. </p>
+<p> 所以我们主要的部分也是空间域处理的方式, 也比较直观. opencv 的例程中<a href="https://docs.opencv.org/4.3.0/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html" target="_blank" rel="noopener">Smoothing Images</a> 章节大概讲了一下目前使用的模糊方式, 其实模糊是相对的, 也是进行降噪的一个有利手段, 在处理掉噪声的同时, 会导致原始图像的细节模糊, 进而丢失一部分图像信息,我们之后看下图像测试结果. 同时在例程中还提到了一本书<a href="http://szeliski.org/Book" target="_blank" rel="noopener">Computer Vision: Algorithms and Applications, 1st ed.</a> 有中译版本, 内容还不错, 可以学习</p>
+<h3 id="opencv-核表示的算法操作"><a href="#opencv-核表示的算法操作" class="headerlink" title="opencv 核表示的算法操作"></a>opencv 核表示的算法操作</h3><p>在之前的内容中, 我们介绍了 opencv 核操作的方式, 对于图像的每个像素点的领域操作都可以使用 opencv 提供的 <code>filter2D</code> 方式进行指定核的运算, 我们能够很容易核的操作, 也就是说我们将图像的算法操作都可以转换成图像的矩阵相乘的运算, 可以表示成<br>$$<br>g(x,y) = M \cdot f(x,y)<br>$$<br>$g(x,y)$ 用来表示结果图像, $f(x,y)$ 表示原始图像,  (x,y) 表示 列行座标, M 就是我们的图像运算矩阵,<br>我们后续都不再重复这些默认的操作, 希望能够明白</p>
+<p>一般来说, 我们进行矩阵运算的时候都会选择方阵, 这样不会由于矩阵的方向性导致的处理结果不同, 所以我们在一般情况下都会选择<br>方阵, 比如上面进行的滤波 采用的就是 $3x3$ 尺寸的图像, 而且由于我们的图像都是离散的, 所以 实际山采用的滤波的窗口边长也是奇数值, 类似于 $3,5,7,9…(2k+1)$ 的形式</p>
+<h3 id="均值滤波及C-代码实现"><a href="#均值滤波及C-代码实现" class="headerlink" title="均值滤波及C++ 代码实现"></a>均值滤波及C++ 代码实现</h3><h4 id="算术均值滤波"><a href="#算术均值滤波" class="headerlink" title="算术均值滤波"></a>算术均值滤波</h4><p>均值滤波(Mean Filter)的算法就是对于每一个像素点, 将其设定为取其邻域窗口内的所有像素的平均值<br>我们考虑一般形式的均值滤波器<br>$$<br>g(x,y) = \frac{1}{mn} \sum_{(i,j) \in S_{xy}} f(i,j)<br>$$</p>
+<p>那我们开始转换一下, 则可以得到下相应的 均值滤波的矩阵<br>$$<br>M = \frac{1}{9} \left [<br>        \begin{array}{c}<br>            1 &amp; 1 &amp; 1 \ 1&amp; 1 &amp; 1 \ 1 &amp; 1 &amp; 1<br>        \end{array}<br>\right ]<br>$$</p>
+<h4 id="加权均值滤波"><a href="#加权均值滤波" class="headerlink" title="加权均值滤波"></a>加权均值滤波</h4><p>上面给出的均值滤波让人容易的就会想一个问题, 对于不同的像素位置, 应该要赋予不同的权重值, 靠近中间的位置我们必须要考虑权重的问题, 这就是我们使用加权的均值滤波了, 一般来说我们最常用的矩阵为<br>$$<br>M = \frac{1}{16} \left [<br>        \begin{array}{c}<br>            1 &amp; 2 &amp; 1 \ 2&amp; 4 &amp; 2 \ 1 &amp; 2 &amp; 1<br>        \end{array}<br>\right ]<br>$$<br> 这种矩阵对于中心元素的权重更高, 边缘的较弱, 符合人的感觉, 具体的参数值可以自己调整, 前面的系数为矩阵内各个元素的总和, 是为了保证系数的归一.</p>
+<p>其实均值滤波器还有很多, 有兴趣的推荐看<a href="https://www.cnblogs.com/wangguchangqing/p/6399293.html" target="_blank" rel="noopener">图像处理基础(3)：均值滤波器及其变种</a> 这篇文章, 写的很好,介绍的很详细, </p>
+<h5 id="C-手动实现均值滤波"><a href="#C-手动实现均值滤波" class="headerlink" title="C++手动实现均值滤波"></a>C++手动实现均值滤波</h5><p>我们这里还是使用基础的 算术均值滤波, 实现起来简单一点, 边界问题也不考虑, 这样的话,我们处理的图像区域就稍微内缩小一个像素(1,1)- (m-2,n-2), 至于边界问题, 处理起来还是要看<br>看起来还是比较简单的, 我们按照给出的方法写一下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 默认 尺寸为3的  均值滤波 // 自定义实现 暂时不考虑参数异常等 处理</span></span><br><span class="line"><span class="function">cv::Mat <span class="title">meanFilter</span><span class="params">(<span class="keyword">const</span> cv::Mat src, <span class="keyword">int</span> ksize = <span class="number">3</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 边界不处理, 直接忽略掉 使用原始图, 拷贝, 避免直接修改</span></span><br><span class="line">    cv::Mat dst = src.clone();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 直接出, 强制向下取整, // 暴力计算每一个 邻域区间的值</span></span><br><span class="line">    <span class="keyword">int</span> k0 = ksize/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> sum[<span class="number">3</span>] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=k0;i&lt;dst.rows-k0<span class="number">-1</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=k0;j&lt;dst.cols-k0<span class="number">-1</span>;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 清空 和数组</span></span><br><span class="line">            <span class="built_in">memset</span>(sum,<span class="number">0</span>, <span class="keyword">sizeof</span>(sum));</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 计算三个通道的结果 和值 并计算 均值写入目标图像</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> c = <span class="number">0</span>;c&lt;<span class="number">3</span>;c++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> m = <span class="number">0</span>;m&lt;ksize;m++)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> n=<span class="number">0</span>;n&lt;ksize;n++)</span><br><span class="line">                    &#123;</span><br><span class="line">                        sum[c] += src.at&lt;cv::Vec3b&gt;(i-k0+m,j-k0+n)[c];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 计算均值写入</span></span><br><span class="line">                dst.at&lt;cv::Vec3b&gt;(i,j)[c] = cv::saturate_cast&lt;uchar&gt;((<span class="keyword">float</span>)sum[c] /(ksize*ksize));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dst;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>中间部分写的比较暴力,直接计算的窗口的和值, 然后进行均值得到的结果, 其实这里如果要考虑窗口的和值, 我们没必要重复计算一次, 每次计我们移动窗口后变化的两个边界差值即可, 这样计算上的一点点速度优化, 我们这里实现的只是一个 小小的demo , 有一定的效果即可</p>
+<h4 id="opencv-实现均值滤波"><a href="#opencv-实现均值滤波" class="headerlink" title="opencv 实现均值滤波"></a>opencv 实现均值滤波</h4><p>我们在之前的章节提到了 使用 <code>filter2D</code> 代替普通操作的方法,在这里自然而然的想到怎么去实现, 我们还是一样的构造一个核, 然后计算结果即可, 这里使用的核还是 上面提到的 算术均值滤波的核</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// filter2D 实现 meanfilter</span></span><br><span class="line"><span class="function">cv::Mat <span class="title">meanFilterByFilter2D</span><span class="params">(<span class="keyword">const</span> cv::Mat src, <span class="keyword">int</span> ksize = <span class="number">3</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cv::Mat kernel = (cv::Mat_&lt;<span class="keyword">float</span>&gt;(ksize,ksize) &lt;&lt; <span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    kernel = kernel / <span class="number">9.0f</span>;</span><br><span class="line">    cv::Mat dst;</span><br><span class="line">    cv::filter2D(src,dst,src.depth(),kernel);</span><br><span class="line">    <span class="keyword">return</span> dst;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里实现起来真的很简单, 这里的 <code>Mat</code> 可以直接进行矩阵的操作, 每个元素都除以了9,这样就简单很多了,  </p>
+<p>接下来呢, opencv 对于这种基础且常见的算法肯定自己去在做了实现呀, 在我们上面也提到了opencv 的例程<a href="https://docs.opencv.org/4.3.0/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html" target="_blank" rel="noopener">Smoothing Images</a>, 提到了 一个模糊的函数, <code>cv::blur</code>, 这个函数可以调用盒式滤波器, 其实也就是均值滤波的通用形式, 前面的系数不一定而已, 我们先实现一下看下效果,  这里跟上面写成一样的形式, 看起来好看一点, 其实只需要一句话便可以实现了 没什么难度,  至于效果, 我们马上来对比<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 blur 均值滤波</span></span><br><span class="line"><span class="function">cv::Mat <span class="title">meanFilterByBlur</span><span class="params">(<span class="keyword">const</span> cv::Mat src, <span class="keyword">int</span> ksize = <span class="number">3</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cv::Mat dst;</span><br><span class="line">    cv::blur(src,dst,cv::Size(ksize,ksize));</span><br><span class="line">    <span class="keyword">return</span> dst;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="均值滤波算法对比"><a href="#均值滤波算法对比" class="headerlink" title="均值滤波算法对比"></a>均值滤波算法对比</h4><p>我们上面提到了构造噪声图像, 然后我们存储了起来, 这里我们选择了一副图像进行直接给结果,  这里我们选择 高椒盐噪声的图像进行测试, 然后先看结果, 第一行表示噪声图像与原始图像的参数值, 后面的三行依次是我们进行上面提到的三种实现出来的滤波方式得到的图像与原始图像进行的对比分析, 这里还是能看到比较明显的结果的, </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">image-noise: psnr:19.4727, mssim: B:0.353134 G:0.383638 R:0.629353 </span><br><span class="line">image-1: psnr:26.505, mssim: B:0.603292 G:0.63888 R:0.806963 </span><br><span class="line">image-2: psnr:26.7208, mssim: B:0.605704 G:0.641344 R:0.809115 </span><br><span class="line">image-3: psnr:26.7208, mssim: B:0.605704 G:0.641344 R:0.809115</span><br></pre></td></tr></table></figure>
+<p>我们看一下测试的代码, 还是之前的界面里面的第二个按钮执行的函数,  这里我们第一个按钮是去读取我们之前存储的噪声图像, 按名称读取,<br>然后结果的时候, 我们是按照每幅图像进行的, 这里暂时 高椒盐噪声的图像, 可以在上面给出的图中看到<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全局 噪声图像数组, psnr 数组 mssim 数组</span></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> IMAGE_DIR =<span class="string">"../testimages/noise/"</span>;</span><br><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;cv::Mat&gt; <span class="title">gNoiseImg</span><span class="params">(<span class="number">6</span>)</span></span>;</span><br><span class="line"><span class="keyword">double</span> psnr[<span class="number">6</span>];</span><br><span class="line">cv::Scalar mssim[<span class="number">6</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MainWindow::testFunc1</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 用于读取 测试图片</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">6</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        gNoiseImg[i] = cv::imread(IMAGE_DIR + <span class="string">"lena-"</span> + <span class="built_in">std</span>::to_string(i+<span class="number">1</span>) + <span class="string">".png"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    qDebug(<span class="string">"ReadOK"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MainWindow::testFunc2</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    QString res_temp = <span class="string">"image-%1: psnr:%2, mssim: B:%3 G:%4 R:%5 "</span>;</span><br><span class="line">    QString res_str;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试 均值滤波 三种方式的不同</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> TEST = <span class="number">1</span>; <span class="comment">// 使用统一的图进行测试 暂时使用 高 椒盐噪声图像</span></span><br><span class="line">    psnr[TEST] = getPSNR(gSrcImg, gNoiseImg[TEST]);</span><br><span class="line">    mssim[TEST] = getMSSIM(gSrcImg,gNoiseImg[TEST]);</span><br><span class="line"></span><br><span class="line">    res_str = res_temp.arg(<span class="string">"noise"</span>)</span><br><span class="line">            .arg(psnr[TEST])</span><br><span class="line">            .arg(mssim[TEST].val[<span class="number">0</span>])</span><br><span class="line">            .arg(mssim[TEST].val[<span class="number">1</span>])</span><br><span class="line">            .arg(mssim[TEST].val[<span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 噪声的参数值</span></span><br><span class="line">    ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line"></span><br><span class="line">    cv::Mat dst[<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">    dst[<span class="number">0</span>] = meanFilter(gNoiseImg[TEST]);</span><br><span class="line">    dst[<span class="number">1</span>] = meanFilterByFilter2D(gNoiseImg[TEST]);</span><br><span class="line">    dst[<span class="number">2</span>] = meanFilterByBlur(gNoiseImg[TEST]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分别计算三种方式得到的滤波的效果 (结果图与 原始图比较)</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        psnr[TEST] = getPSNR(gSrcImg, dst[i]);</span><br><span class="line">        mssim[TEST] = getMSSIM(gSrcImg,dst[i]);</span><br><span class="line"></span><br><span class="line">        res_str = res_temp.arg(i+<span class="number">1</span>)</span><br><span class="line">                .arg(psnr[TEST])</span><br><span class="line">                .arg(mssim[TEST].val[<span class="number">0</span>])</span><br><span class="line">                .arg(mssim[TEST].val[<span class="number">1</span>])</span><br><span class="line">                .arg(mssim[TEST].val[<span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 噪声的参数值</span></span><br><span class="line">        ui-&gt;pt_log-&gt;appendPlainText(res_str);</span><br><span class="line"></span><br><span class="line">        cv::imwrite(IMAGE_DIR + <span class="string">"dst_"</span> + <span class="built_in">std</span>::to_string(i+<span class="number">1</span>)+<span class="string">".png"</span>,dst[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从上面的参数也能看出来, 后面两种方法得到的结果图像是一模一样的, 我们就不再进行展示, 先看 我们实现的均值滤波与自带的均值滤波的图像区别</p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/image/1588391774254.png" alt="自己实现的均值滤波与自带的均值滤波区别"></p>
+<p>其实吧, 总体的结果上是看不出来区别的,  主要是我们的算法上没有进行边界的处理部分, 能在图的中间部分看到稍微的几个噪声点没有处理掉, 这可能也是我们的结果参数要稍微小一点的原因, 总体来说, 我们的算法还是能够进行均值滤波的, 而且跟自带的处理结果也是一致的.</p>
+<p>我这里就有了一个疑问, 为什么我们后面的结果就一模一样了呢,blur 去调用了 filter2D? 然后我去看两个函数的调用图,  感觉问题应该是出在 <code>cv::FilterEngine::apply</code> 函数上,在后面就没去研究了</p>
+<blockquote>
+<p>其实这里看了好久, 看得不是很懂, 就不再叙述了, 给出这两张函数的调用图 有兴趣的自己去看</p>
+</blockquote>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/image/1588391773655.png" alt="filter2D 调用图"></p>
+<p><img src="https://gitee.com/schen00/BlogImage/raw/master/image/1588391773641.png" alt="blur 函数调用图"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实这里原本是计划一起写完的, 但是真的太伤了, 慢慢来吧, 中间容易跑偏, 因为这边还要做比较多的东西, 所以写的越来越慢, 不过至少目前兴致还是很高的 , 昨天发在博客园的文章还被 <a href="https://www.cnblogs.com/Imageshop/" target="_blank" rel="noopener">ImageShop</a> 大佬点赞, 还是很开心的,</p>
+<p>其实越写感觉自己越虚, 很多深入的东西自己都不能说摸透了, 还是要深入去研究了 但是写的深入了看得就少了一点, 其实我尽量写的浅一点, 因为很多人最开始就是搜索 blog 找答案的, 能看懂就行,<br>我会在后面将常用的都给写完的, 尽量更新的快, 现在每天要花大量的时间去查, 去看还要写, 希望我还能坚持下去, 加油.</p>
+<h2 id="广告"><a href="#广告" class="headerlink" title="广告"></a>广告</h2><p>就是我这里还有之前的 函数调用图都是自己使用 doxygen 和graphiz  参考<a href="https://blog.csdn.net/benkaoya/article/details/79763668" target="_blank" rel="noopener">绘制函数调用图（call graph）（4）：doxygen + graphviz</a> 自己重新生成的opencv 的文档图, 至少在用起来还是比较简单的 这个就是一个静态的网页, 我把它放在了我的 服务器上, 这样别人也能访问有需要的可以看下, 基于 opencv 4.3.0 版本的文档图 <a href="http://schen.xyz:89/opencv" target="_blank" rel="noopener">http://schen.xyz:89/opencv</a>   </p>
+<blockquote>
+<p>没有备案, 也没有做防护, 别搞我</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li>《高斯噪声_百度百科》. 见于 2020年4月30日. <a href="https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0" target="_blank" rel="noopener">https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0</a>.</li>
+<li>《绘制函数调用图（call graph）（4）：doxygen + graphviz_运维_许振坪的专栏-CSDN博客》. 见于 2020年5月2日. <a href="https://blog.csdn.net/benkaoya/article/details/79763668" target="_blank" rel="noopener">https://blog.csdn.net/benkaoya/article/details/79763668</a>.</li>
+<li>知乎专栏. 《【技术综述】一文道尽传统图像降噪方法》. 见于 2020年4月29日. <a href="https://zhuanlan.zhihu.com/p/51403693" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/51403693</a>.</li>
+<li>知乎专栏. 《可复现的图像降噪算法总结》. 见于 2020年4月29日. <a href="https://zhuanlan.zhihu.com/p/32502816" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/32502816</a>.</li>
+<li>《图像噪声的成因分类与常见图像去噪算法简介_Java_qq_27606639的博客-CSDN博客》. 见于 2020年4月30日. <a href="https://blog.csdn.net/qq_27606639/article/details/80912071" target="_blank" rel="noopener">https://blog.csdn.net/qq_27606639/article/details/80912071</a>.</li>
+<li>《最小均方滤波器》. 收入 维基百科，自由的百科全书, 2018年3月9日. <a href="https://zh.wikipedia.org/w/index.php?title=%E6%9C%80%E5%B0%8F%E5%9D%87%E6%96%B9%E6%BB%A4%E6%B3%A2%E5%99%A8&amp;oldid=48602322" target="_blank" rel="noopener">https://zh.wikipedia.org/w/index.php?title=%E6%9C%80%E5%B0%8F%E5%9D%87%E6%96%B9%E6%BB%A4%E6%B3%A2%E5%99%A8&amp;oldid=48602322</a>.</li>
+<li>《Computer Vision: Algorithms and Applications, 1st ed.》 见于 2020年5月1日. <a href="http://szeliski.org/Book/" target="_blank" rel="noopener">http://szeliski.org/Book/</a>.</li>
+<li>《OpenCV: Smoothing Images》. 见于 2020年5月1日. <a href="https://docs.opencv.org/4.3.0/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html" target="_blank" rel="noopener">https://docs.opencv.org/4.3.0/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html</a>.</li>
+<li>《openCV之中值滤波&amp;均值滤波（及代码实现）<em>人工智能</em>林小默-CSDN博客》. 见于 2020年5月1日. <a href="https://blog.csdn.net/weixin_37720172/article/details/72627543" target="_blank" rel="noopener">https://blog.csdn.net/weixin_37720172/article/details/72627543</a>.</li>
+</ol>
+<a id="more"></a>
+          
+            <br>
+            
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+          
+            <p>本文永久链接是：<a href=https://schen1024.github.io/2020/04-29/opencv-10-%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2.html>https://schen1024.github.io/2020/04-29/opencv-10-%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2.html</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+      
+        <div class='fancybox'><img src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png'
+        
+          height='64px'
+        ></div>
+      
+    
+  </div>
+</section>
+
+  
+
+
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-12-24T05:36:13+00:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2020年12月24日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/opencv/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>opencv</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/c/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>c++</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/qt/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>qt</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2020/04-29/opencv-10-%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2.html&title=opencv-10-图像滤波-噪声添加与均值滤波-含opencv C++ 代码实现 - 東木 - 随笔&summary=开始之前再说上一篇文章中, 我们想按照噪声产生, 然后将降噪的, 但是限于篇幅, 我就放在这一篇里面了,说起图像的噪声问题就又回到了我们上一章的内容, 把噪声当作信号处理, 实际上数字图像处理实际上也是在进行数字信号的处理过程, 我们这一章就是将滤除信号的过程,
+根据上一章的方式, 我们对图像添加噪声, 然后计算 PSNR 与 SSIM 参数, 然后通过降噪, 再从新计算参数值, 比较我们算法的效果 对比我们的算法效果, 看正文吧
+目录[toc]
+正文我们在上一章给出了两种噪声的添加方式, 可以根据我们的需求添加椒盐噪声和高斯噪声, 但是由于我们的噪声添加使用了随机数 , 导致我们在每次进行的结果可能不一致, 所以我们提前设计好噪声情况, 将图片存储起来, 后面我们进行滤波的时候, 都使用一样的照片, 这样我们能够保证每次的结果是一致的, 这样就能进行算法的对比了,  
+生成噪声图像我们在上一章给出了不同噪声情况下图像结果, 也给出了一个链接, 对比了更多情况下的图像噪声情况, 可以参考, 所以我们考虑五种情况吧 分别是低椒盐噪声, 高椒盐噪声,低高斯噪声, 高高斯噪声,低椒盐混合低高斯噪声, 高椒盐混合高高斯噪声. 我们分别将图片进行存储便能够得到结果
+说明一下: 之前的算法使用的 lena 图像 忘记从那搞来的了, 今天对比了一下, 发现图像不太对, 我现在找到opencv的一个标准图像Lena.jpg, 我下载下来了, 转换成了 lena.png 的图像, 可以见lena.png 这幅图, 可以直接访问链接 https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588298950276.png 直接下载即可.. 
+这里的处理算法比较简单, 我们来看代码1234567891011121314151617181920212223242526272829303132333435363738394041424344void MainWindow::testFunc1(void)&#123;    // 用于生成 测试图像 一共6幅图像    std::vector&lt;cv::Mat&gt; noise_img(6);    // 初始化为原始图像    for(auto &amp;m: noise_img)        m = gSrcImg.clone();    // 分别添加 低, 高, 低混合, 高混合 共6幅图像    addSaltNoise(noise_img[0],1000);    addSaltNoise(noise_img[1],10000);    addGaussianNoise(noise_img[2],0,1);    addGaussianNoise(noise_img[3],100,10);    addSaltNoise(noise_img[4],1000);    addGaussianNoise(noise_img[4],0,1);    addSaltNoise(noise_img[5],10000);    addGaussianNoise(noise_img[5],100,10);    // 计算 6幅图像的  psnr 和 ssim 然后存储结果值    std::vector&lt;double&gt; psnr(6);    std::vector&lt;cv::Scalar&gt; mssim(6);    QString res_temp = "image-%1: psnr:%2, mssim: B:%3 G:%4 R:%5 ";    QString res_str;    // 计算每个图像的 参数值, 然后存储起来    for(int i=0;i&lt;6;i++)    &#123;        psnr[i] = getPSNR(gSrcImg, noise_img[i]);        mssim[i] = getMSSIM(gSrcImg, noise_img[i]);        res_str = res_temp.arg(i+1)                            .arg(psnr[i])                            .arg(mssim[i].val[0])                            .arg(mssim[i].val[1])                            .arg(mssim[i].val[2]);        ui-&gt;pt_log-&gt;appendPlainText(res_str);        cv::imwrite("../testimages/noise/lena-" + std::to_string(i+1) + ".png", noise_img[i]);    &#125;&#125;我们将图片输出, 然后输出了每幅图的参数, 同时将结果图存储下来, 由于我们在实际进行图像处理的时候会有很多123456image-1: psnr:29.4922, mssim: B:0.880587 G:0.888243 R:0.944992 image-2: psnr:19.4727, mssim: B:0.353134 G:0.383638 R:0.629353 image-3: psnr:46.8705, mssim: B:0.991138 G:0.991732 R:0.991185 image-4: psnr:9.15966, mssim: B:0.492354 G:0.482311 R:0.680167 image-5: psnr:29.2807, mssim: B:0.874794 G:0.881488 R:0.935624 image-6: psnr:8.92587, mssim: B:0.392531 G:0.393254 R:0.655795我这里使用之前提到的 图像”拼接” 的方式将图像拼接起来, 这样我们可以更为直观的比较, 图像尺寸都是 $512*512$, 如果需要可以裁剪出来,
+
+CSDN 上传会自己转存图片, 上传资源比较麻烦, 懒得搞, 我这边的图片都存在了 gitee 的图床上, 原图存储的 , 有需要的可以自己取用
+
+
+传统图像降噪算法及其对比之前提到过的【技术综述】一文道尽传统图像降噪方法 这篇文章讲的还比较详细, 大概的给我们讲了一下传统的降噪的方法, 这里我想将各种滤波分开进行实现, 但是比较麻烦, 我就直接在一篇文章中写了吧.. 
+ 目前常用的降噪的方法主要可以分为空域降噪与频域降噪, 空域滤波也是我们常用的使用空间处理的方式,计算量小, 简单易用. 频域比较难理解,计算量也比较大, 但是在很多情况结果比较有效.. 
+ 所以我们主要的部分也是空间域处理的方式, 也比较直观. opencv 的例程中Smoothing Images 章节大概讲了一下目前使用的模糊方式, 其实模糊是相对的, 也是进行降噪的一个有利手段, 在处理掉噪声的同时, 会导致原始图像的细节模糊, 进而丢失一部分图像信息,我们之后看下图像测试结果. 同时在例程中还提到了一本书Computer Vision: Algorithms and Applications, 1st ed. 有中译版本, 内容还不错, 可以学习
+opencv 核表示的算法操作在之前的内容中, 我们介绍了 opencv 核操作的方式, 对于图像的每个像素点的领域操作都可以使用 opencv 提供的 filter2D 方式进行指定核的运算, 我们能够很容易核的操作, 也就是说我们将图像的算法操作都可以转换成图像的矩阵相乘的运算, 可以表示成$$g(x,y) = M \cdot f(x,y)$$$g(x,y)$ 用来表示结果图像, $f(x,y)$ 表示原始图像,  (x,y) 表示 列行座标, M 就是我们的图像运算矩阵,我们后续都不再重复这些默认的操作, 希望能够明白
+一般来说, 我们进行矩阵运算的时候都会选择方阵, 这样不会由于矩阵的方向性导致的处理结果不同, 所以我们在一般情况下都会选择方阵, 比如上面进行的滤波 采用的就是 $3x3$ 尺寸的图像, 而且由于我们的图像都是离散的, 所以 实际山采用的滤波的窗口边长也是奇数值, 类似于 $3,5,7,9…(2k+1)$ 的形式
+均值滤波及C++ 代码实现算术均值滤波均值滤波(Mean Filter)的算法就是对于每一个像素点, 将其设定为取其邻域窗口内的所有像素的平均值我们考虑一般形式的均值滤波器$$g(x,y) = \frac{1}{mn} \sum_{(i,j) \in S_{xy}} f(i,j)$$
+那我们开始转换一下, 则可以得到下相应的 均值滤波的矩阵$$M = \frac{1}{9} \left [        \begin{array}{c}            1 &amp; 1 &amp; 1 \ 1&amp; 1 &amp; 1 \ 1 &amp; 1 &amp; 1        \end{array}\right ]$$
+加权均值滤波上面给出的均值滤波让人容易的就会想一个问题, 对于不同的像素位置, 应该要赋予不同的权重值, 靠近中间的位置我们必须要考虑权重的问题, 这就是我们使用加权的均值滤波了, 一般来说我们最常用的矩阵为$$M = \frac{1}{16} \left [        \begin{array}{c}            1 &amp; 2 &amp; 1 \ 2&amp; 4 &amp; 2 \ 1 &amp; 2 &amp; 1        \end{array}\right ]$$ 这种矩阵对于中心元素的权重更高, 边缘的较弱, 符合人的感觉, 具体的参数值可以自己调整, 前面的系数为矩阵内各个元素的总和, 是为了保证系数的归一.
+其实均值滤波器还有很多, 有兴趣的推荐看图像处理基础(3)：均值滤波器及其变种 这篇文章, 写的很好,介绍的很详细, 
+C++手动实现均值滤波我们这里还是使用基础的 算术均值滤波, 实现起来简单一点, 边界问题也不考虑, 这样的话,我们处理的图像区域就稍微内缩小一个像素(1,1)- (m-2,n-2), 至于边界问题, 处理起来还是要看看起来还是比较简单的, 我们按照给出的方法写一下
+123456789101112131415161718192021222324252627282930313233// 默认 尺寸为3的  均值滤波 // 自定义实现 暂时不考虑参数异常等 处理cv::Mat meanFilter(const cv::Mat src, int ksize = 3)&#123;    // 边界不处理, 直接忽略掉 使用原始图, 拷贝, 避免直接修改    cv::Mat dst = src.clone();    // 直接出, 强制向下取整, // 暴力计算每一个 邻域区间的值    int k0 = ksize/2;    int sum[3] = &#123;0,0,0&#125;;    for(int i=k0;i&lt;dst.rows-k0-1;i++)    &#123;        for(int j=k0;j&lt;dst.cols-k0-1;j++)        &#123;            // 清空 和数组            memset(sum,0, sizeof(sum));            // 计算三个通道的结果 和值 并计算 均值写入目标图像            for(int c = 0;c&lt;3;c++)            &#123;                for(int m = 0;m&lt;ksize;m++)                &#123;                    for (int n=0;n&lt;ksize;n++)                    &#123;                        sum[c] += src.at&lt;cv::Vec3b&gt;(i-k0+m,j-k0+n)[c];                    &#125;                &#125;                // 计算均值写入                dst.at&lt;cv::Vec3b&gt;(i,j)[c] = cv::saturate_cast&lt;uchar&gt;((float)sum[c] /(ksize*ksize));            &#125;        &#125;    &#125;    return dst;&#125;
+中间部分写的比较暴力,直接计算的窗口的和值, 然后进行均值得到的结果, 其实这里如果要考虑窗口的和值, 我们没必要重复计算一次, 每次计我们移动窗口后变化的两个边界差值即可, 这样计算上的一点点速度优化, 我们这里实现的只是一个 小小的demo , 有一定的效果即可
+opencv 实现均值滤波我们在之前的章节提到了 使用 filter2D 代替普通操作的方法,在这里自然而然的想到怎么去实现, 我们还是一样的构造一个核, 然后计算结果即可, 这里使用的核还是 上面提到的 算术均值滤波的核
+123456789// filter2D 实现 meanfiltercv::Mat meanFilterByFilter2D(const cv::Mat src, int ksize = 3)&#123;    cv::Mat kernel = (cv::Mat_&lt;float&gt;(ksize,ksize) &lt;&lt; 1,1,1,1,1,1,1,1,1);    kernel = kernel / 9.0f;    cv::Mat dst;    cv::filter2D(src,dst,src.depth(),kernel);    return dst;&#125;
+这里实现起来真的很简单, 这里的 Mat 可以直接进行矩阵的操作, 每个元素都除以了9,这样就简单很多了,  
+接下来呢, opencv 对于这种基础且常见的算法肯定自己去在做了实现呀, 在我们上面也提到了opencv 的例程Smoothing Images, 提到了 一个模糊的函数, cv::blur, 这个函数可以调用盒式滤波器, 其实也就是均值滤波的通用形式, 前面的系数不一定而已, 我们先实现一下看下效果,  这里跟上面写成一样的形式, 看起来好看一点, 其实只需要一句话便可以实现了 没什么难度,  至于效果, 我们马上来对比1234567// 使用 blur 均值滤波cv::Mat meanFilterByBlur(const cv::Mat src, int ksize = 3)&#123;    cv::Mat dst;    cv::blur(src,dst,cv::Size(ksize,ksize));    return dst;&#125;
+均值滤波算法对比我们上面提到了构造噪声图像, 然后我们存储了起来, 这里我们选择了一副图像进行直接给结果,  这里我们选择 高椒盐噪声的图像进行测试, 然后先看结果, 第一行表示噪声图像与原始图像的参数值, 后面的三行依次是我们进行上面提到的三种实现出来的滤波方式得到的图像与原始图像进行的对比分析, 这里还是能看到比较明显的结果的, 
+1234image-noise: psnr:19.4727, mssim: B:0.353134 G:0.383638 R:0.629353 image-1: psnr:26.505, mssim: B:0.603292 G:0.63888 R:0.806963 image-2: psnr:26.7208, mssim: B:0.605704 G:0.641344 R:0.809115 image-3: psnr:26.7208, mssim: B:0.605704 G:0.641344 R:0.809115
+我们看一下测试的代码, 还是之前的界面里面的第二个按钮执行的函数,  这里我们第一个按钮是去读取我们之前存储的噪声图像, 按名称读取,然后结果的时候, 我们是按照每幅图像进行的, 这里暂时 高椒盐噪声的图像, 可以在上面给出的图中看到12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758// 全局 噪声图像数组, psnr 数组 mssim 数组const std::string IMAGE_DIR ="../testimages/noise/";std::vector&lt;cv::Mat&gt; gNoiseImg(6);double psnr[6];cv::Scalar mssim[6];void MainWindow::testFunc1(void)&#123;    // 用于读取 测试图片    for(int i=0;i&lt;6;i++)    &#123;        gNoiseImg[i] = cv::imread(IMAGE_DIR + "lena-" + std::to_string(i+1) + ".png");    &#125;    qDebug("ReadOK");&#125;void MainWindow::testFunc2(void)&#123;    QString res_temp = "image-%1: psnr:%2, mssim: B:%3 G:%4 R:%5 ";    QString res_str;    // 测试 均值滤波 三种方式的不同    const int TEST = 1; // 使用统一的图进行测试 暂时使用 高 椒盐噪声图像    psnr[TEST] = getPSNR(gSrcImg, gNoiseImg[TEST]);    mssim[TEST] = getMSSIM(gSrcImg,gNoiseImg[TEST]);    res_str = res_temp.arg("noise")            .arg(psnr[TEST])            .arg(mssim[TEST].val[0])            .arg(mssim[TEST].val[1])            .arg(mssim[TEST].val[2]);    // 噪声的参数值    ui-&gt;pt_log-&gt;appendPlainText(res_str);    cv::Mat dst[3];    dst[0] = meanFilter(gNoiseImg[TEST]);    dst[1] = meanFilterByFilter2D(gNoiseImg[TEST]);    dst[2] = meanFilterByBlur(gNoiseImg[TEST]);    // 分别计算三种方式得到的滤波的效果 (结果图与 原始图比较)    for(int i=0;i&lt;3;i++)    &#123;        psnr[TEST] = getPSNR(gSrcImg, dst[i]);        mssim[TEST] = getMSSIM(gSrcImg,dst[i]);        res_str = res_temp.arg(i+1)                .arg(psnr[TEST])                .arg(mssim[TEST].val[0])                .arg(mssim[TEST].val[1])                .arg(mssim[TEST].val[2]);        // 噪声的参数值        ui-&gt;pt_log-&gt;appendPlainText(res_str);        cv::imwrite(IMAGE_DIR + "dst_" + std::to_string(i+1)+".png",dst[i]);    &#125;&#125;
+从上面的参数也能看出来, 后面两种方法得到的结果图像是一模一样的, 我们就不再进行展示, 先看 我们实现的均值滤波与自带的均值滤波的图像区别
+
+其实吧, 总体的结果上是看不出来区别的,  主要是我们的算法上没有进行边界的处理部分, 能在图的中间部分看到稍微的几个噪声点没有处理掉, 这可能也是我们的结果参数要稍微小一点的原因, 总体来说, 我们的算法还是能够进行均值滤波的, 而且跟自带的处理结果也是一致的.
+我这里就有了一个疑问, 为什么我们后面的结果就一模一样了呢,blur 去调用了 filter2D? 然后我去看两个函数的调用图,  感觉问题应该是出在 cv::FilterEngine::apply 函数上,在后面就没去研究了
+
+其实这里看了好久, 看得不是很懂, 就不再叙述了, 给出这两张函数的调用图 有兴趣的自己去看
+
+
+
+总结其实这里原本是计划一起写完的, 但是真的太伤了, 慢慢来吧, 中间容易跑偏, 因为这边还要做比较多的东西, 所以写的越来越慢, 不过至少目前兴致还是很高的 , 昨天发在博客园的文章还被 ImageShop 大佬点赞, 还是很开心的,
+其实越写感觉自己越虚, 很多深入的东西自己都不能说摸透了, 还是要深入去研究了 但是写的深入了看得就少了一点, 其实我尽量写的浅一点, 因为很多人最开始就是搜索 blog 找答案的, 能看懂就行,我会在后面将常用的都给写完的, 尽量更新的快, 现在每天要花大量的时间去查, 去看还要写, 希望我还能坚持下去, 加油.
+广告就是我这里还有之前的 函数调用图都是自己使用 doxygen 和graphiz  参考绘制函数调用图（call graph）（4）：doxygen + graphviz 自己重新生成的opencv 的文档图, 至少在用起来还是比较简单的 这个就是一个静态的网页, 我把它放在了我的 服务器上, 这样别人也能访问有需要的可以看下, 基于 opencv 4.3.0 版本的文档图 http://schen.xyz:89/opencv   
+
+没有备案, 也没有做防护, 别搞我
+
+参考
+《高斯噪声_百度百科》. 见于 2020年4月30日. https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0.
+《绘制函数调用图（call graph）（4）：doxygen + graphviz_运维_许振坪的专栏-CSDN博客》. 见于 2020年5月2日. https://blog.csdn.net/benkaoya/article/details/79763668.
+知乎专栏. 《【技术综述】一文道尽传统图像降噪方法》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/51403693.
+知乎专栏. 《可复现的图像降噪算法总结》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/32502816.
+《图像噪声的成因分类与常见图像去噪算法简介_Java_qq_27606639的博客-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/qq_27606639/article/details/80912071.
+《最小均方滤波器》. 收入 维基百科，自由的百科全书, 2018年3月9日. https://zh.wikipedia.org/w/index.php?title=%E6%9C%80%E5%B0%8F%E5%9D%87%E6%96%B9%E6%BB%A4%E6%B3%A2%E5%99%A8&amp;oldid=48602322.
+《Computer Vision: Algorithms and Applications, 1st ed.》 见于 2020年5月1日. http://szeliski.org/Book/.
+《OpenCV: Smoothing Images》. 见于 2020年5月1日. https://docs.opencv.org/4.3.0/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html.
+《openCV之中值滤波&amp;均值滤波（及代码实现）人工智能林小默-CSDN博客》. 见于 2020年5月1日. https://blog.csdn.net/weixin_37720172/article/details/72627543.
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://schen1024.github.io/2020/04-29/opencv-10-%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2.html&title=opencv-10-图像滤波-噪声添加与均值滤波-含opencv C++ 代码实现 - 東木 - 随笔&summary=开始之前再说上一篇文章中, 我们想按照噪声产生, 然后将降噪的, 但是限于篇幅, 我就放在这一篇里面了,说起图像的噪声问题就又回到了我们上一章的内容, 把噪声当作信号处理, 实际上数字图像处理实际上也是在进行数字信号的处理过程, 我们这一章就是将滤除信号的过程,
+根据上一章的方式, 我们对图像添加噪声, 然后计算 PSNR 与 SSIM 参数, 然后通过降噪, 再从新计算参数值, 比较我们算法的效果 对比我们的算法效果, 看正文吧
+目录[toc]
+正文我们在上一章给出了两种噪声的添加方式, 可以根据我们的需求添加椒盐噪声和高斯噪声, 但是由于我们的噪声添加使用了随机数 , 导致我们在每次进行的结果可能不一致, 所以我们提前设计好噪声情况, 将图片存储起来, 后面我们进行滤波的时候, 都使用一样的照片, 这样我们能够保证每次的结果是一致的, 这样就能进行算法的对比了,  
+生成噪声图像我们在上一章给出了不同噪声情况下图像结果, 也给出了一个链接, 对比了更多情况下的图像噪声情况, 可以参考, 所以我们考虑五种情况吧 分别是低椒盐噪声, 高椒盐噪声,低高斯噪声, 高高斯噪声,低椒盐混合低高斯噪声, 高椒盐混合高高斯噪声. 我们分别将图片进行存储便能够得到结果
+说明一下: 之前的算法使用的 lena 图像 忘记从那搞来的了, 今天对比了一下, 发现图像不太对, 我现在找到opencv的一个标准图像Lena.jpg, 我下载下来了, 转换成了 lena.png 的图像, 可以见lena.png 这幅图, 可以直接访问链接 https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588298950276.png 直接下载即可.. 
+这里的处理算法比较简单, 我们来看代码1234567891011121314151617181920212223242526272829303132333435363738394041424344void MainWindow::testFunc1(void)&#123;    // 用于生成 测试图像 一共6幅图像    std::vector&lt;cv::Mat&gt; noise_img(6);    // 初始化为原始图像    for(auto &amp;m: noise_img)        m = gSrcImg.clone();    // 分别添加 低, 高, 低混合, 高混合 共6幅图像    addSaltNoise(noise_img[0],1000);    addSaltNoise(noise_img[1],10000);    addGaussianNoise(noise_img[2],0,1);    addGaussianNoise(noise_img[3],100,10);    addSaltNoise(noise_img[4],1000);    addGaussianNoise(noise_img[4],0,1);    addSaltNoise(noise_img[5],10000);    addGaussianNoise(noise_img[5],100,10);    // 计算 6幅图像的  psnr 和 ssim 然后存储结果值    std::vector&lt;double&gt; psnr(6);    std::vector&lt;cv::Scalar&gt; mssim(6);    QString res_temp = "image-%1: psnr:%2, mssim: B:%3 G:%4 R:%5 ";    QString res_str;    // 计算每个图像的 参数值, 然后存储起来    for(int i=0;i&lt;6;i++)    &#123;        psnr[i] = getPSNR(gSrcImg, noise_img[i]);        mssim[i] = getMSSIM(gSrcImg, noise_img[i]);        res_str = res_temp.arg(i+1)                            .arg(psnr[i])                            .arg(mssim[i].val[0])                            .arg(mssim[i].val[1])                            .arg(mssim[i].val[2]);        ui-&gt;pt_log-&gt;appendPlainText(res_str);        cv::imwrite("../testimages/noise/lena-" + std::to_string(i+1) + ".png", noise_img[i]);    &#125;&#125;我们将图片输出, 然后输出了每幅图的参数, 同时将结果图存储下来, 由于我们在实际进行图像处理的时候会有很多123456image-1: psnr:29.4922, mssim: B:0.880587 G:0.888243 R:0.944992 image-2: psnr:19.4727, mssim: B:0.353134 G:0.383638 R:0.629353 image-3: psnr:46.8705, mssim: B:0.991138 G:0.991732 R:0.991185 image-4: psnr:9.15966, mssim: B:0.492354 G:0.482311 R:0.680167 image-5: psnr:29.2807, mssim: B:0.874794 G:0.881488 R:0.935624 image-6: psnr:8.92587, mssim: B:0.392531 G:0.393254 R:0.655795我这里使用之前提到的 图像”拼接” 的方式将图像拼接起来, 这样我们可以更为直观的比较, 图像尺寸都是 $512*512$, 如果需要可以裁剪出来,
+
+CSDN 上传会自己转存图片, 上传资源比较麻烦, 懒得搞, 我这边的图片都存在了 gitee 的图床上, 原图存储的 , 有需要的可以自己取用
+
+
+传统图像降噪算法及其对比之前提到过的【技术综述】一文道尽传统图像降噪方法 这篇文章讲的还比较详细, 大概的给我们讲了一下传统的降噪的方法, 这里我想将各种滤波分开进行实现, 但是比较麻烦, 我就直接在一篇文章中写了吧.. 
+ 目前常用的降噪的方法主要可以分为空域降噪与频域降噪, 空域滤波也是我们常用的使用空间处理的方式,计算量小, 简单易用. 频域比较难理解,计算量也比较大, 但是在很多情况结果比较有效.. 
+ 所以我们主要的部分也是空间域处理的方式, 也比较直观. opencv 的例程中Smoothing Images 章节大概讲了一下目前使用的模糊方式, 其实模糊是相对的, 也是进行降噪的一个有利手段, 在处理掉噪声的同时, 会导致原始图像的细节模糊, 进而丢失一部分图像信息,我们之后看下图像测试结果. 同时在例程中还提到了一本书Computer Vision: Algorithms and Applications, 1st ed. 有中译版本, 内容还不错, 可以学习
+opencv 核表示的算法操作在之前的内容中, 我们介绍了 opencv 核操作的方式, 对于图像的每个像素点的领域操作都可以使用 opencv 提供的 filter2D 方式进行指定核的运算, 我们能够很容易核的操作, 也就是说我们将图像的算法操作都可以转换成图像的矩阵相乘的运算, 可以表示成$$g(x,y) = M \cdot f(x,y)$$$g(x,y)$ 用来表示结果图像, $f(x,y)$ 表示原始图像,  (x,y) 表示 列行座标, M 就是我们的图像运算矩阵,我们后续都不再重复这些默认的操作, 希望能够明白
+一般来说, 我们进行矩阵运算的时候都会选择方阵, 这样不会由于矩阵的方向性导致的处理结果不同, 所以我们在一般情况下都会选择方阵, 比如上面进行的滤波 采用的就是 $3x3$ 尺寸的图像, 而且由于我们的图像都是离散的, 所以 实际山采用的滤波的窗口边长也是奇数值, 类似于 $3,5,7,9…(2k+1)$ 的形式
+均值滤波及C++ 代码实现算术均值滤波均值滤波(Mean Filter)的算法就是对于每一个像素点, 将其设定为取其邻域窗口内的所有像素的平均值我们考虑一般形式的均值滤波器$$g(x,y) = \frac{1}{mn} \sum_{(i,j) \in S_{xy}} f(i,j)$$
+那我们开始转换一下, 则可以得到下相应的 均值滤波的矩阵$$M = \frac{1}{9} \left [        \begin{array}{c}            1 &amp; 1 &amp; 1 \ 1&amp; 1 &amp; 1 \ 1 &amp; 1 &amp; 1        \end{array}\right ]$$
+加权均值滤波上面给出的均值滤波让人容易的就会想一个问题, 对于不同的像素位置, 应该要赋予不同的权重值, 靠近中间的位置我们必须要考虑权重的问题, 这就是我们使用加权的均值滤波了, 一般来说我们最常用的矩阵为$$M = \frac{1}{16} \left [        \begin{array}{c}            1 &amp; 2 &amp; 1 \ 2&amp; 4 &amp; 2 \ 1 &amp; 2 &amp; 1        \end{array}\right ]$$ 这种矩阵对于中心元素的权重更高, 边缘的较弱, 符合人的感觉, 具体的参数值可以自己调整, 前面的系数为矩阵内各个元素的总和, 是为了保证系数的归一.
+其实均值滤波器还有很多, 有兴趣的推荐看图像处理基础(3)：均值滤波器及其变种 这篇文章, 写的很好,介绍的很详细, 
+C++手动实现均值滤波我们这里还是使用基础的 算术均值滤波, 实现起来简单一点, 边界问题也不考虑, 这样的话,我们处理的图像区域就稍微内缩小一个像素(1,1)- (m-2,n-2), 至于边界问题, 处理起来还是要看看起来还是比较简单的, 我们按照给出的方法写一下
+123456789101112131415161718192021222324252627282930313233// 默认 尺寸为3的  均值滤波 // 自定义实现 暂时不考虑参数异常等 处理cv::Mat meanFilter(const cv::Mat src, int ksize = 3)&#123;    // 边界不处理, 直接忽略掉 使用原始图, 拷贝, 避免直接修改    cv::Mat dst = src.clone();    // 直接出, 强制向下取整, // 暴力计算每一个 邻域区间的值    int k0 = ksize/2;    int sum[3] = &#123;0,0,0&#125;;    for(int i=k0;i&lt;dst.rows-k0-1;i++)    &#123;        for(int j=k0;j&lt;dst.cols-k0-1;j++)        &#123;            // 清空 和数组            memset(sum,0, sizeof(sum));            // 计算三个通道的结果 和值 并计算 均值写入目标图像            for(int c = 0;c&lt;3;c++)            &#123;                for(int m = 0;m&lt;ksize;m++)                &#123;                    for (int n=0;n&lt;ksize;n++)                    &#123;                        sum[c] += src.at&lt;cv::Vec3b&gt;(i-k0+m,j-k0+n)[c];                    &#125;                &#125;                // 计算均值写入                dst.at&lt;cv::Vec3b&gt;(i,j)[c] = cv::saturate_cast&lt;uchar&gt;((float)sum[c] /(ksize*ksize));            &#125;        &#125;    &#125;    return dst;&#125;
+中间部分写的比较暴力,直接计算的窗口的和值, 然后进行均值得到的结果, 其实这里如果要考虑窗口的和值, 我们没必要重复计算一次, 每次计我们移动窗口后变化的两个边界差值即可, 这样计算上的一点点速度优化, 我们这里实现的只是一个 小小的demo , 有一定的效果即可
+opencv 实现均值滤波我们在之前的章节提到了 使用 filter2D 代替普通操作的方法,在这里自然而然的想到怎么去实现, 我们还是一样的构造一个核, 然后计算结果即可, 这里使用的核还是 上面提到的 算术均值滤波的核
+123456789// filter2D 实现 meanfiltercv::Mat meanFilterByFilter2D(const cv::Mat src, int ksize = 3)&#123;    cv::Mat kernel = (cv::Mat_&lt;float&gt;(ksize,ksize) &lt;&lt; 1,1,1,1,1,1,1,1,1);    kernel = kernel / 9.0f;    cv::Mat dst;    cv::filter2D(src,dst,src.depth(),kernel);    return dst;&#125;
+这里实现起来真的很简单, 这里的 Mat 可以直接进行矩阵的操作, 每个元素都除以了9,这样就简单很多了,  
+接下来呢, opencv 对于这种基础且常见的算法肯定自己去在做了实现呀, 在我们上面也提到了opencv 的例程Smoothing Images, 提到了 一个模糊的函数, cv::blur, 这个函数可以调用盒式滤波器, 其实也就是均值滤波的通用形式, 前面的系数不一定而已, 我们先实现一下看下效果,  这里跟上面写成一样的形式, 看起来好看一点, 其实只需要一句话便可以实现了 没什么难度,  至于效果, 我们马上来对比1234567// 使用 blur 均值滤波cv::Mat meanFilterByBlur(const cv::Mat src, int ksize = 3)&#123;    cv::Mat dst;    cv::blur(src,dst,cv::Size(ksize,ksize));    return dst;&#125;
+均值滤波算法对比我们上面提到了构造噪声图像, 然后我们存储了起来, 这里我们选择了一副图像进行直接给结果,  这里我们选择 高椒盐噪声的图像进行测试, 然后先看结果, 第一行表示噪声图像与原始图像的参数值, 后面的三行依次是我们进行上面提到的三种实现出来的滤波方式得到的图像与原始图像进行的对比分析, 这里还是能看到比较明显的结果的, 
+1234image-noise: psnr:19.4727, mssim: B:0.353134 G:0.383638 R:0.629353 image-1: psnr:26.505, mssim: B:0.603292 G:0.63888 R:0.806963 image-2: psnr:26.7208, mssim: B:0.605704 G:0.641344 R:0.809115 image-3: psnr:26.7208, mssim: B:0.605704 G:0.641344 R:0.809115
+我们看一下测试的代码, 还是之前的界面里面的第二个按钮执行的函数,  这里我们第一个按钮是去读取我们之前存储的噪声图像, 按名称读取,然后结果的时候, 我们是按照每幅图像进行的, 这里暂时 高椒盐噪声的图像, 可以在上面给出的图中看到12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758// 全局 噪声图像数组, psnr 数组 mssim 数组const std::string IMAGE_DIR ="../testimages/noise/";std::vector&lt;cv::Mat&gt; gNoiseImg(6);double psnr[6];cv::Scalar mssim[6];void MainWindow::testFunc1(void)&#123;    // 用于读取 测试图片    for(int i=0;i&lt;6;i++)    &#123;        gNoiseImg[i] = cv::imread(IMAGE_DIR + "lena-" + std::to_string(i+1) + ".png");    &#125;    qDebug("ReadOK");&#125;void MainWindow::testFunc2(void)&#123;    QString res_temp = "image-%1: psnr:%2, mssim: B:%3 G:%4 R:%5 ";    QString res_str;    // 测试 均值滤波 三种方式的不同    const int TEST = 1; // 使用统一的图进行测试 暂时使用 高 椒盐噪声图像    psnr[TEST] = getPSNR(gSrcImg, gNoiseImg[TEST]);    mssim[TEST] = getMSSIM(gSrcImg,gNoiseImg[TEST]);    res_str = res_temp.arg("noise")            .arg(psnr[TEST])            .arg(mssim[TEST].val[0])            .arg(mssim[TEST].val[1])            .arg(mssim[TEST].val[2]);    // 噪声的参数值    ui-&gt;pt_log-&gt;appendPlainText(res_str);    cv::Mat dst[3];    dst[0] = meanFilter(gNoiseImg[TEST]);    dst[1] = meanFilterByFilter2D(gNoiseImg[TEST]);    dst[2] = meanFilterByBlur(gNoiseImg[TEST]);    // 分别计算三种方式得到的滤波的效果 (结果图与 原始图比较)    for(int i=0;i&lt;3;i++)    &#123;        psnr[TEST] = getPSNR(gSrcImg, dst[i]);        mssim[TEST] = getMSSIM(gSrcImg,dst[i]);        res_str = res_temp.arg(i+1)                .arg(psnr[TEST])                .arg(mssim[TEST].val[0])                .arg(mssim[TEST].val[1])                .arg(mssim[TEST].val[2]);        // 噪声的参数值        ui-&gt;pt_log-&gt;appendPlainText(res_str);        cv::imwrite(IMAGE_DIR + "dst_" + std::to_string(i+1)+".png",dst[i]);    &#125;&#125;
+从上面的参数也能看出来, 后面两种方法得到的结果图像是一模一样的, 我们就不再进行展示, 先看 我们实现的均值滤波与自带的均值滤波的图像区别
+
+其实吧, 总体的结果上是看不出来区别的,  主要是我们的算法上没有进行边界的处理部分, 能在图的中间部分看到稍微的几个噪声点没有处理掉, 这可能也是我们的结果参数要稍微小一点的原因, 总体来说, 我们的算法还是能够进行均值滤波的, 而且跟自带的处理结果也是一致的.
+我这里就有了一个疑问, 为什么我们后面的结果就一模一样了呢,blur 去调用了 filter2D? 然后我去看两个函数的调用图,  感觉问题应该是出在 cv::FilterEngine::apply 函数上,在后面就没去研究了
+
+其实这里看了好久, 看得不是很懂, 就不再叙述了, 给出这两张函数的调用图 有兴趣的自己去看
+
+
+
+总结其实这里原本是计划一起写完的, 但是真的太伤了, 慢慢来吧, 中间容易跑偏, 因为这边还要做比较多的东西, 所以写的越来越慢, 不过至少目前兴致还是很高的 , 昨天发在博客园的文章还被 ImageShop 大佬点赞, 还是很开心的,
+其实越写感觉自己越虚, 很多深入的东西自己都不能说摸透了, 还是要深入去研究了 但是写的深入了看得就少了一点, 其实我尽量写的浅一点, 因为很多人最开始就是搜索 blog 找答案的, 能看懂就行,我会在后面将常用的都给写完的, 尽量更新的快, 现在每天要花大量的时间去查, 去看还要写, 希望我还能坚持下去, 加油.
+广告就是我这里还有之前的 函数调用图都是自己使用 doxygen 和graphiz  参考绘制函数调用图（call graph）（4）：doxygen + graphviz 自己重新生成的opencv 的文档图, 至少在用起来还是比较简单的 这个就是一个静态的网页, 我把它放在了我的 服务器上, 这样别人也能访问有需要的可以看下, 基于 opencv 4.3.0 版本的文档图 http://schen.xyz:89/opencv   
+
+没有备案, 也没有做防护, 别搞我
+
+参考
+《高斯噪声_百度百科》. 见于 2020年4月30日. https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0.
+《绘制函数调用图（call graph）（4）：doxygen + graphviz_运维_许振坪的专栏-CSDN博客》. 见于 2020年5月2日. https://blog.csdn.net/benkaoya/article/details/79763668.
+知乎专栏. 《【技术综述】一文道尽传统图像降噪方法》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/51403693.
+知乎专栏. 《可复现的图像降噪算法总结》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/32502816.
+《图像噪声的成因分类与常见图像去噪算法简介_Java_qq_27606639的博客-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/qq_27606639/article/details/80912071.
+《最小均方滤波器》. 收入 维基百科，自由的百科全书, 2018年3月9日. https://zh.wikipedia.org/w/index.php?title=%E6%9C%80%E5%B0%8F%E5%9D%87%E6%96%B9%E6%BB%A4%E6%B3%A2%E5%99%A8&amp;oldid=48602322.
+《Computer Vision: Algorithms and Applications, 1st ed.》 见于 2020年5月1日. http://szeliski.org/Book/.
+《OpenCV: Smoothing Images》. 见于 2020年5月1日. https://docs.opencv.org/4.3.0/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html.
+《openCV之中值滤波&amp;均值滤波（及代码实现）人工智能林小默-CSDN博客》. 见于 2020年5月1日. https://blog.csdn.net/weixin_37720172/article/details/72627543.
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://schen1024.github.io/2020/04-29/opencv-10-%E5%9B%BE%E5%83%8F%E6%BB%A4%E6%B3%A2.html&title=opencv-10-图像滤波-噪声添加与均值滤波-含opencv C++ 代码实现 - 東木 - 随笔&summary=开始之前再说上一篇文章中, 我们想按照噪声产生, 然后将降噪的, 但是限于篇幅, 我就放在这一篇里面了,说起图像的噪声问题就又回到了我们上一章的内容, 把噪声当作信号处理, 实际上数字图像处理实际上也是在进行数字信号的处理过程, 我们这一章就是将滤除信号的过程,
+根据上一章的方式, 我们对图像添加噪声, 然后计算 PSNR 与 SSIM 参数, 然后通过降噪, 再从新计算参数值, 比较我们算法的效果 对比我们的算法效果, 看正文吧
+目录[toc]
+正文我们在上一章给出了两种噪声的添加方式, 可以根据我们的需求添加椒盐噪声和高斯噪声, 但是由于我们的噪声添加使用了随机数 , 导致我们在每次进行的结果可能不一致, 所以我们提前设计好噪声情况, 将图片存储起来, 后面我们进行滤波的时候, 都使用一样的照片, 这样我们能够保证每次的结果是一致的, 这样就能进行算法的对比了,  
+生成噪声图像我们在上一章给出了不同噪声情况下图像结果, 也给出了一个链接, 对比了更多情况下的图像噪声情况, 可以参考, 所以我们考虑五种情况吧 分别是低椒盐噪声, 高椒盐噪声,低高斯噪声, 高高斯噪声,低椒盐混合低高斯噪声, 高椒盐混合高高斯噪声. 我们分别将图片进行存储便能够得到结果
+说明一下: 之前的算法使用的 lena 图像 忘记从那搞来的了, 今天对比了一下, 发现图像不太对, 我现在找到opencv的一个标准图像Lena.jpg, 我下载下来了, 转换成了 lena.png 的图像, 可以见lena.png 这幅图, 可以直接访问链接 https://gitee.com/schen00/BlogImage/raw/master/小书匠/1588298950276.png 直接下载即可.. 
+这里的处理算法比较简单, 我们来看代码1234567891011121314151617181920212223242526272829303132333435363738394041424344void MainWindow::testFunc1(void)&#123;    // 用于生成 测试图像 一共6幅图像    std::vector&lt;cv::Mat&gt; noise_img(6);    // 初始化为原始图像    for(auto &amp;m: noise_img)        m = gSrcImg.clone();    // 分别添加 低, 高, 低混合, 高混合 共6幅图像    addSaltNoise(noise_img[0],1000);    addSaltNoise(noise_img[1],10000);    addGaussianNoise(noise_img[2],0,1);    addGaussianNoise(noise_img[3],100,10);    addSaltNoise(noise_img[4],1000);    addGaussianNoise(noise_img[4],0,1);    addSaltNoise(noise_img[5],10000);    addGaussianNoise(noise_img[5],100,10);    // 计算 6幅图像的  psnr 和 ssim 然后存储结果值    std::vector&lt;double&gt; psnr(6);    std::vector&lt;cv::Scalar&gt; mssim(6);    QString res_temp = "image-%1: psnr:%2, mssim: B:%3 G:%4 R:%5 ";    QString res_str;    // 计算每个图像的 参数值, 然后存储起来    for(int i=0;i&lt;6;i++)    &#123;        psnr[i] = getPSNR(gSrcImg, noise_img[i]);        mssim[i] = getMSSIM(gSrcImg, noise_img[i]);        res_str = res_temp.arg(i+1)                            .arg(psnr[i])                            .arg(mssim[i].val[0])                            .arg(mssim[i].val[1])                            .arg(mssim[i].val[2]);        ui-&gt;pt_log-&gt;appendPlainText(res_str);        cv::imwrite("../testimages/noise/lena-" + std::to_string(i+1) + ".png", noise_img[i]);    &#125;&#125;我们将图片输出, 然后输出了每幅图的参数, 同时将结果图存储下来, 由于我们在实际进行图像处理的时候会有很多123456image-1: psnr:29.4922, mssim: B:0.880587 G:0.888243 R:0.944992 image-2: psnr:19.4727, mssim: B:0.353134 G:0.383638 R:0.629353 image-3: psnr:46.8705, mssim: B:0.991138 G:0.991732 R:0.991185 image-4: psnr:9.15966, mssim: B:0.492354 G:0.482311 R:0.680167 image-5: psnr:29.2807, mssim: B:0.874794 G:0.881488 R:0.935624 image-6: psnr:8.92587, mssim: B:0.392531 G:0.393254 R:0.655795我这里使用之前提到的 图像”拼接” 的方式将图像拼接起来, 这样我们可以更为直观的比较, 图像尺寸都是 $512*512$, 如果需要可以裁剪出来,
+
+CSDN 上传会自己转存图片, 上传资源比较麻烦, 懒得搞, 我这边的图片都存在了 gitee 的图床上, 原图存储的 , 有需要的可以自己取用
+
+
+传统图像降噪算法及其对比之前提到过的【技术综述】一文道尽传统图像降噪方法 这篇文章讲的还比较详细, 大概的给我们讲了一下传统的降噪的方法, 这里我想将各种滤波分开进行实现, 但是比较麻烦, 我就直接在一篇文章中写了吧.. 
+ 目前常用的降噪的方法主要可以分为空域降噪与频域降噪, 空域滤波也是我们常用的使用空间处理的方式,计算量小, 简单易用. 频域比较难理解,计算量也比较大, 但是在很多情况结果比较有效.. 
+ 所以我们主要的部分也是空间域处理的方式, 也比较直观. opencv 的例程中Smoothing Images 章节大概讲了一下目前使用的模糊方式, 其实模糊是相对的, 也是进行降噪的一个有利手段, 在处理掉噪声的同时, 会导致原始图像的细节模糊, 进而丢失一部分图像信息,我们之后看下图像测试结果. 同时在例程中还提到了一本书Computer Vision: Algorithms and Applications, 1st ed. 有中译版本, 内容还不错, 可以学习
+opencv 核表示的算法操作在之前的内容中, 我们介绍了 opencv 核操作的方式, 对于图像的每个像素点的领域操作都可以使用 opencv 提供的 filter2D 方式进行指定核的运算, 我们能够很容易核的操作, 也就是说我们将图像的算法操作都可以转换成图像的矩阵相乘的运算, 可以表示成$$g(x,y) = M \cdot f(x,y)$$$g(x,y)$ 用来表示结果图像, $f(x,y)$ 表示原始图像,  (x,y) 表示 列行座标, M 就是我们的图像运算矩阵,我们后续都不再重复这些默认的操作, 希望能够明白
+一般来说, 我们进行矩阵运算的时候都会选择方阵, 这样不会由于矩阵的方向性导致的处理结果不同, 所以我们在一般情况下都会选择方阵, 比如上面进行的滤波 采用的就是 $3x3$ 尺寸的图像, 而且由于我们的图像都是离散的, 所以 实际山采用的滤波的窗口边长也是奇数值, 类似于 $3,5,7,9…(2k+1)$ 的形式
+均值滤波及C++ 代码实现算术均值滤波均值滤波(Mean Filter)的算法就是对于每一个像素点, 将其设定为取其邻域窗口内的所有像素的平均值我们考虑一般形式的均值滤波器$$g(x,y) = \frac{1}{mn} \sum_{(i,j) \in S_{xy}} f(i,j)$$
+那我们开始转换一下, 则可以得到下相应的 均值滤波的矩阵$$M = \frac{1}{9} \left [        \begin{array}{c}            1 &amp; 1 &amp; 1 \ 1&amp; 1 &amp; 1 \ 1 &amp; 1 &amp; 1        \end{array}\right ]$$
+加权均值滤波上面给出的均值滤波让人容易的就会想一个问题, 对于不同的像素位置, 应该要赋予不同的权重值, 靠近中间的位置我们必须要考虑权重的问题, 这就是我们使用加权的均值滤波了, 一般来说我们最常用的矩阵为$$M = \frac{1}{16} \left [        \begin{array}{c}            1 &amp; 2 &amp; 1 \ 2&amp; 4 &amp; 2 \ 1 &amp; 2 &amp; 1        \end{array}\right ]$$ 这种矩阵对于中心元素的权重更高, 边缘的较弱, 符合人的感觉, 具体的参数值可以自己调整, 前面的系数为矩阵内各个元素的总和, 是为了保证系数的归一.
+其实均值滤波器还有很多, 有兴趣的推荐看图像处理基础(3)：均值滤波器及其变种 这篇文章, 写的很好,介绍的很详细, 
+C++手动实现均值滤波我们这里还是使用基础的 算术均值滤波, 实现起来简单一点, 边界问题也不考虑, 这样的话,我们处理的图像区域就稍微内缩小一个像素(1,1)- (m-2,n-2), 至于边界问题, 处理起来还是要看看起来还是比较简单的, 我们按照给出的方法写一下
+123456789101112131415161718192021222324252627282930313233// 默认 尺寸为3的  均值滤波 // 自定义实现 暂时不考虑参数异常等 处理cv::Mat meanFilter(const cv::Mat src, int ksize = 3)&#123;    // 边界不处理, 直接忽略掉 使用原始图, 拷贝, 避免直接修改    cv::Mat dst = src.clone();    // 直接出, 强制向下取整, // 暴力计算每一个 邻域区间的值    int k0 = ksize/2;    int sum[3] = &#123;0,0,0&#125;;    for(int i=k0;i&lt;dst.rows-k0-1;i++)    &#123;        for(int j=k0;j&lt;dst.cols-k0-1;j++)        &#123;            // 清空 和数组            memset(sum,0, sizeof(sum));            // 计算三个通道的结果 和值 并计算 均值写入目标图像            for(int c = 0;c&lt;3;c++)            &#123;                for(int m = 0;m&lt;ksize;m++)                &#123;                    for (int n=0;n&lt;ksize;n++)                    &#123;                        sum[c] += src.at&lt;cv::Vec3b&gt;(i-k0+m,j-k0+n)[c];                    &#125;                &#125;                // 计算均值写入                dst.at&lt;cv::Vec3b&gt;(i,j)[c] = cv::saturate_cast&lt;uchar&gt;((float)sum[c] /(ksize*ksize));            &#125;        &#125;    &#125;    return dst;&#125;
+中间部分写的比较暴力,直接计算的窗口的和值, 然后进行均值得到的结果, 其实这里如果要考虑窗口的和值, 我们没必要重复计算一次, 每次计我们移动窗口后变化的两个边界差值即可, 这样计算上的一点点速度优化, 我们这里实现的只是一个 小小的demo , 有一定的效果即可
+opencv 实现均值滤波我们在之前的章节提到了 使用 filter2D 代替普通操作的方法,在这里自然而然的想到怎么去实现, 我们还是一样的构造一个核, 然后计算结果即可, 这里使用的核还是 上面提到的 算术均值滤波的核
+123456789// filter2D 实现 meanfiltercv::Mat meanFilterByFilter2D(const cv::Mat src, int ksize = 3)&#123;    cv::Mat kernel = (cv::Mat_&lt;float&gt;(ksize,ksize) &lt;&lt; 1,1,1,1,1,1,1,1,1);    kernel = kernel / 9.0f;    cv::Mat dst;    cv::filter2D(src,dst,src.depth(),kernel);    return dst;&#125;
+这里实现起来真的很简单, 这里的 Mat 可以直接进行矩阵的操作, 每个元素都除以了9,这样就简单很多了,  
+接下来呢, opencv 对于这种基础且常见的算法肯定自己去在做了实现呀, 在我们上面也提到了opencv 的例程Smoothing Images, 提到了 一个模糊的函数, cv::blur, 这个函数可以调用盒式滤波器, 其实也就是均值滤波的通用形式, 前面的系数不一定而已, 我们先实现一下看下效果,  这里跟上面写成一样的形式, 看起来好看一点, 其实只需要一句话便可以实现了 没什么难度,  至于效果, 我们马上来对比1234567// 使用 blur 均值滤波cv::Mat meanFilterByBlur(const cv::Mat src, int ksize = 3)&#123;    cv::Mat dst;    cv::blur(src,dst,cv::Size(ksize,ksize));    return dst;&#125;
+均值滤波算法对比我们上面提到了构造噪声图像, 然后我们存储了起来, 这里我们选择了一副图像进行直接给结果,  这里我们选择 高椒盐噪声的图像进行测试, 然后先看结果, 第一行表示噪声图像与原始图像的参数值, 后面的三行依次是我们进行上面提到的三种实现出来的滤波方式得到的图像与原始图像进行的对比分析, 这里还是能看到比较明显的结果的, 
+1234image-noise: psnr:19.4727, mssim: B:0.353134 G:0.383638 R:0.629353 image-1: psnr:26.505, mssim: B:0.603292 G:0.63888 R:0.806963 image-2: psnr:26.7208, mssim: B:0.605704 G:0.641344 R:0.809115 image-3: psnr:26.7208, mssim: B:0.605704 G:0.641344 R:0.809115
+我们看一下测试的代码, 还是之前的界面里面的第二个按钮执行的函数,  这里我们第一个按钮是去读取我们之前存储的噪声图像, 按名称读取,然后结果的时候, 我们是按照每幅图像进行的, 这里暂时 高椒盐噪声的图像, 可以在上面给出的图中看到12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758// 全局 噪声图像数组, psnr 数组 mssim 数组const std::string IMAGE_DIR ="../testimages/noise/";std::vector&lt;cv::Mat&gt; gNoiseImg(6);double psnr[6];cv::Scalar mssim[6];void MainWindow::testFunc1(void)&#123;    // 用于读取 测试图片    for(int i=0;i&lt;6;i++)    &#123;        gNoiseImg[i] = cv::imread(IMAGE_DIR + "lena-" + std::to_string(i+1) + ".png");    &#125;    qDebug("ReadOK");&#125;void MainWindow::testFunc2(void)&#123;    QString res_temp = "image-%1: psnr:%2, mssim: B:%3 G:%4 R:%5 ";    QString res_str;    // 测试 均值滤波 三种方式的不同    const int TEST = 1; // 使用统一的图进行测试 暂时使用 高 椒盐噪声图像    psnr[TEST] = getPSNR(gSrcImg, gNoiseImg[TEST]);    mssim[TEST] = getMSSIM(gSrcImg,gNoiseImg[TEST]);    res_str = res_temp.arg("noise")            .arg(psnr[TEST])            .arg(mssim[TEST].val[0])            .arg(mssim[TEST].val[1])            .arg(mssim[TEST].val[2]);    // 噪声的参数值    ui-&gt;pt_log-&gt;appendPlainText(res_str);    cv::Mat dst[3];    dst[0] = meanFilter(gNoiseImg[TEST]);    dst[1] = meanFilterByFilter2D(gNoiseImg[TEST]);    dst[2] = meanFilterByBlur(gNoiseImg[TEST]);    // 分别计算三种方式得到的滤波的效果 (结果图与 原始图比较)    for(int i=0;i&lt;3;i++)    &#123;        psnr[TEST] = getPSNR(gSrcImg, dst[i]);        mssim[TEST] = getMSSIM(gSrcImg,dst[i]);        res_str = res_temp.arg(i+1)                .arg(psnr[TEST])                .arg(mssim[TEST].val[0])                .arg(mssim[TEST].val[1])                .arg(mssim[TEST].val[2]);        // 噪声的参数值        ui-&gt;pt_log-&gt;appendPlainText(res_str);        cv::imwrite(IMAGE_DIR + "dst_" + std::to_string(i+1)+".png",dst[i]);    &#125;&#125;
+从上面的参数也能看出来, 后面两种方法得到的结果图像是一模一样的, 我们就不再进行展示, 先看 我们实现的均值滤波与自带的均值滤波的图像区别
+
+其实吧, 总体的结果上是看不出来区别的,  主要是我们的算法上没有进行边界的处理部分, 能在图的中间部分看到稍微的几个噪声点没有处理掉, 这可能也是我们的结果参数要稍微小一点的原因, 总体来说, 我们的算法还是能够进行均值滤波的, 而且跟自带的处理结果也是一致的.
+我这里就有了一个疑问, 为什么我们后面的结果就一模一样了呢,blur 去调用了 filter2D? 然后我去看两个函数的调用图,  感觉问题应该是出在 cv::FilterEngine::apply 函数上,在后面就没去研究了
+
+其实这里看了好久, 看得不是很懂, 就不再叙述了, 给出这两张函数的调用图 有兴趣的自己去看
+
+
+
+总结其实这里原本是计划一起写完的, 但是真的太伤了, 慢慢来吧, 中间容易跑偏, 因为这边还要做比较多的东西, 所以写的越来越慢, 不过至少目前兴致还是很高的 , 昨天发在博客园的文章还被 ImageShop 大佬点赞, 还是很开心的,
+其实越写感觉自己越虚, 很多深入的东西自己都不能说摸透了, 还是要深入去研究了 但是写的深入了看得就少了一点, 其实我尽量写的浅一点, 因为很多人最开始就是搜索 blog 找答案的, 能看懂就行,我会在后面将常用的都给写完的, 尽量更新的快, 现在每天要花大量的时间去查, 去看还要写, 希望我还能坚持下去, 加油.
+广告就是我这里还有之前的 函数调用图都是自己使用 doxygen 和graphiz  参考绘制函数调用图（call graph）（4）：doxygen + graphviz 自己重新生成的opencv 的文档图, 至少在用起来还是比较简单的 这个就是一个静态的网页, 我把它放在了我的 服务器上, 这样别人也能访问有需要的可以看下, 基于 opencv 4.3.0 版本的文档图 http://schen.xyz:89/opencv   
+
+没有备案, 也没有做防护, 别搞我
+
+参考
+《高斯噪声_百度百科》. 见于 2020年4月30日. https://baike.baidu.com/item/%E9%AB%98%E6%96%AF%E5%99%AA%E5%A3%B0.
+《绘制函数调用图（call graph）（4）：doxygen + graphviz_运维_许振坪的专栏-CSDN博客》. 见于 2020年5月2日. https://blog.csdn.net/benkaoya/article/details/79763668.
+知乎专栏. 《【技术综述】一文道尽传统图像降噪方法》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/51403693.
+知乎专栏. 《可复现的图像降噪算法总结》. 见于 2020年4月29日. https://zhuanlan.zhihu.com/p/32502816.
+《图像噪声的成因分类与常见图像去噪算法简介_Java_qq_27606639的博客-CSDN博客》. 见于 2020年4月30日. https://blog.csdn.net/qq_27606639/article/details/80912071.
+《最小均方滤波器》. 收入 维基百科，自由的百科全书, 2018年3月9日. https://zh.wikipedia.org/w/index.php?title=%E6%9C%80%E5%B0%8F%E5%9D%87%E6%96%B9%E6%BB%A4%E6%B3%A2%E5%99%A8&amp;oldid=48602322.
+《Computer Vision: Algorithms and Applications, 1st ed.》 见于 2020年5月1日. http://szeliski.org/Book/.
+《OpenCV: Smoothing Images》. 见于 2020年5月1日. https://docs.opencv.org/4.3.0/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html.
+《openCV之中值滤波&amp;均值滤波（及代码实现）人工智能林小默-CSDN博客》. 见于 2020年5月1日. https://blog.csdn.net/weixin_37720172/article/details/72627543.
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+              <a class='prev' href='/2020/05-02/opencv-11-%E4%B8%AD%E5%80%BC%E6%BB%A4%E6%B3%A2.html'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>opencv-11-中值滤波及自适应中值滤波</p>
+                <p class='content'>开始之前在上一篇我们实现了读取噪声图像, 然后 进行三种形式的均值滤波得到结果, 由于我们自己写的均值滤波未作边缘处理, 所以效果有一定的下降, 但是总体来说, 我们得到的结果能够说明我们的算法...</p>
+              </a>
+            
+            
+              <a class='next' href='/2020/04-29/Imagelab-1-QTopencv.html'>
+                <p class='title'>Imagelab-1-QT 工程重构<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>输入密码, 查看文章1d8a7bfca21f8016ab4202dd0e7ed6412eb5f0ed152ffd89cabaf10f2dfe97dda6ac938f89a891df079e3e8...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  <article class="post white-box comments shadow">
+    <section class="article typo">
+      <p ct><i class='fas fa-comments'></i> 评论</p>
+      
+      
+      
+      
+      
+        <section id="comments">
+          <div id="valine_container" class="valine_thread">
+            <i class="fas fa-spinner fa-spin fa-fw"></i>
+          </div>
+        </section>
+      
+    </section>
+  </article>
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'opencv-10-图像滤波-噪声添加与均值滤波-含opencv C++ 代码实现',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开始之前"><span class="toc-text">开始之前</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正文"><span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#生成噪声图像"><span class="toc-text">生成噪声图像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#传统图像降噪算法及其对比"><span class="toc-text">传统图像降噪算法及其对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#opencv-核表示的算法操作"><span class="toc-text">opencv 核表示的算法操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#均值滤波及C-代码实现"><span class="toc-text">均值滤波及C++ 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#算术均值滤波"><span class="toc-text">算术均值滤波</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加权均值滤波"><span class="toc-text">加权均值滤波</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#C-手动实现均值滤波"><span class="toc-text">C++手动实现均值滤波</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#opencv-实现均值滤波"><span class="toc-text">opencv 实现均值滤波</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#均值滤波算法对比"><span class="toc-text">均值滤波算法对比</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#广告"><span class="toc-text">广告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget category shadow desktop">
+    
+  <header>
+    
+      <a href='categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <ul class="entry navigation">
+        
+          <li><a class="flat-box"
+            title="/categories/Alg/" href="/categories/Alg/"
+            id="categoriesAlg"
+            ><div class='name'>Alg</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/C/" href="/categories/C/"
+            id="categoriesC"
+            ><div class='name'>C++</div><div class='badge'>(8)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Config/" href="/categories/Config/"
+            id="categoriesConfig"
+            ><div class='name'>Config</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Essay/" href="/categories/Essay/"
+            id="categoriesEssay"
+            ><div class='name'>Essay</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Game/" href="/categories/Game/"
+            id="categoriesGame"
+            ><div class='name'>Game</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Hexo/" href="/categories/Hexo/"
+            id="categoriesHexo"
+            ><div class='name'>Hexo</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/IOT/" href="/categories/IOT/"
+            id="categoriesIOT"
+            ><div class='name'>IOT</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Interview/" href="/categories/Interview/"
+            id="categoriesInterview"
+            ><div class='name'>Interview</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LaTex/" href="/categories/LaTex/"
+            id="categoriesLaTex"
+            ><div class='name'>LaTex</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode-Contest/" href="/categories/LeetCode-Contest/"
+            id="categoriesLeetCode-Contest"
+            ><div class='name'>LeetCode-Contest</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/LeetCode/" href="/categories/LeetCode/"
+            id="categoriesLeetCode"
+            ><div class='name'>LeetCode</div><div class='badge'>(11)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Offer/" href="/categories/Offer/"
+            id="categoriesOffer"
+            ><div class='name'>Offer</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/OpenCV/" href="/categories/OpenCV/"
+            id="categoriesOpenCV"
+            ><div class='name'>OpenCV</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Person/" href="/categories/Person/"
+            id="categoriesPerson"
+            ><div class='name'>Person</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/QT/" href="/categories/QT/"
+            id="categoriesQT"
+            ><div class='name'>QT</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SSR/" href="/categories/SSR/"
+            id="categoriesSSR"
+            ><div class='name'>SSR</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Script/" href="/categories/Script/"
+            id="categoriesScript"
+            ><div class='name'>Script</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/SerialPort/" href="/categories/SerialPort/"
+            id="categoriesSerialPort"
+            ><div class='name'>SerialPort</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Sword/" href="/categories/Sword/"
+            id="categoriesSword"
+            ><div class='name'>Sword</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/TODO/" href="/categories/TODO/"
+            id="categoriesTODO"
+            ><div class='name'>TODO</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Tools/" href="/categories/Tools/"
+            id="categoriesTools"
+            ><div class='name'>Tools</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Web/" href="/categories/Web/"
+            id="categoriesWeb"
+            ><div class='name'>Web</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/Windows/" href="/categories/Windows/"
+            id="categoriesWindows"
+            ><div class='name'>Windows</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/bug/" href="/categories/bug/"
+            id="categoriesbug"
+            ><div class='name'>bug</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/data/" href="/categories/data/"
+            id="categoriesdata"
+            ><div class='name'>data</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/hexo/" href="/categories/hexo/"
+            id="categorieshexo"
+            ><div class='name'>hexo</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/latex/" href="/categories/latex/"
+            id="categorieslatex"
+            ><div class='name'>latex</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/opencv/" href="/categories/opencv/"
+            id="categoriesopencv"
+            ><div class='name'>opencv</div><div class='badge'>(16)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imagelab/" href="/categories/opencv/imagelab/"
+            id="categoriesopencvimagelab"
+            ><div class='name'>imagelab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box child"
+            title="/categories/opencv/imaglab/" href="/categories/opencv/imaglab/"
+            id="categoriesopencvimaglab"
+            ><div class='name'>imaglab</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/person/" href="/categories/person/"
+            id="categoriesperson"
+            ><div class='name'>person</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/python/" href="/categories/python/"
+            id="categoriespython"
+            ><div class='name'>python</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/uncategorized/" href="/categories/uncategorized/"
+            id="categoriesuncategorized"
+            ><div class='name'>uncategorized</div><div class='badge'>(5)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/xxx/" href="/categories/xxx/"
+            id="categoriesxxx"
+            ><div class='name'>xxx</div><div class='badge'>(3)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E7%AE%97%E6%B3%95/" href="/categories/%E7%AE%97%E6%B3%95/"
+            id="categoriesE7AE97E6B395"
+            ><div class='name'>算法</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget tagcloud shadow desktop mobile">
+    
+  <header>
+    
+      <a href='tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/2019/" style="font-size: 14px; color: #999">2019</a> <a href="/tags/2020/" style="font-size: 14px; color: #999">2020</a> <a href="/tags/51/" style="font-size: 14px; color: #999">51</a> <a href="/tags/996/" style="font-size: 14px; color: #999">996</a> <a href="/tags/Android/" style="font-size: 14px; color: #999">Android</a> <a href="/tags/Array/" style="font-size: 17px; color: #858585">Array</a> <a href="/tags/Atomineer/" style="font-size: 14px; color: #999">Atomineer</a> <a href="/tags/BinarySearch/" style="font-size: 15px; color: #929292">BinarySearch</a> <a href="/tags/Bugs/" style="font-size: 15px; color: #929292">Bugs</a> <a href="/tags/C/" style="font-size: 14px; color: #999">C</a> <a href="/tags/C/" style="font-size: 24px; color: #555">C++</a> <a href="/tags/Cmake/" style="font-size: 14px; color: #999">Cmake</a> <a href="/tags/Code/" style="font-size: 14px; color: #999">Code</a> <a href="/tags/Compass/" style="font-size: 14px; color: #999">Compass</a> <a href="/tags/Contest/" style="font-size: 14px; color: #999">Contest</a> <a href="/tags/Crack/" style="font-size: 14px; color: #999">Crack</a> <a href="/tags/Doctest/" style="font-size: 14px; color: #999">Doctest</a> <a href="/tags/Dynamic-Programming/" style="font-size: 14px; color: #999">Dynamic Programming</a> <a href="/tags/Emotion/" style="font-size: 14px; color: #999">Emotion</a> <a href="/tags/HEX/" style="font-size: 14px; color: #999">HEX</a> <a href="/tags/ICU/" style="font-size: 14px; color: #999">ICU</a> <a href="/tags/Interview/" style="font-size: 16px; color: #8b8b8b">Interview</a> <a href="/tags/Job/" style="font-size: 15px; color: #929292">Job</a> <a href="/tags/Jobs/" style="font-size: 14px; color: #999">Jobs</a> <a href="/tags/Latex/" style="font-size: 14px; color: #999">Latex</a> <a href="/tags/LeetCode/" style="font-size: 20px; color: #707070">LeetCode</a> <a href="/tags/LeetCode-easy-Overflow/" style="font-size: 14px; color: #999">LeetCode,easy,Overflow</a> <a href="/tags/Live/" style="font-size: 14px; color: #999">Live</a> <a href="/tags/Logger/" style="font-size: 14px; color: #999">Logger</a> <a href="/tags/Math/" style="font-size: 14px; color: #999">Math</a> <a href="/tags/Medium/" style="font-size: 15px; color: #929292">Medium</a> <a href="/tags/NameStyle/" style="font-size: 14px; color: #999">NameStyle</a> <a href="/tags/OpenCV/" style="font-size: 14px; color: #999">OpenCV</a> <a href="/tags/PBootCMS/" style="font-size: 15px; color: #929292">PBootCMS</a> <a href="/tags/PID/" style="font-size: 14px; color: #999">PID</a> <a href="/tags/PSO/" style="font-size: 14px; color: #999">PSO</a> <a href="/tags/Person/" style="font-size: 14px; color: #999">Person</a> <a href="/tags/Plugin/" style="font-size: 14px; color: #999">Plugin</a> <a href="/tags/PrimeNum/" style="font-size: 14px; color: #999">PrimeNum</a> <a href="/tags/Protocbuf/" style="font-size: 14px; color: #999">Protocbuf</a> <a href="/tags/QT/" style="font-size: 17px; color: #858585">QT</a> <a href="/tags/QT%E8%87%AA%E5%AE%9A%E4%B9%89/" style="font-size: 14px; color: #999">QT自定义</a> <a href="/tags/SSR/" style="font-size: 14px; color: #999">SSR</a> <a href="/tags/Serial/" style="font-size: 16px; color: #8b8b8b">Serial</a> <a href="/tags/SerialPort/" style="font-size: 14px; color: #999">SerialPort</a> <a href="/tags/She/" style="font-size: 14px; color: #999">She</a> <a href="/tags/String/" style="font-size: 14px; color: #999">String</a> <a href="/tags/TODO/" style="font-size: 14px; color: #999">TODO</a> <a href="/tags/TwoPointers/" style="font-size: 14px; color: #999">TwoPointers</a> <a href="/tags/UART/" style="font-size: 14px; color: #999">UART</a> <a href="/tags/UnitTest/" style="font-size: 14px; color: #999">UnitTest</a> <a href="/tags/Utils/" style="font-size: 14px; color: #999">Utils</a> <a href="/tags/VS/" style="font-size: 15px; color: #929292">VS</a> <a href="/tags/VS2015/" style="font-size: 16px; color: #8b8b8b">VS2015</a> <a href="/tags/Window/" style="font-size: 14px; color: #999">Window</a> <a href="/tags/Work/" style="font-size: 15px; color: #929292">Work</a> <a href="/tags/Wuhan/" style="font-size: 14px; color: #999">Wuhan</a> <a href="/tags/XeLaTex/" style="font-size: 14px; color: #999">XeLaTex</a> <a href="/tags/action/" style="font-size: 14px; color: #999">action</a> <a href="/tags/algorithm/" style="font-size: 14px; color: #999">algorithm</a> <a href="/tags/aliyun/" style="font-size: 14px; color: #999">aliyun</a> <a href="/tags/asp/" style="font-size: 14px; color: #999">asp</a> <a href="/tags/batch/" style="font-size: 14px; color: #999">batch</a> <a href="/tags/blog/" style="font-size: 21px; color: #696969">blog</a> <a href="/tags/blog%EF%BC%8Chexo/" style="font-size: 14px; color: #999">blog，hexo</a> <a href="/tags/bug/" style="font-size: 14px; color: #999">bug</a> <a href="/tags/c/" style="font-size: 22px; color: #636363">c++</a> <a href="/tags/changelog/" style="font-size: 14px; color: #999">changelog</a> <a href="/tags/cnblogs/" style="font-size: 15px; color: #929292">cnblogs</a> <a href="/tags/cov/" style="font-size: 14px; color: #999">cov</a> <a href="/tags/csdn/" style="font-size: 15px; color: #929292">csdn</a> <a href="/tags/data/" style="font-size: 14px; color: #999">data</a> <a href="/tags/depurple/" style="font-size: 14px; color: #999">depurple</a> <a href="/tags/dream/" style="font-size: 14px; color: #999">dream</a> <a href="/tags/easy/" style="font-size: 16px; color: #8b8b8b">easy</a> <a href="/tags/encrypt/" style="font-size: 23px; color: #5c5c5c">encrypt</a> <a href="/tags/file/" style="font-size: 14px; color: #999">file</a> <a href="/tags/fraud/" style="font-size: 14px; color: #999">fraud</a> <a href="/tags/game/" style="font-size: 15px; color: #929292">game</a> <a href="/tags/github/" style="font-size: 15px; color: #929292">github</a> <a href="/tags/hard/" style="font-size: 15px; color: #929292">hard</a> <a href="/tags/hexo/" style="font-size: 19px; color: #777">hexo</a> <a href="/tags/hide/" style="font-size: 21px; color: #696969">hide</a> <a href="/tags/histograms/" style="font-size: 14px; color: #999">histograms</a> <a href="/tags/history/" style="font-size: 14px; color: #999">history</a> <a href="/tags/home/" style="font-size: 15px; color: #929292">home</a> <a href="/tags/html/" style="font-size: 14px; color: #999">html</a> <a href="/tags/imagelab/" style="font-size: 15px; color: #929292">imagelab</a> <a href="/tags/intel/" style="font-size: 14px; color: #999">intel</a> <a href="/tags/js/" style="font-size: 14px; color: #999">js</a> <a href="/tags/latex/" style="font-size: 15px; color: #929292">latex</a> <a href="/tags/learn/" style="font-size: 14px; color: #999">learn</a> <a href="/tags/list/" style="font-size: 14px; color: #999">list</a> <a href="/tags/master/" style="font-size: 15px; color: #929292">master</a> <a href="/tags/mat/" style="font-size: 14px; color: #999">mat</a> <a href="/tags/matlab/" style="font-size: 14px; color: #999">matlab</a> <a href="/tags/offer/" style="font-size: 14px; color: #999">offer</a> <a href="/tags/opencv/" style="font-size: 24px; color: #555">opencv</a> <a href="/tags/outline/" style="font-size: 14px; color: #999">outline</a> <a href="/tags/overleaf/" style="font-size: 14px; color: #999">overleaf</a> <a href="/tags/pac/" style="font-size: 14px; color: #999">pac</a> <a href="/tags/person/" style="font-size: 18px; color: #7e7e7e">person</a> <a href="/tags/php/" style="font-size: 14px; color: #999">php</a> <a href="/tags/ppt/" style="font-size: 14px; color: #999">ppt</a> <a href="/tags/project/" style="font-size: 14px; color: #999">project</a> <a href="/tags/proxy/" style="font-size: 14px; color: #999">proxy</a> <a href="/tags/python/" style="font-size: 14px; color: #999">python</a> <a href="/tags/qt/" style="font-size: 22px; color: #636363">qt</a> <a href="/tags/robot/" style="font-size: 14px; color: #999">robot</a> <a href="/tags/script/" style="font-size: 14px; color: #999">script</a> <a href="/tags/server/" style="font-size: 15px; color: #929292">server</a> <a href="/tags/shopping/" style="font-size: 14px; color: #999">shopping</a> <a href="/tags/sketchup/" style="font-size: 14px; color: #999">sketchup</a> <a href="/tags/soft/" style="font-size: 15px; color: #929292">soft</a> <a href="/tags/sword/" style="font-size: 14px; color: #999">sword</a> <a href="/tags/swordoffer/" style="font-size: 14px; color: #999">swordoffer</a> <a href="/tags/template/" style="font-size: 14px; color: #999">template</a> <a href="/tags/test/" style="font-size: 16px; color: #8b8b8b">test</a> <a href="/tags/theme/" style="font-size: 14px; color: #999">theme</a> <a href="/tags/todo/" style="font-size: 14px; color: #999">todo</a> <a href="/tags/tools/" style="font-size: 14px; color: #999">tools</a> <a href="/tags/washing-machine/" style="font-size: 14px; color: #999">washing machine</a> <a href="/tags/web/" style="font-size: 15px; color: #929292">web</a> <a href="/tags/whu/" style="font-size: 14px; color: #999">whu</a> <a href="/tags/years/" style="font-size: 14px; color: #999">years</a> <a href="/tags/%E4%B8%B2%E5%8F%A3/" style="font-size: 14px; color: #999">串口</a> <a href="/tags/%E5%88%86%E6%B2%BB/" style="font-size: 14px; color: #999">分治</a> <a href="/tags/%E5%9B%BE%E7%89%87/" style="font-size: 14px; color: #999">图片</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 14px; color: #999">多线程</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 14px; color: #999">学习</a> <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" style="font-size: 14px; color: #999">嵌入式</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 14px; color: #999">数学</a> <a href="/tags/%E6%B0%B4%E6%B8%A9%E6%8E%A7%E5%88%B6/" style="font-size: 14px; color: #999">水温控制</a> <a href="/tags/%E9%98%9F%E5%88%97/" style="font-size: 14px; color: #999">队列</a>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='false'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='netease'
+      type='playlist'
+      id='3175833810'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="/atom.xml"
+                class="social fas fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="mailto:me@xaoxuu.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://github.com/xaoxuu"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=63035382"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+      
+    
+      
+        本站使用
+        <a href="https://volantis.js.org/" target="_blank" class="codename">Schen00</a>
+        作为主题
+        
+          ，
+          总访问量为
+          <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+          次
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://xaoxuu.com" target="_blank" rel="noopener">Copyright © 2017-2020 Mr. X</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js" async></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js" async></script>
+
+  
+
+
+
+
+
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.2.0/js/valine.js"></script>
+
+  
+  <script>
+  var GUEST_INFO = ['nick','mail','link'];
+  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+    return GUEST_INFO.indexOf(item) > -1
+  });
+  var notify = 'false' == true;
+  var verify = 'false' == true;
+  var valine = new Valine();
+  valine.init({
+    el: '#valine_container',
+    notify: notify,
+    verify: verify,
+    guest_info: guest_info,
+    
+    appId: "aB4XKwq00t6BFhV80u7mCg6z-gzGzoHsz",
+    appKey: "RndTSESgwxQgJtumDIvUeWvk",
+    placeholder: "快来评论吧~",
+    pageSize:'10',
+    avatar:'mp',
+    lang:'zh-cn',
+    visitor: 'false',
+    highlight:'true'
+  })
+  </script>
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.1/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copyed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-clipboard-check');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPYED';
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-exclamation-triangle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("div.fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
