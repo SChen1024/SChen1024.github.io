@@ -1,0 +1,100 @@
+\documentclass{article}
+% 中文包
+\usepackage[UTF8]{ctex}
+
+% 导言区
+% 图片排版工具
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{subfigure}
+
+\title{Latex模板}
+\author{SChen1024 }
+\date{March 2020}
+
+\begin{document}
+% \maketitle
+
+\section{latex 图片布局}
+
+\subsection{单图}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[height=4.5cm,width=9.5cm]{dm_hb.png}
+    \caption[图片短标题,显示在目录]{这里是显示在图片下面的长标题}
+    \label{fig:1}           % 用于引用图片
+\end{figure}
+
+\subsection{双图并排}
+
+1. 双图并列展示, 算是不同的图
+% 文档中添加
+\begin{figure}[!htbp]
+	\begin{minipage}[t]{0.5\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{dm_hb.png}
+		\caption{测试图1}
+		\label{fig:1}
+	\end{minipage}
+	\begin{minipage}[t]{0.5\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{dm_hb.png}
+		\caption{测试图2}
+		\label{fig:2}
+	\end{minipage} \\
+\end{figure}
+
+2. 双图并列展示, 分别使用 abc  来标识子图
+\begin{figure}[!htbp]
+    \centering
+    \subfigure[pic1.1111111111111]{
+        \begin{minipage}[t]{0.5\linewidth}
+            \centering
+            \includegraphics[width=\textwidth]{dm_hb.png}
+        \end{minipage}%
+    }%
+    \subfigure[pic2. 2222222]{
+        \begin{minipage}[t]{0.5\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{dm_hb.png}
+        \end{minipage}%
+    }%
+    \caption{总图的标识}
+\end{figure}
+
+3. 四张图片的排列
+
+\begin{figure}[!htbp]
+    \centering
+    \subfigure[pic1.1111111111111]{
+        \begin{minipage}[t]{0.5\linewidth}
+            \centering
+            \includegraphics[width=\textwidth]{dm_hb.png}
+        \end{minipage}%
+    }%
+    \subfigure[pic2. 2222222]{
+        \begin{minipage}[t]{0.5\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{dm_hb.png}
+        \end{minipage}%
+    }%
+    
+    \subfigure[pic1.333333333333333]{
+        \begin{minipage}[t]{0.5\linewidth}
+            \centering
+            \includegraphics[width=\textwidth]{dm_hb.png}
+        \end{minipage}%
+    }%
+    \subfigure[pic2. 44444444444]{
+        \begin{minipage}[t]{0.5\linewidth}
+            \centering
+            \includegraphics[width=\linewidth]{dm_hb.png}
+        \end{minipage}%
+    }%
+    \caption{总图的标识}
+\end{figure}
+
+
+\end{document}
